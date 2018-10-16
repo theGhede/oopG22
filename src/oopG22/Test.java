@@ -88,12 +88,14 @@ public class Test extends JPanel implements ActionListener {
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	// TODO: Point movement
 	public static void testDistance () {
+		int moves = 0;
+		int rightmoves = 0;
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
 				if(distance(flock[i], flock[j]) < minDistance) {
 					double helpDistance = minDistance - distance(flock[i], flock[j]);
-					double yDistance = flock[i].xcoord - flock[j].xcoord;
-					double xDistance = flock[i].ycoord - flock[j].ycoord;
+					double yDistance = Math.abs(flock[i].xcoord - flock[j].xcoord);
+					double xDistance = Math.abs(flock[i].ycoord - flock[j].ycoord);
 
 					if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord < flock[i].xcoord){
 						double angle = Math.atan(xDistance/yDistance);
@@ -102,7 +104,7 @@ public class Test extends JPanel implements ActionListener {
 
 						flock[j].moveDown((yMove));
 						flock[j].moveLeft((xMove));
-
+						moves++;
 					}
 					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord > flock[i].xcoord){
 						double angle = Math.atan(yDistance/xDistance);
@@ -111,6 +113,7 @@ public class Test extends JPanel implements ActionListener {
 
 						flock[j].moveUp((yMove));
 						flock[j].moveRight((xMove));
+						moves++;
 					}
 					else if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord > flock[i].xcoord) {
 						double angle = Math.atan(xDistance/yDistance);
@@ -119,7 +122,7 @@ public class Test extends JPanel implements ActionListener {
 
 						flock[j].moveDown((yMove));
 						flock[j].moveRight((xMove));
-
+						moves++;
 					}
 					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord < flock[i].xcoord) {
 						double angle = Math.atan(yDistance/xDistance);
@@ -128,28 +131,35 @@ public class Test extends JPanel implements ActionListener {
 
 						flock[j].moveUp((yMove));
 						flock[j].moveLeft((xMove));
-
+						moves++;
 					}
 					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach rechts
 					else if(flock[j].ycoord == flock[i].ycoord) {
 						if(flock[j].xcoord < flock[i].xcoord) {
 							flock[j].moveLeft(helpDistance);
+							moves++;
 						}
-						else {
+						else if(flock[j].xcoord > flock[i].xcoord){
 							flock[j].moveRight(helpDistance);
+							moves++;
 						}
 					}
 					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
 					else if(flock[j].xcoord == flock[i].xcoord) {
 						if(flock[j].ycoord < flock[i].ycoord) {
 							flock[j].moveDown(helpDistance);
-						} else {
+
+							moves++;
+						} else if(flock[j].ycoord < flock[i].ycoord){
 							flock[j].moveUp(helpDistance);
+
+							moves++;
 						}
 					}
 				}
 			}
 		}
+		System.out.println(moves);
 	}
 
 	// Berechnen der euklidischen Distanz
@@ -157,7 +167,6 @@ public class Test extends JPanel implements ActionListener {
 		double xdist = Math.pow((a.xcoord - b.xcoord), 2);
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
 		double dist = Math.sqrt(xdist + ydist);
-		//System.out.println(dist);
 		return dist;
 	}
 
@@ -214,6 +223,7 @@ public class Test extends JPanel implements ActionListener {
 		return frame;
 	}
 	
+	// update by repaint every 10 milliseconds (==> after the intervals found in main)
 	Timer t = new Timer(10, this);
 	public void actionPerformed(ActionEvent e) {
 		repaint();
@@ -222,7 +232,6 @@ public class Test extends JPanel implements ActionListener {
 	public static void main(String[] args) throws InterruptedException {
 
 		makeFlock();
-
 		// moved array
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
