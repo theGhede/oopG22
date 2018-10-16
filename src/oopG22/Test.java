@@ -79,13 +79,12 @@ public class Test extends JPanel {
 	public static boolean[] moved = new boolean[flock.length];
 
 	// Mindestabstand - willkürlich definiert
-	public static double minDistance = 8;
+	public static double minDistance = 120;
 
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	// TODO: Point movement
 	public static void testDistance () {
-		double[] distances = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
 				if(distance(flock[i], flock[j]) < minDistance) {
@@ -152,10 +151,11 @@ public class Test extends JPanel {
 
 	// Berechnen der euklidischen Distanz
 	public static double distance (Bird a, Bird b) {
-		double dist;
 		double xdist = Math.pow((a.xcoord - b.xcoord), 2);
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
-		return dist = Math.sqrt(xdist + ydist);
+		double dist = Math.sqrt(xdist + ydist);
+		System.out.println(dist);
+		return dist;
 	}
 
 	// Make flock within the center 500x500 of the JFrame; reminder: top-right = (0,0)
