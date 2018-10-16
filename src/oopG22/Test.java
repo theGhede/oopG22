@@ -57,13 +57,14 @@ public class Test extends JPanel {
 	// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
 	// TODO: Point movement
-	void moveBird (Bird b, double x1,double x2, double y1, double y2) {
+	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) {
 
 		if (!moved[b.index]){
 			b.moveUp(y1);
 			b.moveDown(y2);
 			b.moveLeft(x2);
 			b.moveRight(x1);
+			moved[b.index] = true;
 		}
 		for (int i = 0; i < b.neighbors.length ; i++) {
 			moveBird(b.neighbors[i],x1,x2,y1,y2);
@@ -213,6 +214,11 @@ public class Test extends JPanel {
 	
 		makeFlock();
 		
+		// moved array
+		for (int i = 0; i < flock.length; i++) {
+			moved[i] = false;
+		}
+		
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -221,7 +227,25 @@ public class Test extends JPanel {
 		});
 		
 		// TODO: Simulations
+		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
+		int select = (int) (Math.random() * flock.length-1);
+		moveBird(flock[select], (4 + Math.random() * 8), 0, 0, (12 + Math.random() * 12));
+		// reset moved
+		for (int i = 0; i < flock.length; i++) {
+			moved[i] = false;
+		}
 		
+		minDistance = 12;
+		select = (int) (Math.random() * flock.length-1);
+		moveBird(flock[select], (8 + Math.random() * 12), 0, (12 + Math.random() * 16), 0);
+		// reset moved
+		for (int i = 0; i < flock.length; i++) {
+			moved[i] = false;
+		}
+		
+		minDistance = 4;
+		select = (int) (Math.random() * flock.length-1);
+		moveBird(flock[select], 0, (10 + Math.random() * 24), 0, 0);
 	}
 }
 				
