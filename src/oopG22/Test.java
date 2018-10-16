@@ -42,20 +42,23 @@ public class Test extends JPanel {
 	}
 	
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
-	public static Bird[] neighborhood(Bird b, int radius) {
+	public static void neighborhood(Bird b, int radius) {
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
-		Bird neighbors[] = new Bird[amount];
+		Bird[] neighbors = new Bird[amount];
 		for (int i = 0; i < flock.length; i++) {
-		if (i != b.index && j < amount) {
+			if (i != b.index && j < amount) {
 				if (distance(b, flock[i]) <= radius) {
 					neighbors[j] = flock[i];
 					j++;
 				}
 			}
 		}
-		if (j < amount) neighborhood(b, radius + 1);
-		return neighbors;
+		if (j < amount) {
+			neighborhood(b, radius + 1);
+		} else {
+			b.neighbors = neighbors;
+			}
 	}
 	
 
@@ -63,11 +66,6 @@ public class Test extends JPanel {
 	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
 	// TODO: Point movement
 	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) {
-		System.out.println(b.index);
-		for (int i = 0; i < b.neighbors.length; i++) {
-			System.out.println(b.neighbors[i]);
-		}
-		// TODO: Nullpointer Exception here
 		if (!moved[b.index]){
 			b.moveUp(y1);
 			b.moveDown(y2);
@@ -76,7 +74,8 @@ public class Test extends JPanel {
 			moved[b.index] = true;
 		}
 		for (int i = 0; i < b.neighbors.length ; i++) {
-			moveBird(b.neighbors[i],x1,x2,y1,y2);
+			if (!moved[b.neighbors[i].index]) {
+			moveBird(b.neighbors[i],x1,x2,y1,y2);}
 		}
 	}
 
@@ -201,9 +200,9 @@ public class Test extends JPanel {
 			b.index = i;
 			flock[i] = b;
 		}
-		// TODO: CHECK make neighborhood for each bird
+		// Find neighbors for each bird
 		for (int i = 0; i < flock.length; i++) {
-			flock[i].neighbors = neighborhood(flock[i], 1);
+			neighborhood(flock[i], 1);
 		}
 		
 		// check and repair minimal distance infringments
@@ -214,7 +213,6 @@ public class Test extends JPanel {
 	// draw graphics using paint(g) with Graphics2D for double usage
 	public void paint(Graphics g) {
 		// use this to draw the initial flock via for loop as dots
-		// TODO: throws exception because it tries to draw the points before the flock is made
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
