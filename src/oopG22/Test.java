@@ -17,7 +17,7 @@ public class Test extends JPanel {
 
 			int j = 0;
 			int amount = (int) (5 + (15 * Math.random()));
-			Bird neighbors[] = new Bird[amount-1];
+			Bird neighbors[] = new Bird[amount];
 			for (int i = 0; i < flock.length; i++) {
 				if (i != b.index && j < amount) {
 					if (distance(b, flock[i]) <= radius) {
@@ -71,8 +71,8 @@ public class Test extends JPanel {
 
 	// Der Schwarm wird von einem Array von Vögeln repräsentiert
 	// Die Anzahl der Vögel ist willkürlich vorbestimmt
-	public Bird[] flock = new Bird[199];
-	public boolean[] moved = new boolean[199];
+	public Bird[] flock = new Bird[200];
+	public boolean[] moved = new boolean[flock.length];
 
 	// Mindestabstand - willkürlich definiert
 	public double minDistance = 4;
@@ -157,6 +157,27 @@ public class Test extends JPanel {
 		return dist = Math.sqrt(xdist + ydist);
 	}
 	
+	// TODO: Make flock within the center 600x600 of the JFrame; reminder: top-right = (0,0)
+	public void makeFlock() {
+		double[] xvalues = new double[flock.length];
+		double[] yvalues = new double[flock.length];
+		for(int i = 0; i < flock.length; i++) {
+			xvalues[i] = (Math.random() * 600) + 200;
+			yvalues[i] = (Math.random() * 600) + 200;
+		}
+		for(int i = 0; i < flock.length; i++) {
+			/* make new Birdobjects here
+			 * index = i
+			 * x/ycoord = x/yvalues[i]
+			 * neighbors = this.neighborhood(this, 1)*/
+			
+		}
+		// check and repair minimal distance infringments
+		testDistance();
+		
+		// TODO: draw graphics using paint(g)
+	}
+	
 	public void paint(Graphics g) {
 		// TODO: use this to draw the initial flock via for loop as dots
 		// Polygon as example for drawing
@@ -167,7 +188,6 @@ public class Test extends JPanel {
 	}
 	
 	private static void GUI() {
-		// TODO: Draw points
 
 		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
 		frame.getContentPane().add(new Test());
@@ -178,12 +198,8 @@ public class Test extends JPanel {
 	}
 	
 	public static void main(String[] args) {
-
-		Bird[] flock = new Bird[200];
-		
-		// TODO: Make flock
-		
-		// TODO: CHECK run GUI
+	
+		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GUI();
