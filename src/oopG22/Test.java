@@ -2,29 +2,18 @@ package oopG22;
 
 public class Test {
 
-	// Berechnen der euklidischen Distanz
-	public double distance(Bird a, Bird b) {
-		double dist;
-
-		double xdist = Math.pow((a.x - b.x), 2);
-		double ydist = Math.pow((a.y - b.y), 2);
-		return dist = Math.sqrt(xdist + ydist);
-
-
-	}
-
-
 	private class Bird {
 
-		double x;
-		double y;
+		double xcoord;
+		double ycoord;
+		int[] neighbors;
 		int index;
 
-		private Bird[] neighbors(Bird b, Bird flock[], int radius) {
+		private Bird[] neighborhood(Bird b, int radius) {
 
-			Bird neighbors[] = new Bird[200];
+			Bird neighbors[] = new Bird[flock.length];
 			int j = 0;
-			for (int i = 0; i < flock.length - 1; i++) {
+			for (int i = 0; i < flock.length; i++) {
 				if (i == b.index) break;
 
 				if (distance(b, flock[i]) <= radius) {
@@ -32,10 +21,31 @@ public class Test {
 					j++;
 				}
 			}
-			if (j < 5) neighbors(b, flock, radius + 1);
+			if (j < 5) neighbors(b, radius + 1);
 
 			return neighbors;
 		}
+		
+		void moveUp(int k) {
+			double move = this.ycoord + k;
+			this.ycoord = move;
+		}
+		
+		void moveDown(int k) {
+			double move = this.ycoord - k;
+			this.ycoord = move;
+		}
+
+		void moveLeft(int k) {
+			double move = this.xcoord - k;
+			this.xcoord = move;
+		}
+
+		void moveRight(int k) {
+			double move = this.xcoord + k;
+			this.xcoord = move;
+		}
+		
 	}
 	
 	// Der Schwarm wird von einem Array von Vögeln repräsentiert
