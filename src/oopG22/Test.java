@@ -23,16 +23,16 @@ public class Test {
 		private Bird[] neighbors(Bird b, Bird flock[], int radius) {
 
 			Bird neighbors[] = new Bird[200];
-			for (int i = 0, j = 0; i < flock.length - 1; i++) {
+			int j = 0;
+			for (int i = 0; i < flock.length - 1; i++) {
 				if (i == b.index) break;
 
 				if (distance(b, flock[i]) <= radius) {
 					neighbors[j] = flock[i];
 					j++;
 				}
-				if (j < 5) neighbors(b, flock, radius + 1);
 			}
-
+			if (j < 5) neighbors(b, flock, radius + 1);
 
 			return neighbors;
 		}
