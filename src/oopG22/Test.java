@@ -2,7 +2,7 @@ package oopG22;
 
 public class Test {
 
-	
+
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft
 	private class Bird {
 
@@ -75,18 +75,18 @@ public class Test {
 
 	// Mindestabstand - willkürlich definiert
 	public double minDistance = 4;
-	
+
 	public void testDistance () {
 		double[] distances = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
-			distances[i] = distance(flock[i], flock[j]);
+				distances[i] = distance(flock[i], flock[j]);
 			}
 		}
 	}
 
-	
-	
+
+
 	// Berechnen der euklidischen Distanz
 	public double distance (Bird a, Bird b) {
 		double dist;
@@ -94,9 +94,9 @@ public class Test {
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
 		return dist = Math.sqrt(xdist + ydist);
 	}
-	
-	
-	
+
+
+
 	public static void main(String[] args) {
 
 		Bird[] flock = new Bird[200];
