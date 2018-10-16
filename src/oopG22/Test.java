@@ -88,12 +88,12 @@ public class Test extends JPanel implements ActionListener {
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	// TODO: Point movement
 	public static void testDistance () {
-		for(int i = 0; i < flock.length; i++) {
-			for(int j = 0; j < flock.length; j++) {
+		for(int j = 0; j < flock.length; j++) {
+			for(int i = 0; i < flock.length; i++) {
 				if(distance(flock[i], flock[j]) < minDistance) {
 					double helpDistance = minDistance - distance(flock[i], flock[j]);
-					double yDistance = flock[i].xcoord - flock[j].xcoord;
-					double xDistance = flock[i].ycoord - flock[j].ycoord;
+					double yDistance = Math.abs(flock[i].xcoord - flock[j].xcoord);
+					double xDistance = Math.abs(flock[i].ycoord - flock[j].ycoord);
 
 					if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord < flock[i].xcoord){
 						double angle = Math.atan(xDistance/yDistance);
@@ -169,7 +169,6 @@ public class Test extends JPanel implements ActionListener {
 			xvalues[i] = (Math.random() * 500) + 150;
 			yvalues[i] = (Math.random() * 500) + 150;
 		}
-		repaint();
 		for(int i = 0; i < flock.length; i++) {
 			// make new Bird Objects here
 			Bird b = new Bird();
@@ -184,8 +183,8 @@ public class Test extends JPanel implements ActionListener {
 		}
 
 		// check and repair minimal distance infringments
-		for (int i = 0; i < 1; i++) {
-		testDistance();
+		for (int i = 0; i < 5; i++) {
+			testDistance();
 		}
 	}
 
@@ -202,7 +201,6 @@ public class Test extends JPanel implements ActionListener {
 			g2d.draw(s);
 			g2d.fill(s);
 		}
-
 	}
 
 	private static JFrame GUI() {
@@ -214,26 +212,14 @@ public class Test extends JPanel implements ActionListener {
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 		return frame;
-
 	}
-	
-<<<<<<< HEAD
-	private static JFrame GUI3() {
 
-		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 3");
-		frame.getContentPane().add(new Test());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 800);
-		frame.setLocationByPlatform(true);
-		frame.setVisible(true);
-		return frame;
-=======
+	// update by repaint every 10 milliseconds (==> after the intervals found in main)
 	Timer t = new Timer(10, this);
 	public void actionPerformed(ActionEvent e) {
 		repaint();
->>>>>>> 54148d46260c07061ae56df2d35e865249708c5e
 	}
-	
+
 	public static void main(String[] args) throws InterruptedException {
 
 		makeFlock();
@@ -257,37 +243,24 @@ public class Test extends JPanel implements ActionListener {
 		moveBird(flock[select], (40 + Math.random() * 20), 0, 0, (20 + Math.random() * 40));
 		TimeUnit.SECONDS.sleep(4);
 		testDistance();
-		
+
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-		
+
 		TimeUnit.SECONDS.sleep(20);
 		minDistance = 80;
 		flocksize = 260;
-		
+
 		makeFlock();
-<<<<<<< HEAD
 
-		JFrame frame = GUI2();
-		frame.repaint();
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				GUI2();
-			}
-		});
-
-=======
-		
->>>>>>> 54148d46260c07061ae56df2d35e865249708c5e
 		select = (int) (Math.random() * flock.length-1);
 		TimeUnit.SECONDS.sleep(12);
 		moveBird(flock[select], (20 + Math.random() * 40), 0, (40 + Math.random() * 20), 0);
 		TimeUnit.SECONDS.sleep(4);
 		testDistance();
-		
+
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
@@ -298,16 +271,7 @@ public class Test extends JPanel implements ActionListener {
 		flocksize = 400;
 
 		makeFlock();
-		
-<<<<<<< HEAD
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				GUI3();
-			}
-		});
 
-=======
->>>>>>> 54148d46260c07061ae56df2d35e865249708c5e
 		select = (int) (Math.random() * flock.length-1);
 		TimeUnit.SECONDS.sleep(12);
 		moveBird(flock[select], 0, (40 + Math.random() * 40), 0, 0);
