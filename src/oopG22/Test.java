@@ -61,11 +61,6 @@ public class Test extends JPanel {
 	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
 	// TODO: Point movement
 	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) {
-		System.out.println(b.index);
-		for (int i = 0; i < b.neighbors.length; i++) {
-			System.out.println(b.neighbors[i]);
-		}
-		// TODO: Nullpointer Exception here
 		if (!moved[b.index]){
 			b.moveUp(y1);
 			b.moveDown(y2);
@@ -182,7 +177,7 @@ public class Test extends JPanel {
 			b.index = i;
 			flock[i] = b;
 		}
-		// TODO: CHECK make neighborhood for each bird
+		// Find neighbors for each bird
 		for (int i = 0; i < flock.length; i++) {
 			neighborhood(flock[i], 1);
 		}
@@ -195,7 +190,6 @@ public class Test extends JPanel {
 	// draw graphics using paint(g) with Graphics2D for double usage
 	public void paint(Graphics g) {
 		// use this to draw the initial flock via for loop as dots
-		// TODO: throws exception because it tries to draw the points before the flock is made
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
