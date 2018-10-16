@@ -10,16 +10,27 @@ public class Test {
 		return dist = Math.sqrt(xdist + ydist);
 	}
 	
+	// 
 	private class Bird {
 		double xcoord;
 		double ycoord;
 		
-		private int[] neighbors (Bird b) {
-			
+		private int[] neighborhood (Bird b) {
+			int[] neighbors = new int[20];
+			for (int i = 0; i < 20; i++) {
+				neighbors[i] = -1;
+			}
+			return neighbors;
 		}
 	}
 	
+	
+	
 	public static void main(String[] args) {
-
+		
+		// Der Schwarm wird von einem Array von Vögeln repräsentiert
+		// Die Anzahl der Vögel ist willkürlich vorbestimmt
+		Bird[] flock = new Bird[200];
+		
 	}
 }
