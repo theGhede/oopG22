@@ -11,13 +11,14 @@ public class Test {
 		Bird[] neighbors;
 		int index;
 
+		// Aufbai der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 		private Bird[] neighborhood(Bird b, int radius) {
 
 			int j = 0;
 			int amount = (int) (5 + (15 * Math.random()));
 			Bird neighbors[] = new Bird[amount-1];
 			for (int i = 0; i < flock.length; i++) {
-				if (i != b.index) {
+				if (i != b.index && j < amount) {
 					if (distance(b, flock[i]) <= radius) {
 						neighbors[j] = flock[i];
 						j++;
