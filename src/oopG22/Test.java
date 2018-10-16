@@ -6,11 +6,15 @@ public class Test {
 
 		double xcoord;
 		double ycoord;
+<<<<<<< HEAD
+=======
+		int[] neighbors;
+>>>>>>> 3cd3f6eaaad5c0a59a9098c208ab10223b16c106
 		int index;
 
-		private Bird[] neighbors(Bird b, Bird flock[], int radius) {
+		private Bird[] neighborhood(Bird b, int radius) {
 
-			Bird neighbors[] = new Bird[200];
+			Bird neighbors[] = new Bird[flock.length];
 			int j = 0;
 			for (int i = 0; i < flock.length; i++) {
 				if (i == b.index) break;
@@ -20,10 +24,31 @@ public class Test {
 					j++;
 				}
 			}
-			if (j < 5) neighbors(b, flock, radius + 1);
+			if (j < 5) neighbors(b, radius + 1);
 
 			return neighbors;
 		}
+		
+		void moveUp(int k) {
+			double move = this.ycoord + k;
+			this.ycoord = move;
+		}
+		
+		void moveDown(int k) {
+			double move = this.ycoord - k;
+			this.ycoord = move;
+		}
+
+		void moveLeft(int k) {
+			double move = this.xcoord - k;
+			this.xcoord = move;
+		}
+
+		void moveRight(int k) {
+			double move = this.xcoord + k;
+			this.xcoord = move;
+		}
+		
 	}
 
 	// Der Schwarm wird von einem Array von Vögeln repräsentiert
