@@ -1,5 +1,6 @@
 package oopG22;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 
 import javax.swing.*;
@@ -49,7 +50,6 @@ public class Test extends JPanel {
 			}
 		}
 		if (j < amount) neighborhood(b, radius + 1);
-		// TODO: dieses neighbors soll außerdem als Bird.neighbors gespeichert werden
 		return neighbors;
 	}
 	
@@ -76,7 +76,7 @@ public class Test extends JPanel {
 	public static boolean[] moved = new boolean[flock.length];
 
 	// Mindestabstand - willkürlich definiert
-	public static double minDistance = 4;
+	public static double minDistance = 8;
 	
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
@@ -157,13 +157,13 @@ public class Test extends JPanel {
 		return dist = Math.sqrt(xdist + ydist);
 	}
 	
-	// TODO: Make flock within the center 600x600 of the JFrame; reminder: top-right = (0,0)
+	// Make flock within the center 500x500 of the JFrame; reminder: top-right = (0,0)
 	public static void makeFlock() {
 		double[] xvalues = new double[flock.length];
 		double[] yvalues = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
-			xvalues[i] = (Math.random() * 600) + 200;
-			yvalues[i] = (Math.random() * 600) + 200;
+			xvalues[i] = (Math.random() * 500) + 150;
+			yvalues[i] = (Math.random() * 500) + 150;
 		}
 		for(int i = 0; i < flock.length; i++) {
 			// make new Bird Objects here
@@ -193,7 +193,9 @@ public class Test extends JPanel {
 		for (int i = 0; i < flock.length; i++) {
 			double x = flock[i].xcoord;
 			double y = flock[i].ycoord;
-			g2d.draw(new Line2D.Double(x, y, x, y));
+			Shape s = new Ellipse2D.Double(x, y, 4, 4);
+			g2d.draw(s);
+			g2d.fill(s);
 		}
 	}
 	
