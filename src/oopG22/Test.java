@@ -1,6 +1,8 @@
 package oopG22;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.*;
 
 public class Test extends JPanel {
@@ -79,7 +81,7 @@ public class Test extends JPanel {
 	public static boolean[] moved = new boolean[flock.length];
 
 	// Mindestabstand - willkürlich definiert
-	public static double minDistance = 120;
+	public static double minDistance = 60;
 
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
@@ -154,7 +156,7 @@ public class Test extends JPanel {
 		double xdist = Math.pow((a.xcoord - b.xcoord), 2);
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
 		double dist = Math.sqrt(xdist + ydist);
-		System.out.println(dist);
+		//System.out.println(dist);
 		return dist;
 	}
 
@@ -180,12 +182,13 @@ public class Test extends JPanel {
 		}
 
 		// check and repair minimal distance infringments
+		for (int i = 0; i < 1; i++) {
 		testDistance();
-
+		}
 	}
 
 	// draw graphics using paint(g) with Graphics2D for double usage
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		// use this to draw the initial flock via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -199,31 +202,9 @@ public class Test extends JPanel {
 		}
 	}
 
-	private static JFrame GUI1() {
+	private static JFrame GUI() {
 
 		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 1");
-		frame.getContentPane().add(new Test());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 800);
-		frame.setLocationByPlatform(true);
-		frame.setVisible(true);
-		return frame;
-	}
-
-	private static JFrame GUI2() {
-
-		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 2");
-		frame.getContentPane().add(new Test());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 800);
-		frame.setLocationByPlatform(true);
-		frame.setVisible(true);
-		return frame;
-	}	
-	
-	private static JFrame GUI3() {
-
-		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 3");
 		frame.getContentPane().add(new Test());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 800);
@@ -244,37 +225,36 @@ public class Test extends JPanel {
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				GUI1();
+				GUI();
 			}
 		});
 
-		// TODO: Simulations
+		// TODO: Simulations - each step starts after predetermined time (in seconds)
 		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 		int select = (int) (Math.random() * flock.length-1);
-		moveBird(flock[select], (4 + Math.random() * 8), 0, 0, (12 + Math.random() * 12));
+		TimeUnit.SECONDS.sleep(20);
+		moveBird(flock[select], (40 + Math.random() * 80), 0, 0, (60 + Math.random() * 60));
+		TimeUnit.SECONDS.sleep(10);
 		testDistance();
+		
+		JFrame frame = GUI();
+		frame.repaint();
 		
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-
-		minDistance = 12;
+		
+		TimeUnit.SECONDS.sleep(20);
+		minDistance = 80;
 		flocksize = 260;
 		
 		makeFlock();
 		
-		JFrame frame = GUI2();
-		frame.repaint();
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				GUI2();
-			}
-		});
-		
 		select = (int) (Math.random() * flock.length-1);
-		moveBird(flock[select], (8 + Math.random() * 12), 0, (12 + Math.random() * 16), 0);
+		TimeUnit.SECONDS.sleep(20);
+		moveBird(flock[select], (80 + Math.random() * 40), 0, (100 + Math.random() * 20), 0);
+		TimeUnit.SECONDS.sleep(10);
 		testDistance();
 		
 		// reset moved
@@ -282,19 +262,16 @@ public class Test extends JPanel {
 			moved[i] = false;
 		}
 
-		minDistance = 4;
+		TimeUnit.SECONDS.sleep(20);
+		minDistance = 40;
 		flocksize = 400;
 		
 		makeFlock();
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				GUI3();
-			}
-		});
-		
 		select = (int) (Math.random() * flock.length-1);
-		moveBird(flock[select], 0, (10 + Math.random() * 24), 0, 0);
+		TimeUnit.SECONDS.sleep(20);
+		moveBird(flock[select], 0, (60 + Math.random() * 80), 0, 0);
+		TimeUnit.SECONDS.sleep(10);
 		testDistance();
 	}
 }
