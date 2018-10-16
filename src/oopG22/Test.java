@@ -200,7 +200,7 @@ public class Test extends JPanel {
 		}
 	}
 
-	private static void GUI() {
+	private static JFrame GUI1() {
 
 		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 1");
 		frame.getContentPane().add(new Test());
@@ -211,6 +211,28 @@ public class Test extends JPanel {
 		return frame;
 	}
 
+	private static JFrame GUI2() {
+
+		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 2");
+		frame.getContentPane().add(new Test());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(800, 800);
+		frame.setLocationByPlatform(true);
+		frame.setVisible(true);
+		return frame;
+	}	
+	
+	private static JFrame GUI3() {
+
+		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 3");
+		frame.getContentPane().add(new Test());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(800, 800);
+		frame.setLocationByPlatform(true);
+		frame.setVisible(true);
+		return frame;
+	}	
+	
 	public static void main(String[] args) {
 
 		makeFlock();
