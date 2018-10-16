@@ -58,7 +58,11 @@ public class Test extends JPanel {
 	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
 	// TODO: Point movement
 	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) {
-
+		System.out.println(b.index);
+		for (int i = 0; i < b.neighbors.length; i++) {
+			System.out.println(b.neighbors[i]);
+		}
+		// TODO: Nullpointer Exception here
 		if (!moved[b.index]){
 			b.moveUp(y1);
 			b.moveDown(y2);
@@ -169,9 +173,9 @@ public class Test extends JPanel {
 		for(int i = 0; i < flock.length; i++) {
 			// make new Bird Objects here
 			Bird b = new Bird();
-			b.index = i;
 			b.xcoord = xvalues[i];
 			b.ycoord = yvalues[i];
+			b.index = i;
 			flock[i] = b;
 		}
 		// TODO: CHECK make neighborhood for each bird
