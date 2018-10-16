@@ -1,5 +1,7 @@
 package oopG22;
 import java.awt.*;
+import java.awt.geom.Line2D;
+
 import javax.swing.*;
 
 public class Test extends JPanel {
@@ -164,15 +166,14 @@ public class Test extends JPanel {
 			yvalues[i] = (Math.random() * 600) + 200;
 		}
 		for(int i = 0; i < flock.length; i++) {
+			/* make new Bird Objects here
+			 * index = i
+			 * x/ycoord = x/yvalues[i]*/
 			Bird b = new Bird();
 			b.index = i;
 			b.xcoord = xvalues[i];
 			b.ycoord = yvalues[i];
 			flock[i] = b;
-			/* make new Birdobjects here
-			 * index = i
-			 * x/ycoord = x/yvalues[i]
-			 * neighbors = this.neighborhood(this, 1)*/
 		}
 		// TODO: CHECK make neighborhood for each bird
 		for (int i = 0; i < flock.length; i++) {
@@ -186,12 +187,16 @@ public class Test extends JPanel {
 	}
 	
 	public void paint(Graphics g) {
-		// TODO: use this to draw the initial flock via for loop as dots
-		// Polygon as example for drawing
-		int xValues[] = {25, 145, 25, 145, 25};
-	    int yValues[] = {25, 25, 145, 145, 25};
-	    int points = 5;	    
-	    g.drawPolygon(xValues, yValues, points);
+		// use this to draw the initial flock via for loop as dots
+		// TODO: throws exception because it tries to draw the points before the flock is made
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		for (int i = 0; i < flock.length; i++) {
+			double x = flock[i].xcoord;
+			double y = flock[i].ycoord;
+			g2d.draw(new Line2D.Double(x, y, x, y));
+		}
 	}
 	
 	private static void GUI() {
