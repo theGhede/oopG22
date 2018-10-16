@@ -98,8 +98,8 @@ public class Test extends JPanel {
 						double xMove = helpDistance * Math.sin(angle);
 						double yMove = xMove/Math.tan(angle);
 
-						flock[j].moveUp((yMove));
-						flock[j].moveRight((xMove));
+						flock[j].moveDown((yMove));
+						flock[j].moveLeft((xMove));
 
 					}
 					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord > flock[i].xcoord){
@@ -115,7 +115,7 @@ public class Test extends JPanel {
 						double xMove = helpDistance * Math.sin(angle);
 						double yMove = xMove/Math.tan(angle);
 
-						flock[j].moveUp((yMove));
+						flock[j].moveDown((yMove));
 						flock[j].moveRight((xMove));
 
 					}
@@ -125,16 +125,16 @@ public class Test extends JPanel {
 						double yMove = xMove/Math.tan(angle);
 
 						flock[j].moveUp((yMove));
-						flock[j].moveRight((xMove));
+						flock[j].moveLeft((xMove));
 
 					}
 					// TODO: CHECK Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach links
 					else if(flock[j].ycoord == flock[i].ycoord) {
 						if(flock[j].xcoord < flock[i].xcoord) {
-							flock[j].moveRight(helpDistance);
+							flock[j].moveLeft(helpDistance);
 						}
 						else {
-							flock[j].moveLeft(helpDistance);
+							flock[j].moveRight(helpDistance);
 						}
 					}
 					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
