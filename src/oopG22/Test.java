@@ -36,7 +36,7 @@ public class Test extends JPanel {
 	}
 	
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
-	public Bird[] neighborhood(Bird b, int radius) {
+	public static Bird[] neighborhood(Bird b, int radius) {
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
 		Bird neighbors[] = new Bird[amount];
@@ -72,16 +72,16 @@ public class Test extends JPanel {
 
 	// Der Schwarm wird von einem Array von Vögeln repräsentiert
 	// Die Anzahl der Vögel ist willkürlich vorbestimmt
-	public Bird[] flock = new Bird[200];
-	public boolean[] moved = new boolean[flock.length];
+	public static Bird[] flock = new Bird[200];
+	public static boolean[] moved = new boolean[flock.length];
 
 	// Mindestabstand - willkürlich definiert
-	public double minDistance = 4;
+	public static double minDistance = 4;
 	
 	// Behandlung von Mindestabstandsverletzungen - die obigen move Methoden konnten nicht wiederverwertet werden
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	// TODO: Pointmovement
-	public void testDistance () {
+	public static void testDistance () {
 		double[] distances = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
@@ -150,7 +150,7 @@ public class Test extends JPanel {
 	}
 
 	// Berechnen der euklidischen Distanz
-	public double distance (Bird a, Bird b) {
+	public static double distance (Bird a, Bird b) {
 		double dist;
 		double xdist = Math.pow((a.xcoord - b.xcoord), 2);
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
@@ -158,7 +158,7 @@ public class Test extends JPanel {
 	}
 	
 	// TODO: Make flock within the center 600x600 of the JFrame; reminder: top-right = (0,0)
-	public void makeFlock() {
+	public static void makeFlock() {
 		double[] xvalues = new double[flock.length];
 		double[] yvalues = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
