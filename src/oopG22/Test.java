@@ -238,8 +238,8 @@ public class Test extends JPanel implements ActionListener {
 		// TODO: Simulations - each step starts after predetermined time (in seconds)
 		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 		int select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(14);
-		moveBird(flock[select], (40 + Math.random() * 80), 0, 0, (60 + Math.random() * 60));
+		TimeUnit.SECONDS.sleep(12);
+		moveBird(flock[select], (40 + Math.random() * 20), 0, 0, (20 + Math.random() * 40));
 		TimeUnit.SECONDS.sleep(4);
 		testDistance();
 		
@@ -255,8 +255,8 @@ public class Test extends JPanel implements ActionListener {
 		makeFlock();
 		
 		select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(14);
-		moveBird(flock[select], (80 + Math.random() * 40), 0, (100 + Math.random() * 20), 0);
+		TimeUnit.SECONDS.sleep(12);
+		moveBird(flock[select], (20 + Math.random() * 40), 0, (40 + Math.random() * 20), 0);
 		TimeUnit.SECONDS.sleep(4);
 		testDistance();
 		
@@ -272,8 +272,8 @@ public class Test extends JPanel implements ActionListener {
 		makeFlock();
 		
 		select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(14);
-		moveBird(flock[select], 0, (60 + Math.random() * 80), 0, 0);
+		TimeUnit.SECONDS.sleep(12);
+		moveBird(flock[select], 0, (40 + Math.random() * 40), 0, 0);
 		TimeUnit.SECONDS.sleep(4);
 		testDistance();
 	}
