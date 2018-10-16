@@ -2,29 +2,17 @@ package oopG22;
 
 public class Test {
 
-	// Berechnen der euklidischen Distanz
-	public double distance(Bird a, Bird b) {
-		double dist;
-
-		double xdist = Math.pow((a.x - b.x), 2);
-		double ydist = Math.pow((a.y - b.y), 2);
-		return dist = Math.sqrt(xdist + ydist);
-
-
-	}
-
-
 	private class Bird {
 
-		double x;
-		double y;
+		double xcoord;
+		double ycoord;
 		int index;
 
 		private Bird[] neighbors(Bird b, Bird flock[], int radius) {
 
 			Bird neighbors[] = new Bird[200];
 			int j = 0;
-			for (int i = 0; i < flock.length - 1; i++) {
+			for (int i = 0; i < flock.length; i++) {
 				if (i == b.index) break;
 
 				if (distance(b, flock[i]) <= radius) {
@@ -37,11 +25,12 @@ public class Test {
 			return neighbors;
 		}
 	}
-	
+
 	// Der Schwarm wird von einem Array von Vögeln repräsentiert
 	// Die Anzahl der Vögel ist willkürlich vorbestimmt
 	public Bird[] flock = new Bird[199];
-	
+
+
 	// Mindestabstand - willkürlich definiert
 	public double minDistance = 4;
 	
