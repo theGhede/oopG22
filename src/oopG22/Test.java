@@ -1,19 +1,12 @@
 package oopG22;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-
 import javax.swing.*;
-
-
-	// Vögel bestehen aus Koordinaten & einer Nachbarschaft
-	private class Bird {
 
 public class Test extends JPanel {
 
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
 	private static class Bird {
-
 
 		double xcoord;
 		double ycoord;
@@ -40,7 +33,7 @@ public class Test extends JPanel {
 			this.xcoord = move;
 		}
 	}
-	
+
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 	public static void neighborhood(Bird b, int radius) {
 		int j = 0;
@@ -58,9 +51,9 @@ public class Test extends JPanel {
 			neighborhood(b, radius + 1);
 		} else {
 			b.neighbors = neighbors;
-			}
+		}
 	}
-	
+
 
 	// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
@@ -75,7 +68,7 @@ public class Test extends JPanel {
 		}
 		for (int i = 0; i < b.neighbors.length ; i++) {
 			if (!moved[b.neighbors[i].index]) {
-			moveBird(b.neighbors[i],x1,x2,y1,y2);}
+				moveBird(b.neighbors[i],x1,x2,y1,y2);}
 		}
 	}
 
@@ -85,24 +78,16 @@ public class Test extends JPanel {
 	public static boolean[] moved = new boolean[flock.length];
 
 	// Mindestabstand - willkürlich definiert
-
-	public double minDistance = 4;
-
-	public void testDistance () {
-
 	public static double minDistance = 8;
-	
+
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	// TODO: Pointmovement
 	public static void testDistance () {
-
 		double[] distances = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
 				distances[i] = distance(flock[i], flock[j]);
-
-
 				if(distances[i] < minDistance) {
 					double helpDistance = minDistance - distances[i];
 					double yDistance = flock[i].xcoord - flock[j].xcoord;
@@ -162,15 +147,9 @@ public class Test extends JPanel {
 						}
 					}
 				}
-
 			}
 		}
 	}
-
-
-
-
-
 
 	// Berechnen der euklidischen Distanz
 	public static double distance (Bird a, Bird b) {
@@ -179,10 +158,6 @@ public class Test extends JPanel {
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
 		return dist = Math.sqrt(xdist + ydist);
 	}
-
-
-
-
 
 	// Make flock within the center 500x500 of the JFrame; reminder: top-right = (0,0)
 	public static void makeFlock() {
@@ -204,18 +179,18 @@ public class Test extends JPanel {
 		for (int i = 0; i < flock.length; i++) {
 			neighborhood(flock[i], 1);
 		}
-		
+
 		// check and repair minimal distance infringments
 		testDistance();
-		
+
 	}
-	
+
 	// draw graphics using paint(g) with Graphics2D for double usage
 	public void paint(Graphics g) {
 		// use this to draw the initial flock via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		for (int i = 0; i < flock.length; i++) {
 			double x = flock[i].xcoord;
 			double y = flock[i].ycoord;
@@ -224,7 +199,7 @@ public class Test extends JPanel {
 			g2d.fill(s);
 		}
 	}
-	
+
 	private static void GUI() {
 
 		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
@@ -234,45 +209,47 @@ public class Test extends JPanel {
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 	}
-	
 
 	public static void main(String[] args) {
-	
+
 		makeFlock();
-		
+
 		// moved array
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-		
+
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GUI();
 			}
 		});
-		
+
 		// TODO: Simulations
 		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 		int select = (int) (Math.random() * flock.length-1);
 		moveBird(flock[select], (4 + Math.random() * 8), 0, 0, (12 + Math.random() * 12));
+		testDistance();
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-		
+
 		minDistance = 12;
 		select = (int) (Math.random() * flock.length-1);
 		moveBird(flock[select], (8 + Math.random() * 12), 0, (12 + Math.random() * 16), 0);
+		testDistance();
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-		
+
 		minDistance = 4;
 		select = (int) (Math.random() * flock.length-1);
 		moveBird(flock[select], 0, (10 + Math.random() * 24), 0, 0);
+		testDistance();
 	}
 }
-				
+
 /* TODO:  Beschreibung wer an welchem Teil mitgearbeitet hat, entsprechend der Angabe */
