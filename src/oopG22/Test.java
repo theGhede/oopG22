@@ -7,7 +7,7 @@ import javax.swing.*;
 public class Test extends JPanel {
 
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
-	private class Bird {
+	private static class Bird {
 
 		double xcoord;
 		double ycoord;
@@ -78,7 +78,7 @@ public class Test extends JPanel {
 	// Mindestabstand - willkürlich definiert
 	public static double minDistance = 4;
 	
-	// Behandlung von Mindestabstandsverletzungen - die obigen move Methoden konnten nicht wiederverwertet werden
+	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	// TODO: Pointmovement
 	public static void testDistance () {
@@ -166,9 +166,7 @@ public class Test extends JPanel {
 			yvalues[i] = (Math.random() * 600) + 200;
 		}
 		for(int i = 0; i < flock.length; i++) {
-			/* make new Bird Objects here
-			 * index = i
-			 * x/ycoord = x/yvalues[i]*/
+			// make new Bird Objects here
 			Bird b = new Bird();
 			b.index = i;
 			b.xcoord = xvalues[i];
@@ -219,6 +217,9 @@ public class Test extends JPanel {
 				GUI();
 			}
 		});
+		
+		// TODO: Simulations
+		
 	}
 }
 				
