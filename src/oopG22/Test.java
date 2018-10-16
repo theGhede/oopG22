@@ -33,7 +33,7 @@ public class Test extends JPanel {
 			this.xcoord = move;
 		}
 	}
-	
+
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 	public static void neighborhood(Bird b, int radius) {
 		int j = 0;
@@ -53,7 +53,7 @@ public class Test extends JPanel {
 			b.neighbors = neighbors;
 		}
 	}
-	
+
 
 	// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
@@ -68,7 +68,7 @@ public class Test extends JPanel {
 		}
 		for (int i = 0; i < b.neighbors.length ; i++) {
 			if (!moved[b.neighbors[i].index]) {
-			moveBird(b.neighbors[i],x1,x2,y1,y2);}
+				moveBird(b.neighbors[i],x1,x2,y1,y2);}
 		}
 	}
 
@@ -80,7 +80,7 @@ public class Test extends JPanel {
 
 	// Mindestabstand - willkürlich definiert
 	public static double minDistance = 8;
-	
+
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	// TODO: Pointmovement
@@ -99,8 +99,8 @@ public class Test extends JPanel {
 						double xMove = helpDistance * Math.sin(angle);
 						double yMove = xMove/Math.tan(angle);
 
-						flock[j].moveUp((yMove));
-						flock[j].moveRight((xMove));
+						flock[j].moveDown((yMove));
+						flock[j].moveLeft((xMove));
 
 					}
 					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord > flock[i].xcoord){
@@ -116,7 +116,7 @@ public class Test extends JPanel {
 						double xMove = helpDistance * Math.sin(angle);
 						double yMove = xMove/Math.tan(angle);
 
-						flock[j].moveUp((yMove));
+						flock[j].moveDown((yMove));
 						flock[j].moveRight((xMove));
 
 					}
@@ -126,15 +126,16 @@ public class Test extends JPanel {
 						double yMove = xMove/Math.tan(angle);
 
 						flock[j].moveUp((yMove));
-						flock[j].moveRight((xMove));
+						flock[j].moveLeft((xMove));
 
 					}
 					// TODO: CHECK Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach links
 					else if(flock[j].ycoord == flock[i].ycoord) {
-						if(flock[j].xcoord > flock[i].xcoord) {
-							flock[j].moveRight(helpDistance);
-						} else {
+						if(flock[j].xcoord < flock[i].xcoord) {
 							flock[j].moveLeft(helpDistance);
+						}
+						else {
+							flock[j].moveRight(helpDistance);
 						}
 					}
 					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
@@ -157,7 +158,7 @@ public class Test extends JPanel {
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
 		return dist = Math.sqrt(xdist + ydist);
 	}
-	
+
 	// Make flock within the center 500x500 of the JFrame; reminder: top-right = (0,0)
 	public static void makeFlock() {
 		double[] xvalues = new double[flock.length];
@@ -178,20 +179,18 @@ public class Test extends JPanel {
 		for (int i = 0; i < flock.length; i++) {
 			neighborhood(flock[i], 1);
 		}
-		
-		// check and repair minimal distance infringements
-		int k = 0;
-		while (k < 100) {
-		testDistance(); k++;
-		}
+
+		// check and repair minimal distance infringments
+		testDistance();
+
 	}
-	
+
 	// draw graphics using paint(g) with Graphics2D for double usage
 	public void paint(Graphics g) {
 		// use this to draw the initial flock via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		for (int i = 0; i < flock.length; i++) {
 			double x = flock[i].xcoord;
 			double y = flock[i].ycoord;
@@ -200,8 +199,8 @@ public class Test extends JPanel {
 			g2d.fill(s);
 		}
 	}
-	
-	private static JFrame GUI1() {
+
+	private static void GUI() {
 
 		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 1");
 		frame.getContentPane().add(new Test());
@@ -211,46 +210,24 @@ public class Test extends JPanel {
 		frame.setVisible(true);
 		return frame;
 	}
-	
-	private static JFrame GUI2() {
 
-		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 2");
-		frame.getContentPane().add(new Test());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 800);
-		frame.setLocationByPlatform(true);
-		frame.setVisible(true);
-		return frame;
-	}
-	
-	private static JFrame GUI3() {
-
-		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 3");
-		frame.getContentPane().add(new Test());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 800);
-		frame.setLocationByPlatform(true);
-		frame.setVisible(true);
-		return frame;
-	}	
-	
 	public static void main(String[] args) {
-	
+
 		makeFlock();
-		
+
 		// moved array
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-		
+
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GUI1();
 			}
 		});
-		
-		// TODO: Simulation 1
+
+		// TODO: Simulations
 		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 		int select = (int) (Math.random() * flock.length-1);
 		moveBird(flock[select], (4 + Math.random() * 8), 0, 0, (12 + Math.random() * 12));
@@ -260,8 +237,7 @@ public class Test extends JPanel {
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-		
-		// Simulation 2
+
 		minDistance = 12;
 		flocksize = 260;
 		
@@ -284,8 +260,7 @@ public class Test extends JPanel {
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-		
-		//Simulation 3
+
 		minDistance = 4;
 		flocksize = 320;
 		
@@ -302,5 +277,5 @@ public class Test extends JPanel {
 		testDistance();
 	}
 }
-				
+
 /* TODO:  Beschreibung wer an welchem Teil mitgearbeitet hat, entsprechend der Angabe */
