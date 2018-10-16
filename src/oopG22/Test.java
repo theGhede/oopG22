@@ -2,29 +2,29 @@ package oopG22;
 
 public class Test {
 
+	
+	// Vögel bestehen aus Koordinaten & einer Nachbarschaft
 	private class Bird {
 
 		double xcoord;
 		double ycoord;
-<<<<<<< HEAD
-=======
-		int[] neighbors;
->>>>>>> 3cd3f6eaaad5c0a59a9098c208ab10223b16c106
+		Bird[] neighbors;
 		int index;
 
 		private Bird[] neighborhood(Bird b, int radius) {
 
-			Bird neighbors[] = new Bird[flock.length];
 			int j = 0;
+			int amount = (int) (5 + (15 * Math.random()));
+			Bird neighbors[] = new Bird[amount-1];
 			for (int i = 0; i < flock.length; i++) {
-				if (i == b.index) break;
-
-				if (distance(b, flock[i]) <= radius) {
-					neighbors[j] = flock[i];
-					j++;
+				if (i != b.index) {
+					if (distance(b, flock[i]) <= radius) {
+						neighbors[j] = flock[i];
+						j++;
+					}
 				}
 			}
-			if (j < 5) neighbors(b, radius + 1);
+			if (j < amount) neighborhood(b, radius + 1);
 
 			return neighbors;
 		}
