@@ -37,20 +37,23 @@ public class Test extends JPanel {
 	}
 	
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
-	public static Bird[] neighborhood(Bird b, int radius) {
+	public static void neighborhood(Bird b, int radius) {
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
-		Bird neighbors[] = new Bird[amount];
+		Bird[] neighbors = new Bird[amount];
 		for (int i = 0; i < flock.length; i++) {
-		if (i != b.index && j < amount) {
+			if (i != b.index && j < amount) {
 				if (distance(b, flock[i]) <= radius) {
 					neighbors[j] = flock[i];
 					j++;
 				}
 			}
 		}
-		if (j < amount) neighborhood(b, radius + 1);
-		return neighbors;
+		if (j < amount) {
+			neighborhood(b, radius + 1);
+		} else {
+			b.neighbors = neighbors;
+			}
 	}
 	
 
@@ -180,7 +183,7 @@ public class Test extends JPanel {
 		}
 		// TODO: CHECK make neighborhood for each bird
 		for (int i = 0; i < flock.length; i++) {
-			flock[i].neighbors = neighborhood(flock[i], 1);
+			neighborhood(flock[i], 1);
 		}
 		
 		// check and repair minimal distance infringments
