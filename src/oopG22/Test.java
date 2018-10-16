@@ -11,25 +11,6 @@ public class Test extends JPanel {
 		double ycoord;
 		Bird[] neighbors;
 		int index;
-		
-		// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
-		private Bird[] neighborhood(Bird b, int radius) {
-
-			int j = 0;
-			int amount = (int) (5 + (15 * Math.random()));
-			Bird neighbors[] = new Bird[amount];
-			for (int i = 0; i < flock.length; i++) {
-				if (i != b.index && j < amount) {
-					if (distance(b, flock[i]) <= radius) {
-						neighbors[j] = flock[i];
-						j++;
-					}
-				}
-			}
-			if (j < amount) neighborhood(b, radius + 1);
-			// TODO: dieses neighbors soll außerdem als Bird.neighbors gespeichert werden
-			return neighbors;
-		}
 
 		void moveUp(double k) {
 			double move = this.ycoord + k;
@@ -50,22 +31,40 @@ public class Test extends JPanel {
 			double move = this.xcoord + k;
 			this.xcoord = move;
 		}
-
-		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
-		// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
-		// TODO: Point movement
-		void moveBird (Bird b, double x1,double x2, double y1, double y2) {
-
-			if (!moved[b.index]){
-				moveUp(y1);
-				moveDown(y2);
-				moveLeft(x2);
-				moveRight(x1);
+	}
+	
+	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
+	public Bird[] neighborhood(Bird b, int radius) {
+		int j = 0;
+		int amount = (int) (5 + (15 * Math.random()));
+		Bird neighbors[] = new Bird[amount];
+		for (int i = 0; i < flock.length; i++) {
+		if (i != b.index && j < amount) {
+				if (distance(b, flock[i]) <= radius) {
+					neighbors[j] = flock[i];
+					j++;
+				}
 			}
-			for (int i = 0; i < b.neighbors.length ; i++) {
-				moveBird(b.neighbors[i],x1,x2,y1,y2);
-			}
+		}
+		if (j < amount) neighborhood(b, radius + 1);
+		// TODO: dieses neighbors soll außerdem als Bird.neighbors gespeichert werden
+		return neighbors;
+	}
+	
 
+	// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
+	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
+	// TODO: Point movement
+	void moveBird (Bird b, double x1,double x2, double y1, double y2) {
+
+		if (!moved[b.index]){
+			b.moveUp(y1);
+			b.moveDown(y2);
+			b.moveLeft(x2);
+			b.moveRight(x1);
+		}
+		for (int i = 0; i < b.neighbors.length ; i++) {
+			moveBird(b.neighbors[i],x1,x2,y1,y2);
 		}
 	}
 
@@ -143,7 +142,6 @@ public class Test extends JPanel {
 							flock[j].moveUp(helpDistance);
 						}
 					}
-
 				}
 			}
 		}
@@ -166,12 +164,21 @@ public class Test extends JPanel {
 			yvalues[i] = (Math.random() * 600) + 200;
 		}
 		for(int i = 0; i < flock.length; i++) {
+			Bird b = new Bird();
+			b.index = i;
+			b.xcoord = xvalues[i];
+			b.ycoord = yvalues[i];
+			flock[i] = b;
 			/* make new Birdobjects here
 			 * index = i
 			 * x/ycoord = x/yvalues[i]
 			 * neighbors = this.neighborhood(this, 1)*/
-			
 		}
+		// TODO: CHECK make neighborhood for each bird
+		for (int i = 0; i < flock.length; i++) {
+			flock[i].neighbors = neighborhood(flock[i], 1);
+		}
+		
 		// check and repair minimal distance infringments
 		testDistance();
 		
