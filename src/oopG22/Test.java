@@ -1,8 +1,10 @@
 package oopG22;
+import java.awt.*;
+import javax.swing.*;
 
-public class Test {
+public class Test extends JPanel {
 
-	// Vögel bestehen aus Koordinaten & einer Nachbarschaft
+	// Vögel bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
 	private class Bird {
 
 		double xcoord;
@@ -10,21 +12,7 @@ public class Test {
 		Bird[] neighbors;
 		int index;
 		
-		private int[] neighborhood (Bird b) {
-			int[] neighbors = new int[19];
-			for (int i = 0; i < neighbors.length; i++) {
-				neighbors[i] = -1;
-			}
-			
-			int amount = (int) (5 + (Math.random() * 15));
-			
-			for (int i = 0; i < amount; i++) {
-				double[] distances = new double[flock.length];
-				for (int j = 0; j < flock.length; j++) {
-					if (b.xcoord == flock[j].xcoord && b.ycoord == flock[j].ycoord) {
-						distances[j] = distance(b, flock[j]);
-
-		// Aufbai der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
+		// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 		private Bird[] neighborhood(Bird b, int radius) {
 
 			int j = 0;
@@ -39,7 +27,7 @@ public class Test {
 				}
 			}
 			if (j < amount) neighborhood(b, radius + 1);
-
+			// TODO: dieses neighbors soll außerdem als Bird.neighbors gespeichert werden
 			return neighbors;
 		}
 
@@ -66,7 +54,7 @@ public class Test {
 		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 		// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
 		// TODO: Point movement
-		void moveBird (Bird b, double x1,double x2, double y1, double y2){
+		void moveBird (Bird b, double x1,double x2, double y1, double y2) {
 
 			if (!moved[b.index]){
 				moveUp(y1);
@@ -158,14 +146,38 @@ public class Test {
 		return dist = Math.sqrt(xdist + ydist);
 	}
 	
+	public void paint(Graphics g) {
+		// TODO: use this to draw the initial flock via for loop as dots
+		// Polygon as example for drawing
+		int xValues[] = {25, 145, 25, 145, 25};
+	    int yValues[] = {25, 25, 145, 145, 25};
+	    int points = 5;	    
+	    g.drawPolygon(xValues, yValues, points);
+	}
+	
+	private static void GUI() {
+		// TODO: Draw points
+
+		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
+		frame.getContentPane().add(new Test());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(600, 600);
+		frame.setLocationByPlatform(true);
+		frame.setVisible(true);
+	}
+	
 	public static void main(String[] args) {
 
 		Bird[] flock = new Bird[200];
 		
 		// TODO: Make flock
-		// TODO: WIP JFrame
-		// TODO: Draw points
 		
+		// TODO: CHECK run GUI
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				GUI();
+			}
+		});
 	}
 }
 				
