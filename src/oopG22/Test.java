@@ -94,8 +94,8 @@ public class Test extends JPanel implements ActionListener {
 			for(int j = 0; j < flock.length; j++) {
 				if(distance(flock[i], flock[j]) < minDistance) {
 					double helpDistance = minDistance - distance(flock[i], flock[j]);
-					double yDistance = Math.abs(flock[i].xcoord - flock[j].xcoord);
-					double xDistance = Math.abs(flock[i].ycoord - flock[j].ycoord);
+					double yDistance = (flock[i].xcoord - flock[j].xcoord);
+					double xDistance = (flock[i].ycoord - flock[j].ycoord);
 
 					if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord < flock[i].xcoord){
 						double angle = Math.atan(xDistance/yDistance);
@@ -161,6 +161,16 @@ public class Test extends JPanel implements ActionListener {
 		}
 		System.out.println(moves);
 	}
+	
+	public static void keepDistance () {
+		for (int i = 0; i < flock.length; i++) {
+			for (int j = 0; j < flock.length; j++) {
+				if (distance(flock[i], flock[j]) > minDistance) {
+					testDistance();
+				}
+			}
+		}
+	}
 
 	// Berechnen der euklidischen Distanz
 	public static double distance (Bird a, Bird b) {
@@ -193,7 +203,7 @@ public class Test extends JPanel implements ActionListener {
 
 		// check and repair minimal distance infringments
 		for (int i = 0; i < 5; i++) {
-			testDistance();
+			keepDistance();
 		}
 	}
 
@@ -250,7 +260,7 @@ public class Test extends JPanel implements ActionListener {
 		TimeUnit.SECONDS.sleep(12);
 		moveBird(flock[select], (40 + Math.random() * 20), 0, 0, (20 + Math.random() * 40));
 		TimeUnit.SECONDS.sleep(4);
-		testDistance();
+		keepDistance();
 
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
@@ -267,7 +277,7 @@ public class Test extends JPanel implements ActionListener {
 		TimeUnit.SECONDS.sleep(12);
 		moveBird(flock[select], (20 + Math.random() * 40), 0, (40 + Math.random() * 20), 0);
 		TimeUnit.SECONDS.sleep(4);
-		testDistance();
+		keepDistance();
 
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
@@ -284,7 +294,7 @@ public class Test extends JPanel implements ActionListener {
 		TimeUnit.SECONDS.sleep(12);
 		moveBird(flock[select], 0, (40 + Math.random() * 40), 0, 0);
 		TimeUnit.SECONDS.sleep(4);
-		testDistance();
+		keepDistance();
 	}
 }
 
