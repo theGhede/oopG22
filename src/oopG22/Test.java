@@ -183,9 +183,9 @@ public class Test extends JPanel {
 		// check and repair minimal distance infringments
 		testDistance();
 		
-		// TODO: draw graphics using paint(g)
 	}
 	
+	// draw graphics using paint(g) with Graphics2D for double usage
 	public void paint(Graphics g) {
 		// use this to draw the initial flock via for loop as dots
 		// TODO: throws exception because it tries to draw the points before the flock is made
@@ -211,6 +211,8 @@ public class Test extends JPanel {
 	
 	public static void main(String[] args) {
 	
+		makeFlock();
+		
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
