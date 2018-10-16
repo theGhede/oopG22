@@ -192,8 +192,8 @@ public class Test extends JPanel implements ActionListener {
 		}
 
 		// check and repair minimal distance infringments
-		for (int i = 0; i < 1; i++) {
-		testDistance();
+		for (int i = 0; i < 5; i++) {
+			testDistance();
 		}
 	}
 
@@ -228,7 +228,7 @@ public class Test extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 	}
-	
+
 	public static void main(String[] args) throws InterruptedException {
 
 		makeFlock();
@@ -251,24 +251,24 @@ public class Test extends JPanel implements ActionListener {
 		moveBird(flock[select], (40 + Math.random() * 20), 0, 0, (20 + Math.random() * 40));
 		TimeUnit.SECONDS.sleep(4);
 		testDistance();
-		
+
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
-		
+
 		TimeUnit.SECONDS.sleep(20);
 		minDistance = 80;
 		flocksize = 260;
-		
+
 		makeFlock();
-		
+
 		select = (int) (Math.random() * flock.length-1);
 		TimeUnit.SECONDS.sleep(12);
 		moveBird(flock[select], (20 + Math.random() * 40), 0, (40 + Math.random() * 20), 0);
 		TimeUnit.SECONDS.sleep(4);
 		testDistance();
-		
+
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
@@ -277,9 +277,9 @@ public class Test extends JPanel implements ActionListener {
 		TimeUnit.SECONDS.sleep(20);
 		minDistance = 40;
 		flocksize = 400;
-		
+
 		makeFlock();
-		
+
 		select = (int) (Math.random() * flock.length-1);
 		TimeUnit.SECONDS.sleep(12);
 		moveBird(flock[select], 0, (40 + Math.random() * 40), 0, 0);
