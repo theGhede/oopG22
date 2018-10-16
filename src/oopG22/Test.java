@@ -9,7 +9,15 @@ public class Test {
 		double ydist = Math.pow((a.y - b.y), 2);
 		return dist = Math.sqrt(xdist + ydist);
 	}
+	
+	private class Bird {
+		double xcoord;
+		double ycoord;
 		
+		private int[] neighbors (Bird b) {
+			
+		}
+	}
 	
 	public static void main(String[] args) {
 
