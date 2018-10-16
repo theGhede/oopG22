@@ -154,7 +154,7 @@ public class Test extends JPanel {
 		double xdist = Math.pow((a.xcoord - b.xcoord), 2);
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
 		double dist = Math.sqrt(xdist + ydist);
-		System.out.println(dist);
+		//System.out.println(dist);
 		return dist;
 	}
 
@@ -166,6 +166,7 @@ public class Test extends JPanel {
 			xvalues[i] = (Math.random() * 500) + 150;
 			yvalues[i] = (Math.random() * 500) + 150;
 		}
+		repaint();
 		for(int i = 0; i < flock.length; i++) {
 			// make new Bird Objects here
 			Bird b = new Bird();
@@ -197,6 +198,7 @@ public class Test extends JPanel {
 			g2d.draw(s);
 			g2d.fill(s);
 		}
+
 	}
 
 	private static JFrame GUI1() {
@@ -208,6 +210,7 @@ public class Test extends JPanel {
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 		return frame;
+
 	}
 
 	private static JFrame GUI2() {
@@ -230,7 +233,7 @@ public class Test extends JPanel {
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 		return frame;
-	}	
+	}
 	
 	public static void main(String[] args) {
 
@@ -263,7 +266,7 @@ public class Test extends JPanel {
 		flocksize = 260;
 		
 		makeFlock();
-		
+
 		JFrame frame = GUI2();
 		frame.repaint();
 		
@@ -272,7 +275,7 @@ public class Test extends JPanel {
 				GUI2();
 			}
 		});
-		
+
 		select = (int) (Math.random() * flock.length-1);
 		moveBird(flock[select], (8 + Math.random() * 12), 0, (12 + Math.random() * 16), 0);
 		testDistance();
@@ -284,7 +287,7 @@ public class Test extends JPanel {
 
 		minDistance = 4;
 		flocksize = 400;
-		
+
 		makeFlock();
 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -292,7 +295,7 @@ public class Test extends JPanel {
 				GUI3();
 			}
 		});
-		
+
 		select = (int) (Math.random() * flock.length-1);
 		moveBird(flock[select], 0, (10 + Math.random() * 24), 0, 0);
 		testDistance();
