@@ -2,14 +2,13 @@ package oopG22;
 
 public class Test {
 
-	
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft
 	private class Bird {
 
 		double xcoord;
 		double ycoord;
-<<<<<<< HEAD
-		int[] neighbors;
+		Bird[] neighbors;
+		int index;
 		
 		private int[] neighborhood (Bird b) {
 			int[] neighbors = new int[19];
@@ -25,10 +24,6 @@ public class Test {
 					if (b.xcoord == flock[j].xcoord && b.ycoord == flock[j].ycoord) {
 						distances[j] = distance(b, flock[j]);
 
-=======
-		Bird[] neighbors;
-		int index;
-
 		// Aufbai der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 		private Bird[] neighborhood(Bird b, int radius) {
 
@@ -40,7 +35,6 @@ public class Test {
 					if (distance(b, flock[i]) <= radius) {
 						neighbors[j] = flock[i];
 						j++;
->>>>>>> 8924d79fcf8a0aad48bf64dadedadae5345ae8ba
 					}
 				}
 			}
@@ -70,8 +64,8 @@ public class Test {
 		}
 
 		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
-		//Im Flug können sich die Vögeln stärker annähern als die mindestens Distanz
-
+		// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
+		// TODO: Point movement
 		void moveBird (Bird b, double x1,double x2, double y1, double y2){
 
 			if (!moved[b.index]){
@@ -95,6 +89,9 @@ public class Test {
 	// Mindestabstand - willkürlich definiert
 	public double minDistance = 4;
 	
+	// Behandlung von Mindestabstandsverletzungen - die obigen move Methoden konnten nicht wiederverwertet werden
+	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
+	// TODO: Pointmovement
 	public void testDistance () {
 		double[] distances = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
@@ -107,8 +104,8 @@ public class Test {
 
 					if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord < flock[i].xcoord){
 						double angle = Math.atan(xDistance/yDistance);
-						double Xmove = helpDistance * Math.sin(angle);
-						double Ymove = Xmove/Math.tan(angle);
+						double xMove = helpDistance * Math.sin(angle);
+						double yMove = xMove/Math.tan(angle);
 
 						flock[j].moveUp((yMove));
 						flock[j].moveRight((xMove));
@@ -116,16 +113,16 @@ public class Test {
 					}
 					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord > flock[i].xcoord){
 						double angle = Math.atan(yDistance/xDistance);
-						double Xmove = helpDistance * Math.sin(angle);
-						double Ymove = Xmove/Math.tan(angle);
+						double xMove = helpDistance * Math.sin(angle);
+						double yMove = xMove/Math.tan(angle);
 
 						flock[j].moveUp((yMove));
 						flock[j].moveRight((xMove));
 					}
 					else if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord > flock[i].xcoord) {
 						double angle = Math.atan(xDistance/yDistance);
-						double Xmove = helpDistance * Math.sin(angle);
-						double Ymove = Xmove/Math.tan(angle);
+						double xMove = helpDistance * Math.sin(angle);
+						double yMove = xMove/Math.tan(angle);
 
 						flock[j].moveUp((yMove));
 						flock[j].moveRight((xMove));
@@ -133,13 +130,14 @@ public class Test {
 					}
 					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord < flock[i].xcoord) {
 						double angle = Math.atan(yDistance/xDistance);
-						double Xmove = helpDistance * Math.sin(angle);
-						double Ymove = Xmove/Math.tan(angle);
+						double xMove = helpDistance * Math.sin(angle);
+						double yMove = xMove/Math.tan(angle);
 
 						flock[j].moveUp((yMove));
 						flock[j].moveRight((xMove));
 
 					}
+					// TODO
 					else if(flock[j].ycoord == flock[i].ycoord) {
 						
 					}
@@ -152,8 +150,6 @@ public class Test {
 		}
 	}
 
-	
-	
 	// Berechnen der euklidischen Distanz
 	public double distance (Bird a, Bird b) {
 		double dist;
@@ -162,16 +158,15 @@ public class Test {
 		return dist = Math.sqrt(xdist + ydist);
 	}
 	
-	
-	
 	public static void main(String[] args) {
 
 		Bird[] flock = new Bird[200];
-
-		int amount = (int) (5 + (Math.random() * 15));
-
-		System.out.println("" + amount);
-
+		
+		// TODO: Make flock
+		// TODO: WIP JFrame
+		// TODO: Draw points
+		
 	}
 }
-
+				
+/* TODO:  Beschreibung wer an welchem Teil mitgearbeitet hat, entsprechend der Angabe */
