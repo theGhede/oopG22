@@ -21,6 +21,7 @@ public class Test {
 				for (int j = 0; j < flock.length; j++) {
 					if (b.xcoord == flock[j].xcoord && b.ycoord == flock[j].ycoord) {
 						distances[j] = distance(b, flock[j]);
+
 					}
 				}
 			}
@@ -61,7 +62,55 @@ public class Test {
 		double[] distances = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
-			distances[i] = distance(flock[i], flock[j]);
+				distances[i] = distance(flock[i], flock[j]);
+				if(distances[i] < minDistance) {
+					double helpDistance = minDistance - distances[i];
+					double yDistance = flock[i].xcoord - flock[j].xcoord;
+					double xDistance = flock[i].ycoord - flock[j].ycoord;
+
+					if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord < flock[i].xcoord){
+						double angle = Math.atan(xDistance/yDistance);
+						double Xmove = helpDistance * Math.sin(angle);
+						double Ymove = Xmove/Math.tan(angle);
+
+						flock[j].moveUp((yMove));
+						flock[j].moveRight((xMove));
+
+					}
+					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord > flock[i].xcoord){
+						double angle = Math.atan(yDistance/xDistance);
+						double Xmove = helpDistance * Math.sin(angle);
+						double Ymove = Xmove/Math.tan(angle);
+
+						flock[j].moveUp((yMove));
+						flock[j].moveRight((xMove));
+					}
+					else if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord > flock[i].xcoord) {
+						double angle = Math.atan(xDistance/yDistance);
+						double Xmove = helpDistance * Math.sin(angle);
+						double Ymove = Xmove/Math.tan(angle);
+
+						flock[j].moveUp((yMove));
+						flock[j].moveRight((xMove));
+
+					}
+					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord < flock[i].xcoord) {
+						double angle = Math.atan(yDistance/xDistance);
+						double Xmove = helpDistance * Math.sin(angle);
+						double Ymove = Xmove/Math.tan(angle);
+
+						flock[j].moveUp((yMove));
+						flock[j].moveRight((xMove));
+
+					}
+					else if(flock[j].ycoord == flock[i].ycoord) {
+						
+					}
+					else if(flock[j].xcoord == flock[i].xcoord) {
+
+					}
+
+				}
 			}
 		}
 	}
