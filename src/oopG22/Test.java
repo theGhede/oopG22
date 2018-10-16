@@ -74,7 +74,8 @@ public class Test extends JPanel {
 			moved[b.index] = true;
 		}
 		for (int i = 0; i < b.neighbors.length ; i++) {
-			moveBird(b.neighbors[i],x1,x2,y1,y2);
+			if (!moved[b.neighbors[i].index]) {
+			moveBird(b.neighbors[i],x1,x2,y1,y2);}
 		}
 	}
 
