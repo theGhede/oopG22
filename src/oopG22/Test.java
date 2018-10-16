@@ -60,7 +60,6 @@ public class Test extends JPanel implements ActionListener {
 
 	// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
-	// TODO: Point movement
 	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) {
 		if (!moved[b.index]){
 			b.moveUp(y1);
@@ -80,16 +79,12 @@ public class Test extends JPanel implements ActionListener {
 	public static int flocksize = 200;
 	public static Bird[] flock = new Bird[flocksize];
 	public static boolean[] moved = new boolean[flock.length];
-
 	// Mindestabstand - willkürlich definiert
-	public static double minDistance = 60;
+	public static double minDistance = 14;
 
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
-	// TODO: Point movement
 	public static void testDistance () {
-		int moves = 0;
-		int rightmoves = 0;
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
 				if(distance(flock[i], flock[j]) < minDistance) {
@@ -104,7 +99,6 @@ public class Test extends JPanel implements ActionListener {
 
 						flock[j].moveDown((yMove));
 						flock[j].moveLeft((xMove));
-						moves++;
 					}
 					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord > flock[i].xcoord){
 						double angle = Math.atan(yDistance/xDistance);
@@ -113,7 +107,6 @@ public class Test extends JPanel implements ActionListener {
 
 						flock[j].moveUp((yMove));
 						flock[j].moveRight((xMove));
-						moves++;
 					}
 					else if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord > flock[i].xcoord) {
 						double angle = Math.atan(xDistance/yDistance);
@@ -122,7 +115,6 @@ public class Test extends JPanel implements ActionListener {
 
 						flock[j].moveDown((yMove));
 						flock[j].moveRight((xMove));
-						moves++;
 					}
 					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord < flock[i].xcoord) {
 						double angle = Math.atan(yDistance/xDistance);
@@ -131,45 +123,40 @@ public class Test extends JPanel implements ActionListener {
 
 						flock[j].moveUp((yMove));
 						flock[j].moveLeft((xMove));
-						moves++;
 					}
 					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach rechts
 					else if(flock[j].ycoord == flock[i].ycoord) {
 						if(flock[j].xcoord < flock[i].xcoord) {
 							flock[j].moveLeft(helpDistance);
-							moves++;
 						}
 						else if(flock[j].xcoord > flock[i].xcoord){
 							flock[j].moveRight(helpDistance);
-							moves++;
 						}
 					}
 					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
 					else if(flock[j].xcoord == flock[i].xcoord) {
 						if(flock[j].ycoord < flock[i].ycoord) {
 							flock[j].moveDown(helpDistance);
-
-							moves++;
 						} else if(flock[j].ycoord < flock[i].ycoord){
 							flock[j].moveUp(helpDistance);
-
-							moves++;
 						}
 					}
 				}
 			}
 		}
-		System.out.println(moves);
 	}
 	
 	public static void keepDistance () {
+		int k=0;
 		for (int i = 0; i < flock.length; i++) {
 			for (int j = 0; j < flock.length; j++) {
 				if (distance(flock[i], flock[j]) > minDistance) {
 					testDistance();
+					k++;
 				}
 			}
 		}
+		System.out.println(k);
 	}
 
 	// Berechnen der euklidischen Distanz
@@ -185,8 +172,8 @@ public class Test extends JPanel implements ActionListener {
 		double[] xvalues = new double[flock.length];
 		double[] yvalues = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
-			xvalues[i] = (Math.random() * 500) + 150;
-			yvalues[i] = (Math.random() * 500) + 150;
+			xvalues[i] = (Math.random() * 400) + 200;
+			yvalues[i] = (Math.random() * 400) + 200;
 		}
 		for(int i = 0; i < flock.length; i++) {
 			// make new Bird Objects here
@@ -202,9 +189,7 @@ public class Test extends JPanel implements ActionListener {
 		}
 
 		// check and repair minimal distance infringments
-		for (int i = 0; i < 5; i++) {
-			keepDistance();
-		}
+		keepDistance();
 	}
 
 	// draw graphics using paint(g) with Graphics2D for double usage
@@ -268,7 +253,7 @@ public class Test extends JPanel implements ActionListener {
 		}
 
 		TimeUnit.SECONDS.sleep(20);
-		minDistance = 80;
+		minDistance = 20;
 		flocksize = 260;
 
 		makeFlock();
@@ -285,7 +270,7 @@ public class Test extends JPanel implements ActionListener {
 		}
 
 		TimeUnit.SECONDS.sleep(20);
-		minDistance = 40;
+		minDistance = 8;
 		flocksize = 400;
 
 		makeFlock();
