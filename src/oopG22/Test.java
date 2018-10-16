@@ -5,16 +5,15 @@ import java.awt.geom.Line2D;
 
 import javax.swing.*;
 
-<<<<<<< HEAD
 
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft
 	private class Bird {
-=======
+
 public class Test extends JPanel {
 
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
 	private static class Bird {
->>>>>>> 16c3e354d09e97dfa4b882c5e11f4335caf2b17c
+
 
 		double xcoord;
 		double ycoord;
@@ -87,24 +86,24 @@ public class Test extends JPanel {
 	public static boolean[] moved = new boolean[flock.length];
 
 	// Mindestabstand - willkürlich definiert
-<<<<<<< HEAD
+
 	public double minDistance = 4;
 
 	public void testDistance () {
-=======
+
 	public static double minDistance = 8;
 	
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	// TODO: Pointmovement
 	public static void testDistance () {
->>>>>>> 16c3e354d09e97dfa4b882c5e11f4335caf2b17c
+
 		double[] distances = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
 				distances[i] = distance(flock[i], flock[j]);
-<<<<<<< HEAD
-=======
+
+
 				if(distances[i] < minDistance) {
 					double helpDistance = minDistance - distances[i];
 					double yDistance = flock[i].xcoord - flock[j].xcoord;
@@ -164,16 +163,16 @@ public class Test extends JPanel {
 						}
 					}
 				}
->>>>>>> 16c3e354d09e97dfa4b882c5e11f4335caf2b17c
+
 			}
 		}
 	}
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 16c3e354d09e97dfa4b882c5e11f4335caf2b17c
+
+
+
 	// Berechnen der euklidischen Distanz
 	public static double distance (Bird a, Bird b) {
 		double dist;
@@ -181,12 +180,11 @@ public class Test extends JPanel {
 		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
 		return dist = Math.sqrt(xdist + ydist);
 	}
-<<<<<<< HEAD
 
 
 
-=======
-	
+
+
 	// Make flock within the center 500x500 of the JFrame; reminder: top-right = (0,0)
 	public static void makeFlock() {
 		double[] xvalues = new double[flock.length];
@@ -239,7 +237,7 @@ public class Test extends JPanel {
 		frame.setVisible(true);
 	}
 	
->>>>>>> 16c3e354d09e97dfa4b882c5e11f4335caf2b17c
+
 	public static void main(String[] args) {
 	
 		makeFlock();
