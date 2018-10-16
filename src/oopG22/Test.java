@@ -1,11 +1,12 @@
 package oopG22;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.*;
 
-public class Test extends JPanel {
+public class Test extends JPanel implements ActionListener {
 
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
 	private static class Bird {
@@ -192,7 +193,7 @@ public class Test extends JPanel {
 		// use this to draw the initial flock via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+		t.start();
 		for (int i = 0; i < flock.length; i++) {
 			double x = flock[i].xcoord;
 			double y = flock[i].ycoord;
@@ -204,16 +205,21 @@ public class Test extends JPanel {
 
 	private static JFrame GUI() {
 
-		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm 1");
+		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
 		frame.getContentPane().add(new Test());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 800);
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 		return frame;
-	}	
+	}
 	
-	public static void main(String[] args) {
+	Timer t = new Timer(10, this);
+	public void actionPerformed(ActionEvent e) {
+		repaint();
+	}
+	
+	public static void main(String[] args) throws InterruptedException {
 
 		makeFlock();
 
@@ -232,13 +238,10 @@ public class Test extends JPanel {
 		// TODO: Simulations - each step starts after predetermined time (in seconds)
 		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 		int select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(20);
+		TimeUnit.SECONDS.sleep(14);
 		moveBird(flock[select], (40 + Math.random() * 80), 0, 0, (60 + Math.random() * 60));
-		TimeUnit.SECONDS.sleep(10);
+		TimeUnit.SECONDS.sleep(4);
 		testDistance();
-		
-		JFrame frame = GUI();
-		frame.repaint();
 		
 		// reset moved
 		for (int i = 0; i < flock.length; i++) {
@@ -252,9 +255,9 @@ public class Test extends JPanel {
 		makeFlock();
 		
 		select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(20);
+		TimeUnit.SECONDS.sleep(14);
 		moveBird(flock[select], (80 + Math.random() * 40), 0, (100 + Math.random() * 20), 0);
-		TimeUnit.SECONDS.sleep(10);
+		TimeUnit.SECONDS.sleep(4);
 		testDistance();
 		
 		// reset moved
@@ -269,9 +272,9 @@ public class Test extends JPanel {
 		makeFlock();
 		
 		select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(20);
+		TimeUnit.SECONDS.sleep(14);
 		moveBird(flock[select], 0, (60 + Math.random() * 80), 0, 0);
-		TimeUnit.SECONDS.sleep(10);
+		TimeUnit.SECONDS.sleep(4);
 		testDistance();
 	}
 }
