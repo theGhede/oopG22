@@ -83,14 +83,13 @@ public class Test extends JPanel {
 
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
-	// TODO: Pointmovement
+	// TODO: Point movement
 	public static void testDistance () {
 		double[] distances = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
-				distances[i] = distance(flock[i], flock[j]);
-				if(distances[i] < minDistance) {
-					double helpDistance = minDistance - distances[i];
+				if(distance(flock[i], flock[j]) < minDistance) {
+					double helpDistance = minDistance - distance(flock[i], flock[j]);
 					double yDistance = flock[i].xcoord - flock[j].xcoord;
 					double xDistance = flock[i].ycoord - flock[j].ycoord;
 
@@ -129,7 +128,7 @@ public class Test extends JPanel {
 						flock[j].moveLeft((xMove));
 
 					}
-					// TODO: CHECK Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach links
+					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach rechts
 					else if(flock[j].ycoord == flock[i].ycoord) {
 						if(flock[j].xcoord < flock[i].xcoord) {
 							flock[j].moveLeft(helpDistance);
@@ -284,7 +283,7 @@ public class Test extends JPanel {
 		}
 
 		minDistance = 4;
-		flocksize = 320;
+		flocksize = 400;
 		
 		makeFlock();
 		
