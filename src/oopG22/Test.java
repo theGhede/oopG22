@@ -125,12 +125,23 @@ public class Test extends JPanel {
 						flock[j].moveRight((xMove));
 
 					}
-					// TODO
+					// TODO: CHECK Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach links
 					else if(flock[j].ycoord == flock[i].ycoord) {
-						
+						if(flock[j].xcoord < flock[i].xcoord) {
+							flock[j].moveRight(helpDistance);
+						}
+						else {
+							flock[j].moveLeft(helpDistance);
+						}
 					}
+					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
 					else if(flock[j].xcoord == flock[i].xcoord) {
-
+						if(flock[j].ycoord < flock[i].ycoord) {
+							flock[j].moveDown(helpDistance);
+						}
+						else {
+							flock[j].moveUp(helpDistance);
+						}
 					}
 
 				}
@@ -161,7 +172,7 @@ public class Test extends JPanel {
 		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
 		frame.getContentPane().add(new Test());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(600, 600);
+		frame.setSize(800, 800);
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 	}
