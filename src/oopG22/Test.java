@@ -58,8 +58,10 @@ public class Test extends JPanel implements ActionListener {
 	}
 
 
-	// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
-	// Im Flug können sich die Vögel stärker annähern als die Mindestdistanz
+	/* Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
+	 * Im Flug wird überprüft ob der sich gerade fortbewegende Vogel zu nah an andere annähert
+	 * Rekursiv fliegen alle Vögel in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
+	 * Angestoßen wird die Bewegung durch einen einzelnen zufällig gewählten Vogel*/
 	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) {
 		if (!moved[b.index]){
 			b.moveUp(y1);
@@ -67,10 +69,19 @@ public class Test extends JPanel implements ActionListener {
 			b.moveLeft(x2);
 			b.moveRight(x1);
 			moved[b.index] = true;
+			movingDistance(b);
 		}
 		for (int i = 0; i < b.neighbors.length ; i++) {
 			if (!moved[b.neighbors[i].index]) {
 				moveBird(b.neighbors[i],x1,x2,y1,y2);}
+		}
+	}
+	
+	public static void movingDistance(Bird b) {
+		for (int i = 0; i < flock.length; i++) {
+			if (distance(flock[b.index], flock[i]) < minDistance) {
+				testDistance();
+			}
 		}
 	}
 
@@ -146,17 +157,15 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 	
+	// checks if testDistance & moves defined there are needed - this takes a couple of seconds while the randomized flock is being made
 	public static void keepDistance () {
-		int k=0;
 		for (int i = 0; i < flock.length; i++) {
 			for (int j = 0; j < flock.length; j++) {
 				if (distance(flock[i], flock[j]) > minDistance) {
 					testDistance();
-					k++;
 				}
 			}
 		}
-		System.out.println(k);
 	}
 
 	// Berechnen der euklidischen Distanz
@@ -167,7 +176,7 @@ public class Test extends JPanel implements ActionListener {
 		return dist;
 	}
 
-	// Make flock within the center 500x500 of the JFrame; reminder: top-right = (0,0)
+	// Make flock within the center 400x400 of the JFrame; reminder: top-right = (0,0)
 	public static void makeFlock() {
 		double[] xvalues = new double[flock.length];
 		double[] yvalues = new double[flock.length];
@@ -218,8 +227,8 @@ public class Test extends JPanel implements ActionListener {
 		return frame;
 	}
 	
-	// update by repaint every 10 milliseconds (==> after the intervals found in main)
-	Timer t = new Timer(10, this);
+	// update by repaint every 4 milliseconds (==> after the intervals found in main)
+	Timer t = new Timer(4, this);
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 	}
@@ -239,11 +248,16 @@ public class Test extends JPanel implements ActionListener {
 			}
 		});
 
-		// TODO: Simulations - each step starts after predetermined time (in seconds)
-		// Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
+		/* Simulations - each step starts after predetermined time (in seconds) - it takes runtime + 108 seconds of waiting to complete
+		 * Parameters are: flocksize, minDistance and the movement (incl. a random distance component) of the flock;
+		 * Birds themselves are quasi-randomly generated
+		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeFlock)*/
+		
+		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
 		int select = (int) (Math.random() * flock.length-1);
 		TimeUnit.SECONDS.sleep(12);
-		moveBird(flock[select], (40 + Math.random() * 20), 0, 0, (20 + Math.random() * 40));
+		// ==> Nord-Ost Flug
+		moveBird(flock[select], (40 + Math.random() * 140), 0, 0, (80 + Math.random() * 80));
 		TimeUnit.SECONDS.sleep(4);
 		keepDistance();
 
@@ -252,6 +266,7 @@ public class Test extends JPanel implements ActionListener {
 			moved[i] = false;
 		}
 
+		// slightly more birds who want to keep more distance
 		TimeUnit.SECONDS.sleep(20);
 		minDistance = 20;
 		flocksize = 260;
@@ -260,7 +275,8 @@ public class Test extends JPanel implements ActionListener {
 
 		select = (int) (Math.random() * flock.length-1);
 		TimeUnit.SECONDS.sleep(12);
-		moveBird(flock[select], (20 + Math.random() * 40), 0, (40 + Math.random() * 20), 0);
+		// ==> Süd-Ost Flug
+		moveBird(flock[select], (120 + Math.random() * 60), 0, (80 + Math.random() * 80), 0);
 		TimeUnit.SECONDS.sleep(4);
 		keepDistance();
 
@@ -269,6 +285,7 @@ public class Test extends JPanel implements ActionListener {
 			moved[i] = false;
 		}
 
+		// a lot more birds who accept flying more closely 
 		TimeUnit.SECONDS.sleep(20);
 		minDistance = 8;
 		flocksize = 400;
@@ -277,10 +294,15 @@ public class Test extends JPanel implements ActionListener {
 
 		select = (int) (Math.random() * flock.length-1);
 		TimeUnit.SECONDS.sleep(12);
-		moveBird(flock[select], 0, (40 + Math.random() * 40), 0, 0);
+		// ==> West Flug
+		moveBird(flock[select], 0, (60 + Math.random() * 120), 0, 0);
 		TimeUnit.SECONDS.sleep(4);
 		keepDistance();
 	}
 }
 
-/* TODO:  Beschreibung wer an welchem Teil mitgearbeitet hat, entsprechend der Angabe */
+/* TODO:  Beschreibung wer an welchem Teil mitgearbeitet hat, entsprechend der Angabe
+ * Elias Nachbaur (matr nr):
+ * Florian Fusstetter (00709759): JFrame, paint & repaint, Simulation, Bird & makeFlock, distance (keep & moving), testDistance debugging 
+ * Ignjat Karanovic (matr nr):*/
+ */
