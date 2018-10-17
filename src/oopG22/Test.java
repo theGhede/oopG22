@@ -302,15 +302,11 @@ public class Test extends JPanel implements ActionListener {
 	}
 }
 
-<<<<<<< Updated upstream
-/* TODO:  Beschreibung wer an welchem Teil mitgearbeitet hat, entsprechend der Angabe
- * Elias Nachbaur (matr nr):
- * Florian Fusstetter (00709759): JFrame, paint & repaint, Simulation, Bird & makeFlock, distance (keep & moving), testDistance debugging 
- * Ignjat Karanovic (01529940): neighborhood, moveBird, testDistance korektion
- */
-=======
 /* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
  * Elias Nachbaur (01634010): made testDistance and it's calculations
  * Florian Fusstetter (00709759): JFrame, paint & repaint, Simulation, Bird & makeFlock, distance (keep & moving), testDistance debugging
- * Ignjat Karanovic (matr nr):*/
->>>>>>> Stashed changes
+ * Ignjat Karanovic (01529940): neighborhood, moveBird, testDistance debugging*/
+
+/* Kommentar zu git:
+ * Aufgrund dessen, dass sich unsere Gruppe erst spät gefunden hat & an unserem ersten vis-a-vis Treffen im CL-Lab g0.complang nicht zur
+ * Verfügung stand sind wir bis auf die Abgabe auf eine eigenen public gitlab repo ausgewichen */ 
