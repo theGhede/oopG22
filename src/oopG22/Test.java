@@ -206,6 +206,7 @@ public class Test extends JPanel implements ActionListener {
 		// use this to draw the initial flock via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		// start Timer t
 		t.start();
 		for (int i = 0; i < flock.length; i++) {
 			double x = flock[i].xcoord;
@@ -301,8 +302,15 @@ public class Test extends JPanel implements ActionListener {
 	}
 }
 
+<<<<<<< Updated upstream
 /* TODO:  Beschreibung wer an welchem Teil mitgearbeitet hat, entsprechend der Angabe
  * Elias Nachbaur (matr nr):
  * Florian Fusstetter (00709759): JFrame, paint & repaint, Simulation, Bird & makeFlock, distance (keep & moving), testDistance debugging 
  * Ignjat Karanovic (01529940): neighborhood, moveBird, testDistance korektion
  */
+=======
+/* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
+ * Elias Nachbaur (01634010): made testDistance and it's calculations
+ * Florian Fusstetter (00709759): JFrame, paint & repaint, Simulation, Bird & makeFlock, distance (keep & moving), testDistance debugging
+ * Ignjat Karanovic (matr nr):*/
+>>>>>>> Stashed changes
