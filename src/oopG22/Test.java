@@ -304,5 +304,5 @@ public class Test extends JPanel implements ActionListener {
 /* TODO:  Beschreibung wer an welchem Teil mitgearbeitet hat, entsprechend der Angabe
  * Elias Nachbaur (matr nr):
  * Florian Fusstetter (00709759): JFrame, paint & repaint, Simulation, Bird & makeFlock, distance (keep & moving), testDistance debugging 
- * Ignjat Karanovic (matr nr):*/
+ * Ignjat Karanovic (01529940): neighborhood, moveBird, testDistance korektion
  */
