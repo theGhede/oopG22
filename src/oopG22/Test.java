@@ -53,6 +53,10 @@ import javax.swing.*;
 
 public class Test extends JPanel implements ActionListener {
 
+	
+	// test variables
+	public static int up = 0, down = 0, right = 0, left = 0;
+	
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
 	private static class Bird {
 
@@ -63,41 +67,57 @@ public class Test extends JPanel implements ActionListener {
 
 		void moveUp(double k) throws InterruptedException {
 			if(existing) {
-				TimeUnit.MILLISECONDS.sleep(1);
-			}
-			for (int i = 0; i < k; i++) {
-				double move = this.ycoord + 1;
+				for (int i = 0; i < k; i++) {
+					TimeUnit.MICROSECONDS.sleep(500);
+					double move = this.ycoord + 1;
+					this.ycoord = move;
+				}
+			} else {
+				double move = this.ycoord + k;
 				this.ycoord = move;
+				up++;
 			}
 		}
 
 		void moveDown(double k) throws InterruptedException {
 			if(existing) {
-				TimeUnit.MILLISECONDS.sleep(1);
-			}
-			for (int i = 0; i < k; i++) {
-				double move = this.ycoord - 1;
+				for (int i = 0; i < k; i++) {
+					TimeUnit.MICROSECONDS.sleep(500);
+					double move = this.ycoord - 1;
+					this.ycoord = move;
+				}
+			} else {
+				double move = this.ycoord - k;
 				this.ycoord = move;
+				down++;
 			}
 		}
 
 		void moveLeft(double k) throws InterruptedException {
 			if(existing) {
-				TimeUnit.MILLISECONDS.sleep(1);
-			}
-			for (int i = 0; i < k; i++) {
-				double move = this.xcoord - 1;
+				for (int i = 0; i < k; i++) {
+					TimeUnit.MICROSECONDS.sleep(500);
+					double move = this.xcoord - 1;
+					this.ycoord = move;
+				}
+			} else {
+				double move = this.xcoord - k;
 				this.ycoord = move;
+				left++;
 			}
 		}
 
 		void moveRight(double k) throws InterruptedException {
 			if(existing) {
-				TimeUnit.MILLISECONDS.sleep(1);
-			}
-			for (int i = 0; i < k; i++) {
-				double move = this.xcoord + 1;
+				for (int i = 0; i < k; i++) {
+					TimeUnit.MICROSECONDS.sleep(500);
+					double move = this.xcoord + 1;
+					this.ycoord = move;
+				}
+			} else {
+				double move = this.xcoord + k;
 				this.ycoord = move;
+				right++;
 			}
 		}
 	}
@@ -241,7 +261,7 @@ public class Test extends JPanel implements ActionListener {
 		return dist;
 	}
 
-	public static boolean existing = false;
+	public static boolean existing;
 	// Make flock within the center 400x400 of the JFrame; reminder: top-right = (0,0)
 	public static void makeFlock() throws InterruptedException {
 		existing = false;
@@ -309,6 +329,7 @@ public class Test extends JPanel implements ActionListener {
 		for (int i = 0; i < flock.length; i++) {
 			moved[i] = false;
 		}
+		System.out.println("up: " + up + "   down: "+ down + "   left: " + left + "   right: " + right);
 
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
