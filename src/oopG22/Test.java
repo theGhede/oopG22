@@ -98,11 +98,11 @@ public class Test extends JPanel implements ActionListener {
 				for (int i = 0; i < k; i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord - 1;
-					this.ycoord = move;
+					this.xcoord = move;
 				}
 			} else {
 				double move = this.xcoord - k;
-				this.ycoord = move;
+				this.xcoord = move;
 				left++;
 			}
 		}
@@ -112,11 +112,11 @@ public class Test extends JPanel implements ActionListener {
 				for (int i = 0; i < k; i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord + 1;
-					this.ycoord = move;
+					this.xcoord = move;
 				}
 			} else {
 				double move = this.xcoord + k;
-				this.ycoord = move;
+				this.xcoord = move;
 				right++;
 			}
 		}
