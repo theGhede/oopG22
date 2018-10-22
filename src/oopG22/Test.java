@@ -16,24 +16,44 @@ public class Test extends JPanel implements ActionListener {
 		Bird[] neighbors;
 		int index;
 
-		void moveUp(double k) {
-			double move = this.ycoord + k;
-			this.ycoord = move;
+		void moveUp(double k) throws InterruptedException {
+			if(existing) {
+				TimeUnit.MILLISECONDS.sleep(1);
+			}
+			for (int i = 0; i < k; i++) {
+				double move = this.ycoord + 1;
+				this.ycoord = move;
+			}
 		}
 
-		void moveDown(double k) {
-			double move = this.ycoord - k;
-			this.ycoord = move;
+		void moveDown(double k) throws InterruptedException {
+			if(existing) {
+				TimeUnit.MILLISECONDS.sleep(1);
+			}
+			for (int i = 0; i < k; i++) {
+				double move = this.ycoord - 1;
+				this.ycoord = move;
+			}
 		}
 
-		void moveLeft(double k) {
-			double move = this.xcoord - k;
-			this.xcoord = move;
+		void moveLeft(double k) throws InterruptedException {
+			if(existing) {
+				TimeUnit.MILLISECONDS.sleep(1);
+			}
+			for (int i = 0; i < k; i++) {
+				double move = this.xcoord - 1;
+				this.ycoord = move;
+			}
 		}
 
-		void moveRight(double k) {
-			double move = this.xcoord + k;
-			this.xcoord = move;
+		void moveRight(double k) throws InterruptedException {
+			if(existing) {
+				TimeUnit.MILLISECONDS.sleep(1);
+			}
+			for (int i = 0; i < k; i++) {
+				double move = this.xcoord + 1;
+				this.ycoord = move;
+			}
 		}
 	}
 
@@ -62,7 +82,7 @@ public class Test extends JPanel implements ActionListener {
 	 * Im Flug wird überprüft ob der sich gerade fortbewegende Vogel zu nah an andere annähert
 	 * Rekursiv fliegen alle Vögel in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
 	 * Angestoßen wird die Bewegung durch einen einzelnen zufällig gewählten Vogel*/
-	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) {
+	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) throws InterruptedException {
 		if (!moved[b.index]){
 			b.moveUp(y1);
 			b.moveDown(y2);
@@ -77,7 +97,7 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 	
-	public static void movingDistance(Bird b) {
+	public static void movingDistance(Bird b) throws InterruptedException {
 		for (int i = 0; i < flock.length; i++) {
 			if (distance(flock[b.index], flock[i]) < minDistance) {
 				testDistance();
@@ -95,7 +115,7 @@ public class Test extends JPanel implements ActionListener {
 
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
-	public static void testDistance () {
+	public static void testDistance () throws InterruptedException {
 		for(int i = 0; i < flock.length; i++) {
 			for(int j = 0; j < flock.length; j++) {
 				if(distance(flock[i], flock[j]) < minDistance) {
@@ -158,7 +178,7 @@ public class Test extends JPanel implements ActionListener {
 	}
 	
 	// checks if testDistance & moves defined there are needed - this takes a couple of seconds while the randomized flock is being made
-	public static void keepDistance () {
+	public static void keepDistance () throws InterruptedException {
 		for (int i = 0; i < flock.length; i++) {
 			for (int j = 0; j < flock.length; j++) {
 				if (distance(flock[i], flock[j]) > minDistance) {
@@ -176,8 +196,10 @@ public class Test extends JPanel implements ActionListener {
 		return dist;
 	}
 
+	public static boolean existing = false;
 	// Make flock within the center 400x400 of the JFrame; reminder: top-right = (0,0)
-	public static void makeFlock() {
+	public static void makeFlock() throws InterruptedException {
+		existing = false;
 		double[] xvalues = new double[flock.length];
 		double[] yvalues = new double[flock.length];
 		for(int i = 0; i < flock.length; i++) {
@@ -199,6 +221,7 @@ public class Test extends JPanel implements ActionListener {
 
 		// check and repair minimal distance infringments
 		keepDistance();
+		existing = true;
 	}
 
 	// draw graphics using paint(g) with Graphics2D for double usage
