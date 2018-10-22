@@ -6,6 +6,51 @@ import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
+/* TODO:
+ * Die Simulation soll in einem dreidimensionalen Raum ablaufen.
+ * Zur einfachen Darstellung der dritten Dimension am Bildschirm eignen sich Helligkeitswerte und Farben.
+ *  ===========
+ * Der Flug ist durch die Physik und Physiologie eingeschränkt. Eine energiesparende Fortbewegung ist nur in bestimmten, 
+ * engen Geschwindigkeitsbereichen möglich. Andere Geschwindigkeiten sowie Richtungsänderungen benötigen deutlich mehr Energie. 
+ * Die für Anpassungen nötige Zeit hängt von der verfügbaren Kraft und Energie ab, aber auch von der Zeit für die Informationsverarbeitung 
+ * im Gehirn. Nach erhöhten Anstrengungen möchte sich der Körper erholen (außer in Notfällen, etwa bei Angriffen), sodass Richtungsänderungen 
+ * ohne Störung von außen nur in gewissen Zeitabständen erfolgen.
+
+	Very doable. Feasible.
+	stressed[boolean] for flight mode
+	distance modifiers based on animal type &	flight mode
+	make limits based on animal type & flight mode.
+ *  ===========
+	Unterschiedliche Vogelarten haben verschiedene weitere Bedürfnisse und Strategien. Bei Kranichen können wir z.B. annehmen, 
+	dass sie gerne freie Sicht nach vorne hätten. Meist müssen vorausfliegende Vögel mehr Energie aufwenden als Vögel mitten im Schwarm. 
+	Wahrscheinlich werden sich bei einigen Vogelarten ermüdete Vögel nach hinten fallen lassen und ausgeruhte Vögel die Führung übernehmen. 
+	Die fittesten Stare drängen zur Mitte, während schwächere Vögel am Rand eher der Bedrohung durch Angreifer ausgesetzt sind.
+	
+	Weitere Eigenschaft für die Vogelobjekte: fitness[int]
+	Aufgrund dessen kann bei moveSwarm das Tier zusätzlich verschoben werden.
+	Dazu benötigen wir weiterhin eine Größe welche den Center, maxDistance von diesem Center des Schwarms bestimmt.
+	Feasible, maybe doable (nicht in allen Belangen; aber generell als feature) & realistic.
+ *  ===========
+	Detaillierte Simulationen sind aufwendig. Große Schwärme werden in der nötigen Genauigkeit kaum in Echtzeit simulierbar sein.
+	Daher müssen Simulationsergebnisse aufgezeichnet und später, wenn gewünscht wiederholt dargestellt werden. Dennoch sollten, zumindest
+	für kleine Schwärme, Simulationen in Echtzeit angestrebt werden.
+
+	Doable - erstellen & speichern Daten von x/y Koordinaten und nutzen dies um unseren Schwarm zu erstellen - spart Zeit bei Programmstart
+	gegenüber unserer quasi-zufälligen Methode. Frage ist, ob dies notwendig ist. DIes ist auch ohnehin unsere erste Alternative zu zufällig 
+	erstellten Schwärmen.
+ *  ===========
+	Simulationen von Schwärmen zahlreicher Tierarten sind nötig. Für jede Tierart sind die physischen Parameter und individuellen 
+	Verhaltensmuster separat festzulegen. Dennoch brauchen wir ein einheitliches Framework, das alle Teile der Simulation übernimmt, 
+	die nicht von diesen individuellen Mustern abhängen. Die vielen Tierarten und die Verschiedenartigkeit der Verhaltensmuster verursachen 
+	einen gewaltigen Implementierungsaufwand. Daher sollte das Framework so viel Arbeit wie möglich übernehmen und die Implementierung der 
+	Verhaltensmuster vereinfachen.
+
+	Hauptaufgabe. → Untertypen von Schwärmen.
+	Frage: Benötigen wir Untertypen für Tiere? Nur falls nicht alle Arten stressed[] & 
+	fitness[] brauchen.
+	Wichtige schwarmspezifische Parameter sind minDistance & swarmSize - von uns 
+	gesetzte Größen & nicht Teil des Schwarmobjekts. Diese Größen werden zur Simulation von uns gesetzt → Steuergrößen.*/
+
 public class Test extends JPanel implements ActionListener {
 
 	// Vögel bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
