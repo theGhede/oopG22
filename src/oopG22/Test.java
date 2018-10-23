@@ -335,8 +335,8 @@ public class Test extends JPanel implements ActionListener {
 		double[] xvalues = new double[swarm.length];
 		double[] yvalues = new double[swarm.length];
 		for(int i = 0; i < swarm.length; i++) {
-			xvalues[i] = (Math.random() * 400) + 200;
-			yvalues[i] = (Math.random() * 400) + 200;
+			xvalues[i] = (Math.random() * 600) + 200;
+			yvalues[i] = (Math.random() * 600) + 200;
 		}
 		for(int i = 0; i < swarm.length; i++) {
 			// make new Animal Objects here
@@ -402,7 +402,7 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 	
-	public static void printCoords() {
+	public static void printCoords(String xfile, String yfile) {
 		
 		double[] xsaved = new double[swarmsize];
 		double[] ysaved = new double[swarmsize];
@@ -413,7 +413,7 @@ public class Test extends JPanel implements ActionListener {
 		
 		PrintWriter pw = null;
 		try {
-			pw = new PrintWriter(new File("xcoords.csv"));
+			pw = new PrintWriter(new File(xfile+".csv"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -426,7 +426,7 @@ public class Test extends JPanel implements ActionListener {
         pw.close();
         
         try {
-			pw = new PrintWriter(new File("ycoords.csv"));
+			pw = new PrintWriter(new File(yfile+".csv"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
