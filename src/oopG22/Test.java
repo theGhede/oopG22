@@ -73,7 +73,7 @@ public class Test extends JPanel implements ActionListener {
 		// TODO: issue: movement currently cannot be diagonal & this is very apparent with animations in place
 		void moveUp(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < (k * modifier); i++) {
+				for (int i = 0; i < (k * this.modifier); i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.ycoord + 1;
 					this.ycoord = move;
@@ -87,7 +87,7 @@ public class Test extends JPanel implements ActionListener {
 
 		void moveDown(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < (k * modifier); i++) {
+				for (int i = 0; i < (k * this.modifier); i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.ycoord - 1;
 					this.ycoord = move;
@@ -101,7 +101,7 @@ public class Test extends JPanel implements ActionListener {
 
 		void moveLeft(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < (k * modifier); i++) {
+				for (int i = 0; i < (k * this.modifier); i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord - 1;
 					this.xcoord = move;
@@ -115,7 +115,7 @@ public class Test extends JPanel implements ActionListener {
 
 		void moveRight(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < (k * modifier); i++) {
+				for (int i = 0; i < (k * this.modifier); i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord + 1;
 					this.xcoord = move;
@@ -131,6 +131,7 @@ public class Test extends JPanel implements ActionListener {
 	// TODO: subclasses of Animal (Ants, large Animals in stricter formation, regular Animals with modifiers)
 	// regular Animal including new behavior for tiring and stress
 	private static class Bird extends Animal{
+		// stressed
 		// tired/stamina
 	}
 	
@@ -173,17 +174,15 @@ public class Test extends JPanel implements ActionListener {
 	 * Rekursiv fliegen alle Tiere in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
 	 * Angestoßen wird die Bewegung durch einen einzelnes gewähltes Tier*/
 	
-	// TODO: figure out whether and how to do simultaneous movement
+	// TODO: figure out whether and how to do diagonal movement
 	public static void moveAnimal (Animal b, double x1,double x2, double y1, double y2) throws InterruptedException {
 		if (!moved[b.index]){
 			b.moveUp(y1);
 			b.moveDown(y2);
-			b.moveLeft(x2);
 			b.moveRight(x1);
+			b.moveLeft(x2);
 			moved[b.index] = true;
-				if (minDistance != 0) {
-					movingDistance(b);
-				}
+			movingDistance(b);
 			}
 		if (b.neighbors != null) {
 			for (int i = 0; i < b.neighbors.length ; i++) {
@@ -202,25 +201,39 @@ public class Test extends JPanel implements ActionListener {
 	}
 	
 	public static void movingDistance(Animal b) throws InterruptedException {
-		for (int i = 0; i < swarm.length; i++) {
-			if (distance(swarm[b.index], swarm[i]) < minDistance) {
-				testDistance();
+		if(minDistance != 0) {
+			for (int i = 0; i < swarm.length; i++) {
+				if (distance(swarm[b.index], swarm[i]) < minDistance) {
+					testDistance();
+				}
 			}
 		}
 	}
 	
 	// checks if testDistance & moves defined there are needed - this takes a couple of seconds while the randomized swarm is being made
 	public static void establishDistance () throws InterruptedException {
-		for (int i = 0; i < swarm.length; i++) {
-			for (int j = 0; j < swarm.length; j++) {
-				if (distance(swarm[i], swarm[j]) > minDistance) {
-					testDistance();
+		if (minDistance != 0) {
+			for (int i = 0; i < swarm.length; i++) {
+				for (int j = 0; j < swarm.length; j++) {
+					if (distance(swarm[i], swarm[j]) > minDistance) {
+						testDistance();
+					}
 				}
-			}
+			}	
 		}
 	}
 
-	// TODO: angle etc in eigene Methode auslagern
+	// angle etc in eigene Methode auslagern
+	public static double[] distanceHelper (double helpDistance, double xDistance, double yDistance) {
+		// [xMove, y Move]
+		double[] res = new double[1];
+		double angle = Math.atan(xDistance/yDistance);
+		double xMove = helpDistance * Math.sin(angle);
+		double yMove = xMove/Math.tan(angle);
+		res[0] = xMove;
+		res[1] = yMove;
+		return res;
+	}
 	// Behandlung von Mindestabstandsverletzungen
 	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
 	public static void testDistance () throws InterruptedException {
@@ -228,38 +241,24 @@ public class Test extends JPanel implements ActionListener {
 			for(int j = 0; j < swarm.length; j++) {
 				if(distance(swarm[i], swarm[j]) < minDistance) {
 					double helpDistance = minDistance - distance(swarm[i], swarm[j]);
-					double yDistance = (swarm[i].xcoord - swarm[j].xcoord);
 					double xDistance = (swarm[i].ycoord - swarm[j].ycoord);
-
+					double yDistance = (swarm[i].xcoord - swarm[j].xcoord);
+					double xMove = distanceHelper(helpDistance, xDistance, yDistance)[0];
+					double yMove = distanceHelper(helpDistance, xDistance, yDistance)[1];
+					
 					if(swarm[j].ycoord < swarm[i].ycoord && swarm[j].xcoord < swarm[i].xcoord){
-						double angle = Math.atan(xDistance/yDistance);
-						double xMove = helpDistance * Math.sin(angle);
-						double yMove = xMove/Math.tan(angle);
-
 						swarm[j].moveDown((yMove));
 						swarm[j].moveLeft((xMove));
 					}
 					else if(swarm[j].ycoord > swarm[i].ycoord && swarm[j].xcoord > swarm[i].xcoord){
-						double angle = Math.atan(yDistance/xDistance);
-						double xMove = helpDistance * Math.sin(angle);
-						double yMove = xMove/Math.tan(angle);
-
 						swarm[j].moveUp((yMove));
 						swarm[j].moveRight((xMove));
 					}
 					else if(swarm[j].ycoord < swarm[i].ycoord && swarm[j].xcoord > swarm[i].xcoord) {
-						double angle = Math.atan(xDistance/yDistance);
-						double xMove = helpDistance * Math.sin(angle);
-						double yMove = xMove/Math.tan(angle);
-
 						swarm[j].moveDown((yMove));
 						swarm[j].moveRight((xMove));
 					}
 					else if(swarm[j].ycoord > swarm[i].ycoord && swarm[j].xcoord < swarm[i].xcoord) {
-						double angle = Math.atan(yDistance/xDistance);
-						double xMove = helpDistance * Math.sin(angle);
-						double yMove = xMove/Math.tan(angle);
-
 						swarm[j].moveUp((yMove));
 						swarm[j].moveLeft((xMove));
 					}
@@ -293,7 +292,7 @@ public class Test extends JPanel implements ActionListener {
 	public static Animal[] swarm = new Animal[swarmsize];
 	public static boolean[] moved = new boolean[swarm.length];
 	// Mindestabstand - willkürlich definiert
-	public static double minDistance = 7;
+	public static double minDistance = 14;
 	
 	// TODO: make super class for Swarm
 	private static class Swarm {
@@ -315,7 +314,6 @@ public class Test extends JPanel implements ActionListener {
 		
 	}
 	
-	
 	// this is used to cut out time delays when first making and correcting a swarm
 	public static boolean existing;
 	// TODO: transform to become a method of Swarm
@@ -325,8 +323,8 @@ public class Test extends JPanel implements ActionListener {
 		double[] xvalues = new double[swarm.length];
 		double[] yvalues = new double[swarm.length];
 		for(int i = 0; i < swarm.length; i++) {
-			xvalues[i] = (Math.random() * 600) + 200;
-			yvalues[i] = (Math.random() * 600) + 200;
+			xvalues[i] = (Math.random() * 400) + 200;
+			yvalues[i] = (Math.random() * 400) + 200;
 		}
 		for(int i = 0; i < swarm.length; i++) {
 			// make new Animal Objects here
@@ -343,45 +341,33 @@ public class Test extends JPanel implements ActionListener {
 			neighborhood(swarm[i], 1);
 		}
 		// check and repair minimal distance infringements
-		if (minDistance != 0) {
-			establishDistance();
-		}
+		establishDistance();
 		existing = true;
 	}
 
-	// draw graphics using paint(g) with Graphics2D for double usage
+	// TODO: update by repaint every 4 milliseconds (==> after the intervals found in main)
+	Timer t = new Timer(4, this);
+	
+	// draw graphics using paint(g) with Graphics2D for double variables
 	public void paintComponent(Graphics g) {
 		// use this to draw the initial swarm via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		// start Timer t
-		t.start();
 		
 		// TODO: different sizes for different animals; reminder: shape coordinates are the upper left point
 		// TODO: grey animals
 		for (int i = 0; i < swarm.length; i++) {
 			double x = swarm[i].xcoord;
 			double y = swarm[i].ycoord;
-			Shape s = new Ellipse2D.Double(x, y, 1, 1);
+			Shape s = new Ellipse2D.Double(x, y, 4, 4);
 			g2d.draw(s);
 			g2d.fill(s);
 			// maybe useful Swing methods: validate() & revalidate()
 		}
-	}
-
-	// TODO: type can be JFrame or void ... JFrame was needed to test with multiple frames
-	private static JFrame GUI() {
-		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
-		frame.getContentPane().add(new Test());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 800);
-		frame.setLocationByPlatform(true);
-		frame.setVisible(true);
-		return frame;
+		// start Timer t
+		t.start();
 	}
 	
-	// TODO: update by repaint every 4 milliseconds (==> after the intervals found in main)
-	Timer t = new Timer(4, this);
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 	}
@@ -390,6 +376,16 @@ public class Test extends JPanel implements ActionListener {
 		for (int i = 0; i < swarm.length; i++) {
 			moved[i] = false;
 		}
+	}
+
+	private static void GUI() {
+		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
+		frame.getContentPane().add(new Test());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(800, 800);
+		frame.setLocationByPlatform(true);
+		frame.setVisible(true);
+		frame.setResizable(false);
 	}
 	
 	public static void printCoords(String xfile, String yfile) {
@@ -428,6 +424,27 @@ public class Test extends JPanel implements ActionListener {
         pw.write(sby.toString());
         pw.close();
 	}
+	
+	// TODO: method to build simulations
+	public void sstart(Swarm1 s, int size, int minD, double x, double y) {
+		// TODO: select an animal based on swarm type OR use overrides
+		size = s.swarmsize;
+		minD = s.minDistance;
+		double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+		if (x < 0) {
+			x2 = x;
+		}
+		if (x >= 0) {
+			x1 = x;
+		}
+		if (y < 0) {
+			y2 = y;
+		}
+		if (y >= 0) {
+			y1 = y;
+		}
+		// moveAnimal(s.swarm[s.select], x1, x2, y1, y2);
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 
@@ -455,10 +472,7 @@ public class Test extends JPanel implements ActionListener {
 		// ==> Nord-Ost Flug
 		moveAnimal(swarm[select], (40 + Math.random() * 140), 0, 0, (80 + Math.random() * 80));
 		TimeUnit.SECONDS.sleep(2);
-		if (minDistance != 0) {
-			establishDistance();
-		}
-
+		establishDistance();
 
 		// slightly more Animals who want to keep more distance
 		TimeUnit.SECONDS.sleep(20);
@@ -473,9 +487,7 @@ public class Test extends JPanel implements ActionListener {
 		// ==> Süd-Ost Flug
 		moveAnimal(swarm[select], (120 + Math.random() * 60), 0, (80 + Math.random() * 80), 0);
 		TimeUnit.SECONDS.sleep(4);
-		if (minDistance != 0) {
-			establishDistance();
-		}
+		establishDistance();
 
 		// a lot more Animals who accept flying more closely 
 		TimeUnit.SECONDS.sleep(20);
@@ -490,9 +502,7 @@ public class Test extends JPanel implements ActionListener {
 		// ==> West Flug
 		moveAnimal(swarm[select], 0, (60 + Math.random() * 120), 0, 0);
 		TimeUnit.SECONDS.sleep(4);
-		if (minDistance != 0) {
-			establishDistance();
-		}
+		establishDistance();
 	}
 }
 
