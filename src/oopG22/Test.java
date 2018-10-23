@@ -69,12 +69,7 @@ public class Test extends JPanel implements ActionListener {
 		int index;
 		// this lets us manipulate the length of an animals movement
 		double modifier;
-		boolean tired = false;
-		if (modifier <= 0.5){
-			tired = true;
-		}  else if (modifier >= 1) {
-			tired = false;
-		}
+
 		// TODO: issue: movement currently cannot be diagonal & this is very apparent with animations in place
 		void moveUp(double k) throws InterruptedException {
 			if(existing) {
@@ -86,11 +81,6 @@ public class Test extends JPanel implements ActionListener {
 			} else {
 				double move = this.ycoord + k;
 				this.ycoord = move;
-			}
-			if (tired = false){
-				modifier -= 0.25;
-			}else {
-				modifier += 0.25;
 			}
 
 		}
@@ -106,7 +96,7 @@ public class Test extends JPanel implements ActionListener {
 				double move = this.ycoord - k;
 				this.ycoord = move;
 			}
-			modifier -= 0.25;
+
 		}
 
 		void moveLeft(double k) throws InterruptedException {
@@ -120,7 +110,7 @@ public class Test extends JPanel implements ActionListener {
 				double move = this.xcoord - k;
 				this.xcoord = move;
 			}
-			modifier -= 0.25;
+
 		}
 
 		void moveRight(double k) throws InterruptedException {
@@ -134,7 +124,7 @@ public class Test extends JPanel implements ActionListener {
 				double move = this.xcoord + k;
 				this.xcoord = move;
 			}
-			modifier -= 0.25;
+
 		}
 	}
 	
