@@ -1,10 +1,12 @@
 package oopG22;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -56,96 +58,6 @@ import java.io.PrintWriter;
 
 public class Test extends JPanel implements ActionListener {
 	
-	// TODO: CHECK: rewrite vocabulary to "swarm" and "animal" since we're doing insects or whatever now 
-	
-	// TODO: split off classes
-	// Tiere bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
-	private static class Animal {
-
-
-		double xcoord;
-		double ycoord;
-		Animal[] neighbors;
-		int index;
-		// this lets us manipulate the length of an animals movement
-		double modifier;
-
-		// TODO: issue: movement currently cannot be diagonal & this is very apparent with animations in place
-		void moveUp(double k) throws InterruptedException {
-			if(existing) {
-				for (int i = 0; i < (k * this.modifier); i++) {
-					TimeUnit.MICROSECONDS.sleep(500);
-					double move = this.ycoord + 1;
-					this.ycoord = move;
-				}
-			} else {
-				double move = this.ycoord + k;
-				this.ycoord = move;
-			}
-
-		}
-
-		void moveDown(double k) throws InterruptedException {
-			if(existing) {
-				for (int i = 0; i < (k * this.modifier); i++) {
-					TimeUnit.MICROSECONDS.sleep(500);
-					double move = this.ycoord - 1;
-					this.ycoord = move;
-				}
-			} else {
-				double move = this.ycoord - k;
-				this.ycoord = move;
-			}
-
-		}
-
-		void moveLeft(double k) throws InterruptedException {
-			if(existing) {
-				for (int i = 0; i < (k * this.modifier); i++) {
-					TimeUnit.MICROSECONDS.sleep(500);
-					double move = this.xcoord - 1;
-					this.xcoord = move;
-				}
-			} else {
-				double move = this.xcoord - k;
-				this.xcoord = move;
-			}
-
-		}
-
-		void moveRight(double k) throws InterruptedException {
-			if(existing) {
-				for (int i = 0; i < (k * this.modifier); i++) {
-					TimeUnit.MICROSECONDS.sleep(500);
-					double move = this.xcoord + 1;
-					this.xcoord = move;
-				}
-			} else {
-				double move = this.xcoord + k;
-				this.xcoord = move;
-			}
-
-		}
-	}
-	
-	// TODO: subclasses of Animal (Ants, large Animals in stricter formation, regular Animals with modifiers)
-	// regular Animal including new behavior for tiring and stress
-	private static class Bird extends Animal{
-		// stressed
-		// tired/stamina
-	}
-	
-	// large Animal type of which only a few fly in formation
-	private static class LargeAnimal extends Animal {
-		/* TODO: decide if this is necessary or whether the "flight in formation" without stress or
-		 * stamina is enough for this type */
-	}
-	
-	// insects which can crawl over eachother and are tireless but react to danger if we want them to
-	private static class Insect extends Animal {
-		
-	}
-
 	// TODO: choose k neighbors to be rendered in grey
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 	public static void neighborhood(Animal b, int radius) {
@@ -284,36 +196,6 @@ public class Test extends JPanel implements ActionListener {
 			}
 		}
 	}
-
-	
-	// TODO: move variables to classes/objects if possible
-	// Die Anzahl der Tiere ist willkürlich vorbestimmt
-	// TODO: error! swarms aren't yet manipulated for simulations
-	public static int swarmsize = 200;
-	public static Animal[] swarm = new Animal[swarmsize];
-	public static boolean[] moved = new boolean[swarm.length];
-	// Mindestabstand - willkürlich definiert
-	public static double minDistance = 14;
-	
-	// TODO: make super class for Swarm
-	private static class Swarm {
-		
-	}
-	
-	
-	
-	// TODO: make subclasses of Swarm for our different animals
-	private static class Flock extends Swarm{
-		
-	}
-	
-	private static class FlightInFormation extends Swarm {
-		
-	}
-	
-	private static class Colony extends Swarm {
-		
-	}
 	
 	// this is used to cut out time delays when first making and correcting a swarm
 	public static boolean existing;
@@ -435,25 +317,40 @@ public class Test extends JPanel implements ActionListener {
 	}
 	
 	// TODO: method to build simulations
-	public void sstart(Swarm1 s, int size, int minD, double x, double y) {
-		// TODO: select an animal based on swarm type OR use overrides
+	public void start(Swarm s, int size, int minD, double x, double y) throws InterruptedException {
+		// TODO: select an animal based on swarm type
+		
+		// TODO: general movement rules
 		size = s.swarmsize;
 		minD = s.minDistance;
 		double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
 		if (x < 0) {
 			x2 = x;
 		}
-		if (x >= 0) {
+		if (x > 0) {
 			x1 = x;
 		}
 		if (y < 0) {
 			y2 = y;
 		}
-		if (y >= 0) {
+		if (y > 0) {
 			y1 = y;
 		}
-		// moveAnimal(s.swarm[s.select], x1, x2, y1, y2);
+		moveAnimal(s.swarm[s.select], x1, x2, y1, y2);
 	}
+	
+	// TODO: Method which creates swarm object of chosen type and then calls makeSwarm to make Animals of the
+	// corresponding type
+	public static void generate (String type) {
+		
+	}
+	
+	// TODO: move variables to classes/objects if possible
+	public static int swarmsize = 200;
+	public static Animal[] swarm = new Animal[swarmsize];
+	public static boolean[] moved = new boolean[swarm.length];
+	// Mindestabstand
+	public static double minDistance = 14;
 
 	public static void main(String[] args) throws InterruptedException {
 
@@ -467,12 +364,10 @@ public class Test extends JPanel implements ActionListener {
 				GUI();
 			}
 		});
-		
-		// TODO: make new simulations for new animal types and move minDistance and swarmsize to classes
-		
+				
 		/* Simulations - each step starts after predetermined time (in seconds) - it takes runtime + 108 seconds of waiting to complete
 		 * Parameters are: swarmsize, minDistance and the movement (incl. a random distance component) of the swarm;
-		 * Animals themselves are quasi-randomly generated
+		 * Animals themselves are quasi-randomly pre-generated
 		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeswarm)*/
 		
 		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
