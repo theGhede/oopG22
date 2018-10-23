@@ -138,7 +138,7 @@ public class Test extends JPanel implements ActionListener {
 
 	// angle etc in eigene Methode auslagern
 	public static double[] distanceHelper (double helpDistance, double xDistance, double yDistance) {
-		// [xMove, y Move]
+		// [xMove, yMove]
 		double[] res = new double[2];
 		double angle = Math.atan(xDistance/yDistance);
 		double xMove = helpDistance * Math.sin(angle);
@@ -216,8 +216,7 @@ public class Test extends JPanel implements ActionListener {
 			b.ycoord = yvalues[i];
 			b.index = i;
 			swarm[i] = b;
-			b.modifier = 1
-			;
+			b.modifier = 1;
 		}
 		// Find neighbors for each Animal
 		for (int i = 0; i < swarm.length; i++) {
@@ -248,7 +247,7 @@ public class Test extends JPanel implements ActionListener {
                 g2d.fill(s);
             }
             else{
-                Shape s = new Ellipse2D.Double(x, y, 5, 5);
+                Shape s = new Ellipse2D.Double(x, y, 4, 4);
                 g2d.setPaint(Color.BLACK);
                 g2d.fill(s);
             }
