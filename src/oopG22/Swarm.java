@@ -1,6 +1,6 @@
 package oopG22;
 
-public class Swarm1 {
+public class Swarm {
 	// TODO: what kind of swarm is it - for methods where instance of questions are hard to answer
 	// might not be needed
 	String type;

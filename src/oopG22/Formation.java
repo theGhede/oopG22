@@ -1,5 +1,6 @@
 package oopG22;
 
-public class Formation extends Swarm1{
-
+// Large bird formation
+public class Formation extends Swarm {
+	// TODO
 }

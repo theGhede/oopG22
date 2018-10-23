@@ -1,5 +1,6 @@
 package oopG22;
 
-public class Flock extends Swarm1 {
+// Flock of Birds
+public class Flock extends Swarm {
 
 }
