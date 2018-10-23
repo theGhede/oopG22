@@ -139,12 +139,12 @@ public class Test extends JPanel implements ActionListener {
 	// angle etc in eigene Methode auslagern
 	public static double[] distanceHelper (double helpDistance, double xDistance, double yDistance) {
 		// [xMove, y Move]
-		double[] res = new double[1];
+		double[] res = new double[2];
 		double angle = Math.atan(xDistance/yDistance);
 		double xMove = helpDistance * Math.sin(angle);
 		double yMove = xMove/Math.tan(angle);
 		res[0] = xMove;
-		res[0] = yMove;
+		res[1] = yMove;
 		return res;
 	}
 	// Behandlung von Mindestabstandsverletzungen
@@ -157,7 +157,7 @@ public class Test extends JPanel implements ActionListener {
 					double xDistance = (swarm[i].ycoord - swarm[j].ycoord);
 					double yDistance = (swarm[i].xcoord - swarm[j].xcoord);
 					double xMove = distanceHelper(helpDistance, xDistance, yDistance)[0];
-					double yMove = distanceHelper(helpDistance, xDistance, yDistance)[0];
+					double yMove = distanceHelper(helpDistance, xDistance, yDistance)[1];
 					
 					if(swarm[j].ycoord < swarm[i].ycoord && swarm[j].xcoord < swarm[i].xcoord){
 						swarm[j].moveDown((yMove));
