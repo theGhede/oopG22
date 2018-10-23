@@ -78,7 +78,7 @@ public class Test extends JPanel implements ActionListener {
 		// TODO: issue: movement currently cannot be diagonal & this is very apparent with animations in place
 		void moveUp(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < (k * modifier); i++) {
+				for (int i = 0; i < (k * this.modifier); i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.ycoord + 1;
 					this.ycoord = move;
@@ -97,7 +97,7 @@ public class Test extends JPanel implements ActionListener {
 
 		void moveDown(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < (k * modifier); i++) {
+				for (int i = 0; i < (k * this.modifier); i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.ycoord - 1;
 					this.ycoord = move;
@@ -111,7 +111,7 @@ public class Test extends JPanel implements ActionListener {
 
 		void moveLeft(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < (k * modifier); i++) {
+				for (int i = 0; i < (k * this.modifier); i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord - 1;
 					this.xcoord = move;
@@ -125,7 +125,7 @@ public class Test extends JPanel implements ActionListener {
 
 		void moveRight(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < (k * modifier); i++) {
+				for (int i = 0; i < (k * this.modifier); i++) {
 					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord + 1;
 					this.xcoord = move;
@@ -141,6 +141,7 @@ public class Test extends JPanel implements ActionListener {
 	// TODO: subclasses of Animal (Ants, large Animals in stricter formation, regular Animals with modifiers)
 	// regular Animal including new behavior for tiring and stress
 	private static class Bird extends Animal{
+		// stressed
 		// tired/stamina
 	}
 	
