@@ -1,13 +1,12 @@
 package oopG22;
 
 public class Swarm {
-	// TODO: what kind of swarm is it - for methods where instance of questions are hard to answer
-	// might not be needed
+	// what kind of swarm is
 	String type;
 	int swarmsize;
 	int minDistance;
 	boolean existing;
-	// selects first animal to move (type dependent)
+	// selects first animal to move (type dependent rules)
 	int select;
 	Animal[] swarm;
 }
