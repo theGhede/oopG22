@@ -287,7 +287,6 @@ public class Test extends JPanel implements ActionListener {
 		existing = true;
 	}
 
-<<<<<<< HEAD
 	public static void loadcsv() {
 
 		String csvFilex = "path to x coords";
@@ -321,19 +320,16 @@ public class Test extends JPanel implements ActionListener {
 
 
 	// draw graphics using paint(g) with Graphics2D for double usage
-=======
 	// TODO: update by repaint every 4 milliseconds (==> after the intervals found in main)
 	Timer t = new Timer(4, this);
 	
 	// draw graphics using paint(g) with Graphics2D for double variables
->>>>>>> 198984295af2233de03d2198a2f4c741a90681f6
 	public void paintComponent(Graphics g) {
 		// use this to draw the initial swarm via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		// TODO: different sizes for different animals; reminder: shape coordinates are the upper left point
-		// TODO: grey animals
 		for (int i = 0; i < swarm.length; i++) {
 			double x = swarm[i].xcoord;
 			double y = swarm[i].ycoord;
