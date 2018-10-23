@@ -58,6 +58,7 @@ public class Test extends JPanel implements ActionListener {
 	
 	// TODO: CHECK: rewrite vocabulary to "swarm" and "animal" since we're doing insects or whatever now 
 	
+	// TODO: split off classes
 	// Tiere bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
 	private static class Animal {
 
@@ -73,7 +74,7 @@ public class Test extends JPanel implements ActionListener {
 		void moveUp(double k) throws InterruptedException {
 			if(existing) {
 				for (int i = 0; i < (k * modifier); i++) {
-					//TimeUnit.MICROSECONDS.sleep(500);
+					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.ycoord + 1;
 					this.ycoord = move;
 				}
@@ -86,7 +87,7 @@ public class Test extends JPanel implements ActionListener {
 		void moveDown(double k) throws InterruptedException {
 			if(existing) {
 				for (int i = 0; i < (k * modifier); i++) {
-					//TimeUnit.MICROSECONDS.sleep(500);
+					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.ycoord - 1;
 					this.ycoord = move;
 				}
@@ -99,7 +100,7 @@ public class Test extends JPanel implements ActionListener {
 		void moveLeft(double k) throws InterruptedException {
 			if(existing) {
 				for (int i = 0; i < (k * modifier); i++) {
-					//TimeUnit.MICROSECONDS.sleep(500);
+					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord - 1;
 					this.xcoord = move;
 				}
@@ -112,7 +113,7 @@ public class Test extends JPanel implements ActionListener {
 		void moveRight(double k) throws InterruptedException {
 			if(existing) {
 				for (int i = 0; i < (k * modifier); i++) {
-					//TimeUnit.MICROSECONDS.sleep(500);
+					TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord + 1;
 					this.xcoord = move;
 				}
@@ -383,7 +384,7 @@ public class Test extends JPanel implements ActionListener {
 		// TODO: make and simulate arrays for predetermined swarm
 		resetMoved();
 		makeswarm();
-		/*double[] xsaved = new double[swarmsize];
+		double[] xsaved = new double[swarmsize];
 		double[] ysaved = new double[swarmsize];
 		for (int i = 0; i < swarm.length; i++) {
 			xsaved[i] = (double) Math.round(swarm[i].xcoord * 10000) / 10000;
@@ -416,7 +417,7 @@ public class Test extends JPanel implements ActionListener {
 		}
         pw.write(sby.toString());
         pw.close();
-        System.out.println("printed");*/
+        System.out.println("printed");
        
 		
 		// Run GUI
@@ -435,15 +436,15 @@ public class Test extends JPanel implements ActionListener {
 		
 		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
 		int select = (int) (Math.random() * swarm.length-1);
-		//TimeUnit.SECONDS.sleep(12);
+		TimeUnit.SECONDS.sleep(12);
 		// ==> Nord-Ost Flug
 		moveAnimal(swarm[select], (40 + Math.random() * 140), 0, 0, (80 + Math.random() * 80));
-		//TimeUnit.SECONDS.sleep(2);
+		TimeUnit.SECONDS.sleep(2);
 		establishDistance();
 
 
 		// slightly more Animals who want to keep more distance
-		//TimeUnit.SECONDS.sleep(20);
+		TimeUnit.SECONDS.sleep(20);
 		minDistance = 20;
 		swarmsize = 260;
 		
@@ -451,16 +452,16 @@ public class Test extends JPanel implements ActionListener {
 		makeswarm();
 
 		select = (int) (Math.random() * swarm.length-1);
-		//TimeUnit.SECONDS.sleep(12);
+		TimeUnit.SECONDS.sleep(12);
 		// ==> Süd-Ost Flug
 		moveAnimal(swarm[select], (120 + Math.random() * 60), 0, (80 + Math.random() * 80), 0);
-		//TimeUnit.SECONDS.sleep(4);
+		TimeUnit.SECONDS.sleep(4);
 		establishDistance();
 		System.out.println(moved.length);
 
 
 		// a lot more Animals who accept flying more closely 
-		//TimeUnit.SECONDS.sleep(20);
+		TimeUnit.SECONDS.sleep(20);
 		minDistance = 8;
 		swarmsize = 400;
 
@@ -468,10 +469,10 @@ public class Test extends JPanel implements ActionListener {
 		makeswarm();
 
 		select = (int) (Math.random() * swarm.length-1);
-		//TimeUnit.SECONDS.sleep(12);
+		TimeUnit.SECONDS.sleep(12);
 		// ==> West Flug
 		moveAnimal(swarm[select], 0, (60 + Math.random() * 120), 0, 0);
-		//TimeUnit.SECONDS.sleep(4);
+		TimeUnit.SECONDS.sleep(4);
 		establishDistance();
 		System.out.println(moved.length);
 	}
