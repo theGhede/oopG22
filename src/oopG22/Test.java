@@ -291,35 +291,38 @@ public class Test extends JPanel implements ActionListener {
 		existing = true;
 	}
 
-/*
-	public static void loadcsv() {
+		public static void loadcsv() {
 
 		String csvFilex = "path to x coords";
 		String csvFiley = "path to y coords";
 		String line = "";
 		String line2 = "";
 		String csvSplitBy = ",";
+		String[] xcoords = null;
+		String[] ycoords = null;
 
 
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFilex))) {
 			while ((line = br.readLine()) != null) {
-				String[] xcoords = line.split(csvSplitBy);
+				xcoords = line.split(csvSplitBy);
 				}
 			}
+	 	catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		try (BufferedReader br2 = new BufferedReader((new FileReader(csvFiley)))) {
+		try (BufferedReader br2 = new BufferedReader(new FileReader(csvFiley))) {
 			while ((line2 = br2.readLine()) != null) {
-				String[] ycoords = line2.split(csvSplitBy);
+				ycoords = line2.split(csvSplitBy);
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		for(int i = 0; i < xcoords.length; i++) {
 			Animal b = new Animal();
-			b.xcoord = xcoords[i];
-			b.ycoord = ycoords[i];
+			b.xcoord = Double.valueOf(xcoords[i]);
+			b.ycoord = Double.valueOf(ycoords[i]);
 			b.index = i;
 			swarm[i] = b;
 			b.modifier = 1;
@@ -330,7 +333,7 @@ public class Test extends JPanel implements ActionListener {
 
 	}
 
-*/
+
 	// draw graphics using paint(g) with Graphics2D for double usage
 
 	// TODO: update by repaint every 4 milliseconds (==> after the intervals found in main)
