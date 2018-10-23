@@ -1,5 +1,5 @@
 package oopG22;
 
-public class Formation extends Swarm{
+public class Formation extends Swarm1{
 
 }
