@@ -1,5 +1,5 @@
 package oopG22;
 
-public class Colony extends Swarm{
+public class Colony extends Swarm1{
 
 }

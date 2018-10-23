@@ -167,6 +167,7 @@ public class Test extends JPanel implements ActionListener {
 				b.neighbors = neighbors;
 			}
 		}
+
 	}
 
 	/* Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
@@ -231,7 +232,7 @@ public class Test extends JPanel implements ActionListener {
 		double xMove = helpDistance * Math.sin(angle);
 		double yMove = xMove/Math.tan(angle);
 		res[0] = xMove;
-		res[1] = yMove;
+		res[0] = yMove;
 		return res;
 	}
 	// Behandlung von Mindestabstandsverletzungen
@@ -244,7 +245,7 @@ public class Test extends JPanel implements ActionListener {
 					double xDistance = (swarm[i].ycoord - swarm[j].ycoord);
 					double yDistance = (swarm[i].xcoord - swarm[j].xcoord);
 					double xMove = distanceHelper(helpDistance, xDistance, yDistance)[0];
-					double yMove = distanceHelper(helpDistance, xDistance, yDistance)[1];
+					double yMove = distanceHelper(helpDistance, xDistance, yDistance)[0];
 					
 					if(swarm[j].ycoord < swarm[i].ycoord && swarm[j].xcoord < swarm[i].xcoord){
 						swarm[j].moveDown((yMove));
@@ -359,9 +360,17 @@ public class Test extends JPanel implements ActionListener {
 		for (int i = 0; i < swarm.length; i++) {
 			double x = swarm[i].xcoord;
 			double y = swarm[i].ycoord;
-			Shape s = new Ellipse2D.Double(x, y, 4, 4);
-			g2d.draw(s);
-			g2d.fill(s);
+			if (i % 4 == 0){
+                Shape s = new Ellipse2D.Double(x, y, 4, 4);
+                g2d.setPaint(Color.gray);
+                g2d.fill(s);
+            }
+            else{
+                Shape s = new Ellipse2D.Double(x, y, 5, 5);
+                g2d.setPaint(Color.BLACK);
+                g2d.fill(s);
+            }
+
 			// maybe useful Swing methods: validate() & revalidate()
 		}
 		// start Timer t
