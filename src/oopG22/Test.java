@@ -87,13 +87,69 @@ public class Test extends JPanel implements ActionListener {
 	 * Rekursiv fliegen alle Tiere in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
 	 * Angestoßen wird die Bewegung durch einen einzelnes gewähltes Tier*/
 	
-	// TODO: figure out whether and how to do diagonal movement
+	// TODO: diagonal movement
+	// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
 	public static void moveAnimal (Animal b, double x1,double x2, double y1, double y2) throws InterruptedException {
 		if (!moved[b.index]){
-			b.moveUp(y1);
-			b.moveDown(y2);
-			b.moveRight(x1);
-			b.moveLeft(x2);
+			// helper variables
+			double x, y;
+			
+			// TODO: logic error for cardinal directions - needs fix
+			if (x1 == 0 && y1 == 0) {
+				x = x2%4; y = y2%4;
+				while (x2 > x) {
+					b.moveLeft(4);
+					x2 -= 4;
+				}
+				while (y2 > y) {
+					b.moveDown(4);
+					y2 -= 4;
+				}
+				// remainder of the movement
+				b.moveLeft(x);
+				b.moveDown(y);
+			}
+			if (x1 == 0 && y2 == 0) {
+				x = x2%4; y = y1%4;
+				while (x2 > x) {
+					b.moveLeft(4);
+				}
+				while (y1 > y) {
+					b.moveUp(4);	
+				}
+				b.moveLeft(x);
+				b.moveUp(y);
+			}
+			if (x2 == 0 && y1 == 0) {
+				x = x1%4; y = y2%4;
+				while (x1 > x) {
+					b.moveRight(4);	
+				}
+				while (y2 > y) {
+					b.moveDown(4);	
+				}
+				b.moveRight(x);
+				b.moveDown(y);
+			}
+			if (x2 == 0 && y2 == 0) {
+				x = x1%4; y = y1%4;
+				while (x1 > x) {
+					b.moveRight(4);
+				}
+				while (y1 > y) {
+					b.moveUp(4);
+				}
+				b.moveRight(x);
+				b.moveUp(y);
+			}
+			if ((x1 == 0 && x2 == 0 && y1 == 0) || (x1 == 0 && x2 == 0 && y2 == 0) || (x1 == 0 && y1 == 0 && y2 == 0)
+					|| (x2 == 0 && y1 == 0 && y2 == 0)) {
+				// no need for diagonal movement if 3 variables are 0
+				b.moveUp(y1);
+				b.moveDown(y2);
+				b.moveRight(x1);
+				b.moveLeft(x2);
+			}
 			moved[b.index] = true;
 			movingDistance(b);
 			}
@@ -322,20 +378,27 @@ public class Test extends JPanel implements ActionListener {
 		// TODO: general movement rules
 		size = s.swarmsize;
 		minD = s.minDistance;
+		s.select = (int) (Math.random() * s.swarm.length-1);
+		
 		double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-		if (x < 0) {
-			x2 = x;
+		// helper variables for incremental movement
+		double a = x/4, b = y/4;
+		if (x < 0) x2 = x;
+		if (x > 0) x1 = x;
+		if (y < 0) y2 = y;
+		if (y > 0) y1 = y;
+		
+		if (x1 == 0 && y1 == 0) {
+			
+		} else if (x1 == 0 && y2 == 0) {
+			
+		} else if (x2 == 0 && y1 == 0) {
+	
+		} else if (x1 == 0 && y2 == 0) {
+			
+		} else {
+			moveAnimal(s.swarm[s.select], x1, x2, y1, y2);
 		}
-		if (x > 0) {
-			x1 = x;
-		}
-		if (y < 0) {
-			y2 = y;
-		}
-		if (y > 0) {
-			y1 = y;
-		}
-		moveAnimal(s.swarm[s.select], x1, x2, y1, y2);
 	}
 	
 	// TODO: Method which creates swarm object of chosen type and then calls makeSwarm to make Animals of the
@@ -371,7 +434,7 @@ public class Test extends JPanel implements ActionListener {
 		
 		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
 		int select = (int) (Math.random() * swarm.length-1);
-		TimeUnit.SECONDS.sleep(12);
+		TimeUnit.SECONDS.sleep(2);
 		// ==> Nord-Ost Flug
 		moveAnimal(swarm[select], (40 + Math.random() * 140), 0, 0, (80 + Math.random() * 80));
 		TimeUnit.SECONDS.sleep(2);
