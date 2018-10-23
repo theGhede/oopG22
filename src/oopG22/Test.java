@@ -99,7 +99,8 @@ public class Test extends JPanel implements ActionListener {
 			double x, y;
 			
 			// TODO: logic error for cardinal directions - needs fix
-			if (x1 == 0 && y1 == 0) {
+			if (x1 == 0 && y1 == 0 && x2 != 0 && y2 != 0) {
+				System.out.println("SW");
 				x = x2%4; y = y2%4;
 				while (x2 > x) {
 					b.moveLeft(4);
@@ -113,7 +114,8 @@ public class Test extends JPanel implements ActionListener {
 				b.moveLeft(x);
 				b.moveDown(y);
 			}
-			if (x1 == 0 && y2 == 0) {
+			if (x1 == 0 && y2 == 0 && x2 != 0 && y1 != 0) {
+				System.out.println("NW");
 				x = x2%4; y = y1%4;
 				while (x2 > x) {
 					b.moveLeft(4);
@@ -124,7 +126,8 @@ public class Test extends JPanel implements ActionListener {
 				b.moveLeft(x);
 				b.moveUp(y);
 			}
-			if (x2 == 0 && y1 == 0) {
+			if (x2 == 0 && y1 == 0 && x1 != 0 && y2 != 0) {
+				System.out.println("SO");
 				x = x1%4; y = y2%4;
 				while (x1 > x) {
 					b.moveRight(4);	
@@ -135,7 +138,8 @@ public class Test extends JPanel implements ActionListener {
 				b.moveRight(x);
 				b.moveDown(y);
 			}
-			if (x2 == 0 && y2 == 0) {
+			if (x2 == 0 && y2 == 0 && x1 != 0 && y1 != 0) {
+				System.out.println("NO");
 				x = x1%4; y = y1%4;
 				while (x1 > x) {
 					b.moveRight(4);
