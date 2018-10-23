@@ -11,8 +11,7 @@ public class Animal {
 	int index;
 	// this lets us manipulate the length of an animals movement
 	double modifier;
-	boolean grey;
-
+	
 	boolean existing = false;
 	// TODO: issue: movement currently cannot be diagonal & this is very apparent with animations in place
 	// TODO: fix existing
