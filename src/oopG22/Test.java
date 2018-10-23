@@ -62,14 +62,19 @@ public class Test extends JPanel implements ActionListener {
 	// Tiere bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
 	private static class Animal {
 
+
 		double xcoord;
 		double ycoord;
 		Animal[] neighbors;
 		int index;
-		
 		// this lets us manipulate the length of an animals movement
 		double modifier;
-		
+		boolean tired = false;
+		if (modifier <= 0.5){
+			tired = true;
+		}  else if (modifier >= 1) {
+			tired = false;
+		}
 		// TODO: issue: movement currently cannot be diagonal & this is very apparent with animations in place
 		void moveUp(double k) throws InterruptedException {
 			if(existing) {
@@ -82,6 +87,12 @@ public class Test extends JPanel implements ActionListener {
 				double move = this.ycoord + k;
 				this.ycoord = move;
 			}
+			if (tired = false){
+				modifier -= 0.25;
+			}else {
+				modifier += 0.25;
+			}
+
 		}
 
 		void moveDown(double k) throws InterruptedException {
@@ -95,6 +106,7 @@ public class Test extends JPanel implements ActionListener {
 				double move = this.ycoord - k;
 				this.ycoord = move;
 			}
+			modifier -= 0.25;
 		}
 
 		void moveLeft(double k) throws InterruptedException {
@@ -108,6 +120,7 @@ public class Test extends JPanel implements ActionListener {
 				double move = this.xcoord - k;
 				this.xcoord = move;
 			}
+			modifier -= 0.25;
 		}
 
 		void moveRight(double k) throws InterruptedException {
@@ -121,13 +134,13 @@ public class Test extends JPanel implements ActionListener {
 				double move = this.xcoord + k;
 				this.xcoord = move;
 			}
+			modifier -= 0.25;
 		}
 	}
 	
 	// TODO: subclasses of Animal (Ants, large Animals in stricter formation, regular Animals with modifiers)
 	// regular Animal including new behavior for tiring and stress
 	private static class Bird extends Animal{
-		// stressed
 		// tired/stamina
 	}
 	
@@ -286,11 +299,11 @@ public class Test extends JPanel implements ActionListener {
 	// TODO: move variables to classes/objects if possible
 	// Die Anzahl der Tiere ist willkürlich vorbestimmt
 	// TODO: error! swarms aren't yet manipulated for simulations
-	public static int swarmsize = 1000000;
+	public static int swarmsize = 200;
 	public static Animal[] swarm = new Animal[swarmsize];
 	public static boolean[] moved = new boolean[swarm.length];
 	// Mindestabstand - willkürlich definiert
-	public static double minDistance = 0;
+	public static double minDistance = 7;
 	
 	// TODO: make super class for Swarm
 	private static class Swarm {
@@ -332,7 +345,8 @@ public class Test extends JPanel implements ActionListener {
 			b.ycoord = yvalues[i];
 			b.index = i;
 			swarm[i] = b;
-			b.modifier = 1;
+			b.modifier = 1
+			;
 		}
 		// Find neighbors for each Animal
 		for (int i = 0; i < swarm.length; i++) {
