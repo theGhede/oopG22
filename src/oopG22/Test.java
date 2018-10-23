@@ -138,7 +138,7 @@ public class Test extends JPanel implements ActionListener {
 	}
 	
 	// insects which can crawl over eachother and are tireless but react to danger if we want them to
-	private static class Ant extends Animal {
+	private static class Insect extends Animal {
 		
 	}
 
@@ -308,7 +308,7 @@ public class Test extends JPanel implements ActionListener {
 		
 	}
 	
-	private static class Insects extends Swarm {
+	private static class Colony extends Swarm {
 		
 	}
 	
@@ -326,7 +326,6 @@ public class Test extends JPanel implements ActionListener {
 			yvalues[i] = (Math.random() * 400) + 200;
 		}
 		for(int i = 0; i < swarm.length; i++) {
-			System.out.println("another one");
 			// make new Animal Objects here
 			Animal b = new Animal();
 			b.xcoord = xvalues[i];
@@ -335,11 +334,8 @@ public class Test extends JPanel implements ActionListener {
 			swarm[i] = b;
 			b.modifier = 1;
 		}
-		int bros = 0;
 		// Find neighbors for each Animal
 		for (int i = 0; i < swarm.length; i++) {
-			bros++;
-			System.out.println(bros);
 			neighborhood(swarm[i], 1);
 		}
 		// check and repair minimal distance infringements
@@ -427,7 +423,6 @@ public class Test extends JPanel implements ActionListener {
 		}
         pw.write(sby.toString());
         pw.close();
-        System.out.println("printed");
 	}
 
 	public static void main(String[] args) throws InterruptedException {
@@ -477,8 +472,6 @@ public class Test extends JPanel implements ActionListener {
 		if (minDistance != 0) {
 			establishDistance();
 		}
-		System.out.println(moved.length);
-
 
 		// a lot more Animals who accept flying more closely 
 		TimeUnit.SECONDS.sleep(20);
@@ -496,7 +489,6 @@ public class Test extends JPanel implements ActionListener {
 		if (minDistance != 0) {
 			establishDistance();
 		}
-		System.out.println(moved.length);
 	}
 }
 
