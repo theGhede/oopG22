@@ -12,6 +12,7 @@ public class Animal {
 	// this lets us manipulate the length of an animals movement
 	double modifier;
 
+	boolean existing = false;
 	// TODO: issue: movement currently cannot be diagonal & this is very apparent with animations in place
 	// TODO: fix existing
 	void moveUp(double k) throws InterruptedException {
