@@ -8,6 +8,10 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 /* TODO:
  * Die Simulation soll in einem dreidimensionalen Raum ablaufen.
@@ -344,6 +348,38 @@ public class Test extends JPanel implements ActionListener {
 		}
 		existing = true;
 	}
+
+	public static void loadcsv() {
+
+		String csvFilex = "path to x coords";
+		String csvFiley = "path to y coords";
+		String line = "";
+		String line2 = "";
+		String csvSplitBy = ",";
+		int i = 0;
+
+		try (BufferedReader br = new BufferedReader(new FileReader(csvFilex))) {
+
+			while ((line = br.readLine()) != null) {
+
+				Animal b = new Animal();
+				b.index = i;
+				b.xcoord = Double.valueOf(line.split(csvSplitBy));
+				i++;
+
+				try (BufferedReader br2 = new BufferedReader((new FileReader(csvFiley)))) {
+
+					while ((line2 = br2.readLine()) != null) {
+
+					b.ycoord = Double.valueOf(line2.split(csvSplitBy));
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	// draw graphics using paint(g) with Graphics2D for double usage
 	public void paintComponent(Graphics g) {
