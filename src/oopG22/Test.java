@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 /* TODO:
  * Die Simulation soll in einem dreidimensionalen Raum ablaufen.
@@ -52,85 +55,102 @@ import javax.swing.*;
 	gesetzte Größen & nicht Teil des Schwarmobjekts. Diese Größen werden zur Simulation von uns gesetzt → Steuergrößen.*/
 
 public class Test extends JPanel implements ActionListener {
-
 	
-	// test variables
-	public static int up = 0, down = 0, right = 0, left = 0;
+	// TODO: CHECK: rewrite vocabulary to "swarm" and "animal" since we're doing insects or whatever now 
 	
-	// Vögel bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
-	private static class Bird {
+	// Tiere bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
+	private static class Animal {
 
 		double xcoord;
 		double ycoord;
-		Bird[] neighbors;
+		Animal[] neighbors;
 		int index;
-
+		
+		// this lets us manipulate the length of an animals movement
+		double modifier;
+		
+		// TODO: issue: movement currently cannot be diagonal & this is very apparent with animations in place
 		void moveUp(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < k; i++) {
-					TimeUnit.MICROSECONDS.sleep(500);
+				for (int i = 0; i < (k * modifier); i++) {
+					//TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.ycoord + 1;
 					this.ycoord = move;
 				}
 			} else {
 				double move = this.ycoord + k;
 				this.ycoord = move;
-				up++;
 			}
 		}
 
 		void moveDown(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < k; i++) {
-					TimeUnit.MICROSECONDS.sleep(500);
+				for (int i = 0; i < (k * modifier); i++) {
+					//TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.ycoord - 1;
 					this.ycoord = move;
 				}
 			} else {
 				double move = this.ycoord - k;
 				this.ycoord = move;
-				down++;
 			}
 		}
 
 		void moveLeft(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < k; i++) {
-					TimeUnit.MICROSECONDS.sleep(500);
+				for (int i = 0; i < (k * modifier); i++) {
+					//TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord - 1;
 					this.xcoord = move;
 				}
 			} else {
 				double move = this.xcoord - k;
 				this.xcoord = move;
-				left++;
 			}
 		}
 
 		void moveRight(double k) throws InterruptedException {
 			if(existing) {
-				for (int i = 0; i < k; i++) {
-					TimeUnit.MICROSECONDS.sleep(500);
+				for (int i = 0; i < (k * modifier); i++) {
+					//TimeUnit.MICROSECONDS.sleep(500);
 					double move = this.xcoord + 1;
 					this.xcoord = move;
 				}
 			} else {
 				double move = this.xcoord + k;
 				this.xcoord = move;
-				right++;
 			}
 		}
 	}
+	
+	// TODO: subclasses of Animal (Ants, large Animals in stricter formation, regular Animals with modifiers)
+	// regular Animal including new behavior for tiring and stress
+	private static class Bird extends Animal{
+		// stressed
+		// tired/stamina
+	}
+	
+	// large Animal type of which only a few fly in formation
+	private static class LargeAnimal extends Animal {
+		/* TODO: decide if this is necessary or whether the "flight in formation" without stress or
+		 * stamina is enough for this type */
+	}
+	
+	// insects which can crawl over eachother and are tireless but react to danger if we want them to
+	private static class Ant extends Animal {
+		
+	}
 
+	// TODO: choose k neighbors to be rendered in grey
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
-	public static void neighborhood(Bird b, int radius) {
+	public static void neighborhood(Animal b, int radius) {
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
-		Bird[] neighbors = new Bird[amount];
-		for (int i = 0; i < flock.length; i++) {
+		Animal[] neighbors = new Animal[amount];
+		for (int i = 0; i < swarm.length; i++) {
 			if (i != b.index && j < amount) {
-				if (distance(b, flock[i]) <= radius) {
-					neighbors[j] = flock[i];
+				if (distance(b, swarm[i]) <= radius) {
+					neighbors[j] = swarm[i];
 					j++;
 				}
 			}
@@ -142,12 +162,13 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 
-
 	/* Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
 	 * Im Flug wird überprüft ob der sich gerade fortbewegende Vogel zu nah an andere annähert
-	 * Rekursiv fliegen alle Vögel in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
-	 * Angestoßen wird die Bewegung durch einen einzelnen zufällig gewählten Vogel*/
-	public static void moveBird (Bird b, double x1,double x2, double y1, double y2) throws InterruptedException {
+	 * Rekursiv fliegen alle Tiere in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
+	 * Angestoßen wird die Bewegung durch einen einzelnes gewähltes Tier*/
+	
+	// TODO: figure out whether and how to do simultaneous movement
+	public static void moveAnimal (Animal b, double x1,double x2, double y1, double y2) throws InterruptedException {
 		if (!moved[b.index]){
 			b.moveUp(y1);
 			b.moveDown(y2);
@@ -158,155 +179,184 @@ public class Test extends JPanel implements ActionListener {
 		}
 		for (int i = 0; i < b.neighbors.length ; i++) {
 			if (!moved[b.neighbors[i].index]) {
-				moveBird(b.neighbors[i],x1,x2,y1,y2);}
+				moveAnimal(b.neighbors[i],x1,x2,y1,y2);}
 		}
 	}
 	
-	public static void movingDistance(Bird b) throws InterruptedException {
-		for (int i = 0; i < flock.length; i++) {
-			if (distance(flock[b.index], flock[i]) < minDistance) {
+	// Berechnen der euklidischen Distanz
+	public static double distance (Animal a, Animal b) {
+		double xdist = Math.pow((a.xcoord - b.xcoord), 2);
+		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
+		double dist = Math.sqrt(xdist + ydist);
+		return dist;
+	}
+	
+	public static void movingDistance(Animal b) throws InterruptedException {
+		for (int i = 0; i < swarm.length; i++) {
+			if (distance(swarm[b.index], swarm[i]) < minDistance) {
 				testDistance();
 			}
 		}
 	}
-
-	// Der Schwarm wird von einem Array von Vögeln repräsentiert
-	// Die Anzahl der Vögel ist willkürlich vorbestimmt
-	public static int flocksize = 200;
-	public static Bird[] flock = new Bird[flocksize];
-	public static boolean[] moved = new boolean[flock.length];
-	// Mindestabstand - willkürlich definiert
-	public static double minDistance = 14;
-
-	// Behandlung von Mindestabstandsverletzungen
-	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
-	public static void testDistance () throws InterruptedException {
-		for(int i = 0; i < flock.length; i++) {
-			for(int j = 0; j < flock.length; j++) {
-				if(distance(flock[i], flock[j]) < minDistance) {
-					double helpDistance = minDistance - distance(flock[i], flock[j]);
-					double yDistance = (flock[i].xcoord - flock[j].xcoord);
-					double xDistance = (flock[i].ycoord - flock[j].ycoord);
-
-					if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord < flock[i].xcoord){
-						double angle = Math.atan(xDistance/yDistance);
-						double xMove = helpDistance * Math.sin(angle);
-						double yMove = xMove/Math.tan(angle);
-
-						flock[j].moveDown((yMove));
-						flock[j].moveLeft((xMove));
-					}
-					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord > flock[i].xcoord){
-						double angle = Math.atan(yDistance/xDistance);
-						double xMove = helpDistance * Math.sin(angle);
-						double yMove = xMove/Math.tan(angle);
-
-						flock[j].moveUp((yMove));
-						flock[j].moveRight((xMove));
-					}
-					else if(flock[j].ycoord < flock[i].ycoord && flock[j].xcoord > flock[i].xcoord) {
-						double angle = Math.atan(xDistance/yDistance);
-						double xMove = helpDistance * Math.sin(angle);
-						double yMove = xMove/Math.tan(angle);
-
-						flock[j].moveDown((yMove));
-						flock[j].moveRight((xMove));
-					}
-					else if(flock[j].ycoord > flock[i].ycoord && flock[j].xcoord < flock[i].xcoord) {
-						double angle = Math.atan(yDistance/xDistance);
-						double xMove = helpDistance * Math.sin(angle);
-						double yMove = xMove/Math.tan(angle);
-
-						flock[j].moveUp((yMove));
-						flock[j].moveLeft((xMove));
-					}
-					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach rechts
-					else if(flock[j].ycoord == flock[i].ycoord) {
-						if(flock[j].xcoord < flock[i].xcoord) {
-							flock[j].moveLeft(helpDistance);
-						}
-						else if(flock[j].xcoord > flock[i].xcoord){
-							flock[j].moveRight(helpDistance);
-						}
-					}
-					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
-					else if(flock[j].xcoord == flock[i].xcoord) {
-						if(flock[j].ycoord < flock[i].ycoord) {
-							flock[j].moveDown(helpDistance);
-						} else if(flock[j].ycoord < flock[i].ycoord){
-							flock[j].moveUp(helpDistance);
-						}
-					}
-				}
-			}
-		}
-	}
 	
-	// checks if testDistance & moves defined there are needed - this takes a couple of seconds while the randomized flock is being made
-	public static void keepDistance () throws InterruptedException {
-		for (int i = 0; i < flock.length; i++) {
-			for (int j = 0; j < flock.length; j++) {
-				if (distance(flock[i], flock[j]) > minDistance) {
+	// checks if testDistance & moves defined there are needed - this takes a couple of seconds while the randomized swarm is being made
+	public static void establishDistance () throws InterruptedException {
+		for (int i = 0; i < swarm.length; i++) {
+			for (int j = 0; j < swarm.length; j++) {
+				if (distance(swarm[i], swarm[j]) > minDistance) {
 					testDistance();
 				}
 			}
 		}
 	}
 
-	// Berechnen der euklidischen Distanz
-	public static double distance (Bird a, Bird b) {
-		double xdist = Math.pow((a.xcoord - b.xcoord), 2);
-		double ydist = Math.pow((a.ycoord - b.ycoord), 2);
-		double dist = Math.sqrt(xdist + ydist);
-		return dist;
+	// Behandlung von Mindestabstandsverletzungen
+	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
+	public static void testDistance () throws InterruptedException {
+		for(int i = 0; i < swarm.length; i++) {
+			for(int j = 0; j < swarm.length; j++) {
+				if(distance(swarm[i], swarm[j]) < minDistance) {
+					double helpDistance = minDistance - distance(swarm[i], swarm[j]);
+					double yDistance = (swarm[i].xcoord - swarm[j].xcoord);
+					double xDistance = (swarm[i].ycoord - swarm[j].ycoord);
+
+					if(swarm[j].ycoord < swarm[i].ycoord && swarm[j].xcoord < swarm[i].xcoord){
+						double angle = Math.atan(xDistance/yDistance);
+						double xMove = helpDistance * Math.sin(angle);
+						double yMove = xMove/Math.tan(angle);
+
+						swarm[j].moveDown((yMove));
+						swarm[j].moveLeft((xMove));
+					}
+					else if(swarm[j].ycoord > swarm[i].ycoord && swarm[j].xcoord > swarm[i].xcoord){
+						double angle = Math.atan(yDistance/xDistance);
+						double xMove = helpDistance * Math.sin(angle);
+						double yMove = xMove/Math.tan(angle);
+
+						swarm[j].moveUp((yMove));
+						swarm[j].moveRight((xMove));
+					}
+					else if(swarm[j].ycoord < swarm[i].ycoord && swarm[j].xcoord > swarm[i].xcoord) {
+						double angle = Math.atan(xDistance/yDistance);
+						double xMove = helpDistance * Math.sin(angle);
+						double yMove = xMove/Math.tan(angle);
+
+						swarm[j].moveDown((yMove));
+						swarm[j].moveRight((xMove));
+					}
+					else if(swarm[j].ycoord > swarm[i].ycoord && swarm[j].xcoord < swarm[i].xcoord) {
+						double angle = Math.atan(yDistance/xDistance);
+						double xMove = helpDistance * Math.sin(angle);
+						double yMove = xMove/Math.tan(angle);
+
+						swarm[j].moveUp((yMove));
+						swarm[j].moveLeft((xMove));
+					}
+					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach rechts
+					else if(swarm[j].ycoord == swarm[i].ycoord) {
+						if(swarm[j].xcoord < swarm[i].xcoord) {
+							swarm[j].moveLeft(helpDistance);
+						}
+						else if(swarm[j].xcoord > swarm[i].xcoord){
+							swarm[j].moveRight(helpDistance);
+						}
+					}
+					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
+					else if(swarm[j].xcoord == swarm[i].xcoord) {
+						if(swarm[j].ycoord < swarm[i].ycoord) {
+							swarm[j].moveDown(helpDistance);
+						} else if(swarm[j].ycoord < swarm[i].ycoord){
+							swarm[j].moveUp(helpDistance);
+						}
+					}
+				}
+			}
+		}
 	}
 
+	
+	// TODO: move variables to classes/objects if possible
+	// Die Anzahl der Tiere ist willkürlich vorbestimmt
+	// TODO: error! swarms aren't yet manipulated for simulations
+	public static int swarmsize = 200;
+	public static Animal[] swarm = new Animal[swarmsize];
+	public static boolean[] moved = new boolean[swarm.length];
+	// Mindestabstand - willkürlich definiert
+	public static double minDistance = 14;
+	
+	// TODO: make super class for Swarm
+	private static class Swarm {
+		
+	}
+	
+	
+	
+	// TODO: make subclasses of Swarm for our different animals
+	private static class Flock extends Swarm{
+		
+	}
+	
+	private static class FlightInFormation extends Swarm {
+		
+	}
+	
+	private static class Insects extends Swarm {
+		
+	}
+	
+	
+	// this is used to cut out time delays when first making and correcting a swarm
 	public static boolean existing;
-	// Make flock within the center 400x400 of the JFrame; reminder: top-right = (0,0)
-	public static void makeFlock() throws InterruptedException {
+	// TODO: transform to become a method of Swarm
+	// Make swarm within the center 400x400 of the JFrame; reminder: top-right = (0,0)
+	public static void makeswarm() throws InterruptedException {
 		existing = false;
-		double[] xvalues = new double[flock.length];
-		double[] yvalues = new double[flock.length];
-		for(int i = 0; i < flock.length; i++) {
+		double[] xvalues = new double[swarm.length];
+		double[] yvalues = new double[swarm.length];
+		for(int i = 0; i < swarm.length; i++) {
 			xvalues[i] = (Math.random() * 400) + 200;
 			yvalues[i] = (Math.random() * 400) + 200;
 		}
-		for(int i = 0; i < flock.length; i++) {
-			// make new Bird Objects here
-			Bird b = new Bird();
+		for(int i = 0; i < swarm.length; i++) {
+			// make new Animal Objects here
+			Animal b = new Animal();
 			b.xcoord = xvalues[i];
 			b.ycoord = yvalues[i];
 			b.index = i;
-			flock[i] = b;
+			swarm[i] = b;
+			b.modifier = 1;
 		}
-		// Find neighbors for each bird
-		for (int i = 0; i < flock.length; i++) {
-			neighborhood(flock[i], 1);
+		// Find neighbors for each Animal
+		for (int i = 0; i < swarm.length; i++) {
+			neighborhood(swarm[i], 1);
 		}
-
-		// check and repair minimal distance infringments
-		keepDistance();
+		// check and repair minimal distance infringements
+		establishDistance();
 		existing = true;
 	}
 
 	// draw graphics using paint(g) with Graphics2D for double usage
 	public void paintComponent(Graphics g) {
-		// use this to draw the initial flock via for loop as dots
+		// use this to draw the initial swarm via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		// start Timer t
 		t.start();
-		for (int i = 0; i < flock.length; i++) {
-			double x = flock[i].xcoord;
-			double y = flock[i].ycoord;
+		
+		// TODO: different sizes for different animals; reminder: shape coordinates are the upper left point
+		// TODO: grey animals
+		for (int i = 0; i < swarm.length; i++) {
+			double x = swarm[i].xcoord;
+			double y = swarm[i].ycoord;
 			Shape s = new Ellipse2D.Double(x, y, 4, 4);
 			g2d.draw(s);
 			g2d.fill(s);
+			// maybe useful Swing methods: validate() & revalidate()
 		}
 	}
 
+	// TODO: type can be JFrame or void ... JFrame was needed to test with multiple frames
 	private static JFrame GUI() {
-
 		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
 		frame.getContentPane().add(new Test());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -316,86 +366,118 @@ public class Test extends JPanel implements ActionListener {
 		return frame;
 	}
 	
-	// update by repaint every 4 milliseconds (==> after the intervals found in main)
+	// TODO: update by repaint every 4 milliseconds (==> after the intervals found in main)
 	Timer t = new Timer(4, this);
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 	}
+	// initialize moved array	
+	public static void resetMoved() {
+		for (int i = 0; i < swarm.length; i++) {
+			moved[i] = false;
+		}
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 
-		makeFlock();
-		// moved array
-		for (int i = 0; i < flock.length; i++) {
-			moved[i] = false;
+		// TODO: make and simulate arrays for predetermined swarm
+		resetMoved();
+		makeswarm();
+		/*double[] xsaved = new double[swarmsize];
+		double[] ysaved = new double[swarmsize];
+		for (int i = 0; i < swarm.length; i++) {
+			xsaved[i] = (double) Math.round(swarm[i].xcoord * 10000) / 10000;
+			ysaved[i] = (double) Math.round(swarm[i].ycoord * 10000) / 10000;
 		}
-		System.out.println("up: " + up + "   down: "+ down + "   left: " + left + "   right: " + right);
-
+		
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter(new File("xcoords.csv"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+        StringBuilder sbx = new StringBuilder();
+        for (int i = 0; i < xsaved.length; i++) {
+        	sbx.append(xsaved[i]);
+            sbx.append(',');
+		}
+        pw.write(sbx.toString());
+        pw.close();
+        
+        try {
+			pw = new PrintWriter(new File("ycoords.csv"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+        StringBuilder sby = new StringBuilder();
+        for (int i = 0; i < xsaved.length; i++) {
+        	sby.append(ysaved[i]);
+            sby.append(',');
+		}
+        pw.write(sby.toString());
+        pw.close();
+        System.out.println("printed");*/
+       
+		
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GUI();
 			}
 		});
-
+		
+		// TODO: make new simulations for new animal types and move minDistance and swarmsize to classes
+		
 		/* Simulations - each step starts after predetermined time (in seconds) - it takes runtime + 108 seconds of waiting to complete
-		 * Parameters are: flocksize, minDistance and the movement (incl. a random distance component) of the flock;
-		 * Birds themselves are quasi-randomly generated
-		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeFlock)*/
+		 * Parameters are: swarmsize, minDistance and the movement (incl. a random distance component) of the swarm;
+		 * Animals themselves are quasi-randomly generated
+		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeswarm)*/
 		
 		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
-		int select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(12);
+		int select = (int) (Math.random() * swarm.length-1);
+		//TimeUnit.SECONDS.sleep(12);
 		// ==> Nord-Ost Flug
-		moveBird(flock[select], (40 + Math.random() * 140), 0, 0, (80 + Math.random() * 80));
-		TimeUnit.SECONDS.sleep(4);
-		keepDistance();
+		moveAnimal(swarm[select], (40 + Math.random() * 140), 0, 0, (80 + Math.random() * 80));
+		//TimeUnit.SECONDS.sleep(2);
+		establishDistance();
 
-		// reset moved
-		for (int i = 0; i < flock.length; i++) {
-			moved[i] = false;
-		}
 
-		// slightly more birds who want to keep more distance
-		TimeUnit.SECONDS.sleep(20);
+		// slightly more Animals who want to keep more distance
+		//TimeUnit.SECONDS.sleep(20);
 		minDistance = 20;
-		flocksize = 260;
+		swarmsize = 260;
+		
+		resetMoved();
+		makeswarm();
 
-		makeFlock();
-
-		select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(12);
+		select = (int) (Math.random() * swarm.length-1);
+		//TimeUnit.SECONDS.sleep(12);
 		// ==> Süd-Ost Flug
-		moveBird(flock[select], (120 + Math.random() * 60), 0, (80 + Math.random() * 80), 0);
-		TimeUnit.SECONDS.sleep(4);
-		keepDistance();
+		moveAnimal(swarm[select], (120 + Math.random() * 60), 0, (80 + Math.random() * 80), 0);
+		//TimeUnit.SECONDS.sleep(4);
+		establishDistance();
+		System.out.println(moved.length);
 
-		// reset moved
-		for (int i = 0; i < flock.length; i++) {
-			moved[i] = false;
-		}
 
-		// a lot more birds who accept flying more closely 
-		TimeUnit.SECONDS.sleep(20);
+		// a lot more Animals who accept flying more closely 
+		//TimeUnit.SECONDS.sleep(20);
 		minDistance = 8;
-		flocksize = 400;
+		swarmsize = 400;
 
-		makeFlock();
+		resetMoved();
+		makeswarm();
 
-		select = (int) (Math.random() * flock.length-1);
-		TimeUnit.SECONDS.sleep(12);
+		select = (int) (Math.random() * swarm.length-1);
+		//TimeUnit.SECONDS.sleep(12);
 		// ==> West Flug
-		moveBird(flock[select], 0, (60 + Math.random() * 120), 0, 0);
-		TimeUnit.SECONDS.sleep(4);
-		keepDistance();
+		moveAnimal(swarm[select], 0, (60 + Math.random() * 120), 0, 0);
+		//TimeUnit.SECONDS.sleep(4);
+		establishDistance();
+		System.out.println(moved.length);
 	}
 }
 
 /* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
- * Elias Nachbaur (01634010): made testDistance and it's calculations
- * Florian Fusstetter (00709759): JFrame, paint & repaint, Simulation, Bird & makeFlock, distance (keep & moving), testDistance debugging
- * Ignjat Karanovic (01529940): neighborhood, moveBird, testDistance debugging*/
-
-/* Kommentar zu git:
- * Aufgrund dessen, dass sich unsere Gruppe erst spät gefunden hat & an unserem ersten vis-a-vis Treffen im CL-Lab g0.complang nicht zur
- * Verfügung stand sind wir bis auf die Abgabe auf eine eigenen public gitlab repo ausgewichen */ 
+ * Elias Nachbaur (01634010): 
+ * Florian Fusstetter (00709759): 
+ * Ignjat Karanovic (01529940): */
