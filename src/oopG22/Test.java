@@ -291,10 +291,7 @@ public class Test extends JPanel implements ActionListener {
 		existing = true;
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 29617351aba8c339e83159825f54e99667ce4578
+/*
 	public static void loadcsv() {
 
 		String csvFilex = "path to x coords";
@@ -333,20 +330,14 @@ public class Test extends JPanel implements ActionListener {
 
 	}
 
-
+*/
 	// draw graphics using paint(g) with Graphics2D for double usage
-<<<<<<< HEAD
 
-=======
->>>>>>> 29617351aba8c339e83159825f54e99667ce4578
 	// TODO: update by repaint every 4 milliseconds (==> after the intervals found in main)
 	Timer t = new Timer(4, this);
 	
 	// draw graphics using paint(g) with Graphics2D for double variables
-<<<<<<< HEAD
 
-=======
->>>>>>> 29617351aba8c339e83159825f54e99667ce4578
 	public void paintComponent(Graphics g) {
 		// use this to draw the initial swarm via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
