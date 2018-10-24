@@ -425,6 +425,11 @@ public class Test extends JPanel implements ActionListener {
 			}
 		}
 		if (s.type == "Bird") {
+
+			int [] center = new int [2];
+			int averageX = 0;
+			int averageY = 0;
+
 			// stressed & tired
 			for (int i = 0; i < s.flock.length; i++) {
 				s.flock[i].stressed = true;
@@ -475,6 +480,17 @@ public class Test extends JPanel implements ActionListener {
 			}
 			for (int i = 0; i < s.flock.length; i++) {
 				// TODO center & tired movement
+
+				averageX += s.flock[i].xcoord;
+				averageY += s.flock[i].ycoord;
+
+
+				averageX = averageX / swarm.length;
+				averageY = averageY / swarm.length;
+
+				center [0] = averageX;
+				center [1] = averageY;
+
 			}
 		}
 		// TODO
