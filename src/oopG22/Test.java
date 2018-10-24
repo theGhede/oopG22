@@ -37,7 +37,7 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 
-	/* Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
+	/*
 	 * Im Flug wird überprüft ob der sich gerade fortbewegende Vogel zu nah an andere annähert
 	 * Rekursiv fliegen alle Tiere in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
 	 * Angestoßen wird die Bewegung durch einen einzelnes gewähltes Tier*/
@@ -467,9 +467,55 @@ public class Test extends JPanel implements ActionListener {
 				center [0] = averageX;
 				center [1] = averageY;
 			}
+<<<<<<< HEAD
+
+			for (int i = 0; i < s.flock.length ; i++) {
+
+				if (s.flock[i].tired){
+					//Bewegung,  moveRight = x1, moveLeft = x2 moveUp = y1, moveDown = y2,
+
+					if(s.flock[i].ycoord < center[1] && s.flock[i].xcoord < center[0] ){
+						moveAnimal(s.flock[i],Math.abs(center[0] - s.flock[i].xcoord),0,Math.abs(center[1] - s.flock[i].ycoord),0);
+					}
+					else if(s.flock[i].ycoord > center[1] && s.flock[i].xcoord > center[0]){
+						moveAnimal(s.flock[i],0,Math.abs(center[0] - s.flock[i].xcoord),0,Math.abs(center[1] - s.flock[i].ycoord));
+
+					}
+					else if(s.flock[i].ycoord > center[1] && s.flock[i].xcoord < center[0]) {
+						moveAnimal(s.flock[i],Math.abs(center[0] - s.flock[i].xcoord),0,0,Math.abs(center[1] - s.flock[i].ycoord));
+
+					}
+					else if(s.flock[i].ycoord < center[1] && s.flock[i].xcoord > center[0]) {
+						moveAnimal(s.flock[i],0,Math.abs(center[0] - s.flock[i].xcoord),Math.abs(center[1] - s.flock[i].ycoord),0);
+					}
+					// Vogel wird nach links bewegt, falls er sich rechts von dem Center befindet, sonst nach rechts
+					else if(s.flock[i].ycoord == center[1]) {
+						if(s.flock[i].xcoord < center[0]) {
+							moveAnimal(s.flock[i],Math.abs(center[0] - s.flock[i].xcoord),0,0,0);
+						}
+						else if(s.flock[i].xcoord > center[0]){
+							moveAnimal(s.flock[i],0,Math.abs(center[0] - s.flock[i].xcoord),0,0);
+						}
+					}
+					// Vogel wird nach unten bewegt, falls er sich unter dem Center befindet, sonst nach oben
+					else if(s.flock[i].xcoord == center[0]) {
+						if(s.flock[i].ycoord < center[1]) {
+							moveAnimal(s.flock[i],0,0,Math.abs(center[1] - s.flock[i].ycoord),0);
+						} else if(s.flock[i].ycoord > center[1]){
+							moveAnimal(s.flock[i], 0,0,0,Math.abs(center[1] - s.flock[i].ycoord));
+						}
+					}
+
+
+				}
+
+=======
 			for (int i = 0; i < s.flock.length; i++) {
 				s.flock[i].recenter(center);
+>>>>>>> e0bd81df7d09de38d583794114585d0574636d40
 			}
+
+
 		}
 		// instead of neighbors these follow a leader and home in on his path
 		if (s.type == "Insect") {
