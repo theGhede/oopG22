@@ -66,22 +66,19 @@ public class Test extends JPanel implements ActionListener {
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
 		Animal[] neighbors = new Animal[amount];
-		if (b.neighbors != null) {
-			for (int i = 0; i < swarm.length; i++) {
-				if (i != b.index && j < amount) {
-					if (distance(b, swarm[i]) <= radius) {
-						neighbors[j] = swarm[i];
-						j++;
-					}
+		for (int i = 0; i < swarm.length; i++) {
+			if (i != b.index && j < amount) {
+				if (distance(b, swarm[i]) <= radius) {
+					neighbors[j] = swarm[i];
+					j++;
 				}
 			}
-			if (j < amount) {
-				neighborhood(b, radius + 1);
-			} else {
-				b.neighbors = neighbors;
-			}
 		}
-
+		if (j < amount) {
+			neighborhood(b, radius + 1);
+		} else {
+			b.neighbors = neighbors;
+		}
 	}
 
 	/* Nachbarschaftsbewegung, moveUp = y1, moveDown = y2, moveRight = x1, moveLeft = x2
@@ -128,17 +125,13 @@ public class Test extends JPanel implements ActionListener {
 	// checks if testDistance & moves defined there are needed - this takes a couple of seconds while the randomized swarm is being made
 	public static void establishDistance () throws InterruptedException {
 		if (minDistance != 0) {
+			// cap improves runtime in cases where one node is cought on the line between two nodes
 			int cap = swarmsize /5;
 			for (int i = 0; i < swarm.length; i++) {
 				for (int j = 0; j < swarm.length; j++) {
 					if (distance(swarm[i], swarm[j]) > minDistance && cap != 0) {
 						testDistance();
 						cap--;
-					} else if (distance(swarm[i], swarm[j]) > minDistance) {
-						swarm[i].moveLeft(distance(swarm[i], swarm[j])); 
-						swarm[i].moveDown(distance(swarm[i], swarm[j]));
-						swarm[j].moveUp(distance(swarm[i], swarm[j]));
-						swarm[j].moveRight(distance(swarm[i], swarm[j]));
 					}
 				}
 			}
@@ -230,6 +223,7 @@ public class Test extends JPanel implements ActionListener {
 		}
 		// check and repair minimal distance infringements
 		establishDistance();
+		resetMoved();
 	}
 
 	// csv loader	
@@ -269,9 +263,9 @@ public class Test extends JPanel implements ActionListener {
 			swarm[i] = b;
 			b.modifier = 1;
 		}
-		/*for (int i = 0; i < swarm.length; i++) {
+		for (int i = 0; i < swarm.length; i++) {
 			neighborhood(swarm[i], 1);
-		}*/
+		}
 
 	}
 
@@ -408,9 +402,8 @@ public class Test extends JPanel implements ActionListener {
 	// Mindestabstand
 	public static double minDistance = 14;
 
+	
 	public static void main(String[] args) throws InterruptedException {
-
-		resetMoved();
 		
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
@@ -431,10 +424,21 @@ public class Test extends JPanel implements ActionListener {
 		int select = (int) (Math.random() * swarm.length-1);
 		TimeUnit.SECONDS.sleep(2);
 		// ==> Nord-Ost Flug
-		double x = 40 + Math.random() * 140;
-		double y = 80 + Math.random() * 80;
-		moveAnimal(swarm[select], x, 0, 0, y);
-		System.out.println(swarm[select].xcoord +",   " + swarm[select].ycoord);
+		double x = 4 + Math.random() * 14;
+		double y = 8 + Math.random() * 8;
+		for (int i = 0; i < 10; i++) {
+			moveAnimal(swarm[select], x, 0, 0, y);
+			resetMoved();
+		}
+		
+		resetMoved();
+		select = (int) (Math.random() * swarm.length-1);
+		// diagonal movement - works with NO, SO, SW, NO only
+		for (int i = 0; i < 200/4; i++) {
+			moveAnimal(swarm[select], 0, 4, 4, 0);
+			resetMoved();
+		}
+		
 		TimeUnit.SECONDS.sleep(2);
 		establishDistance();
 
@@ -442,7 +446,8 @@ public class Test extends JPanel implements ActionListener {
 		minDistance = 20;
 		swarmsize = 120;
 		
-		resetMoved();
+		TimeUnit.SECONDS.sleep(20);
+
 		makeswarm();
 
 		select = (int) (Math.random() * swarm.length-1);
@@ -457,7 +462,6 @@ public class Test extends JPanel implements ActionListener {
 		minDistance = 8;
 		swarmsize = 400;
 
-		resetMoved();
 		makeswarm();
 
 		select = (int) (Math.random() * swarm.length-1);
