@@ -14,28 +14,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-/* TODO:
- * Der Flug ist durch die Physik und Physiologie eingeschränkt. Eine energiesparende Fortbewegung ist nur in bestimmten, 
- * engen Geschwindigkeitsbereichen möglich. Andere Geschwindigkeiten sowie Richtungsänderungen benötigen deutlich mehr Energie. 
- * Die für Anpassungen nötige Zeit hängt von der verfügbaren Kraft und Energie ab, aber auch von der Zeit für die Informationsverarbeitung 
- * im Gehirn. Nach erhöhten Anstrengungen möchte sich der Körper erholen (außer in Notfällen, etwa bei Angriffen), sodass Richtungsänderungen 
- * ohne Störung von außen nur in gewissen Zeitabständen erfolgen.
-
-	Very doable. Feasible.
-	stressed[boolean] for flight mode
-	distance modifiers based on animal type &	flight mode
-	make limits based on animal type & flight mode.
- *  ===========
-	Unterschiedliche Vogelarten haben verschiedene weitere Bedürfnisse und Strategien. Bei Kranichen können wir z.B. annehmen, 
-	dass sie gerne freie Sicht nach vorne hätten. Meist müssen vorausfliegende Vögel mehr Energie aufwenden als Vögel mitten im Schwarm. 
-	Wahrscheinlich werden sich bei einigen Vogelarten ermüdete Vögel nach hinten fallen lassen und ausgeruhte Vögel die Führung übernehmen. 
-	Die fittesten Stare drängen zur Mitte, während schwächere Vögel am Rand eher der Bedrohung durch Angreifer ausgesetzt sind.
-	
-	Weitere Eigenschaft für die Vogelobjekte: fitness[int]
-	Aufgrund dessen kann bei moveSwarm das Tier zusätzlich verschoben werden.
-	Dazu benötigen wir weiterhin eine Größe welche den Center, maxDistance von diesem Center des Schwarms bestimmt.
-	Feasible, maybe doable (nicht in allen Belangen; aber generell als feature) & realistic.
-	*/
 
 public class Test extends JPanel implements ActionListener {
 	
@@ -178,7 +156,6 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 	
-	// TODO: transform to become a method of Swarm
 	// Make swarm within the center 400x400 of the JFrame; reminder: top-right = (0,0)
 	public static void makeswarm(String type) throws InterruptedException {
 		double[] xvalues = new double[swarm.length];
@@ -188,7 +165,6 @@ public class Test extends JPanel implements ActionListener {
 			yvalues[i] = (Math.random() * 400) + 200;
 		}
 		for(int i = 0; i < swarm.length; i++) {
-			// TODO: remove this; only for testing
 			Animal b = new Animal();
 			b.xcoord = xvalues[i];
 			b.ycoord = yvalues[i];
@@ -197,14 +173,35 @@ public class Test extends JPanel implements ActionListener {
 			b.modifier = 1;
 		}
 		// make new Animal Objects here
+		if (type == "Animal") {
+			for(int i = 0; i < swarm.length; i++) {
+				Animal b = new Animal();
+				b.xcoord = xvalues[i];
+				b.ycoord = yvalues[i];
+				b.index = i;
+				swarm[i] = b;
+				b.modifier = 1;
+			}
+		}
 		if (type == "Bird") {
-			
+			for(int i = 0; i < swarm.length; i++) {
+				Bird b = new Bird();
+				b.xcoord = xvalues[i];
+				b.ycoord = yvalues[i];
+				b.index = i;
+				swarm[i] = b;
+				b.modifier = 1;
+			}
 		}
 		else if (type == "Insect") {
-			
-		}
-		else if (type == "LargeBird") {
-
+			for(int i = 0; i < swarm.length; i++) {
+				Insect b = new Insect();
+				b.xcoord = xvalues[i];
+				b.ycoord = yvalues[i];
+				b.index = i;
+				swarm[i] = b;
+				b.modifier = 1;
+			}
 		}
 		// Find neighbors for each Animal
 		for (int i = 0; i < swarm.length; i++) {
@@ -273,7 +270,7 @@ public class Test extends JPanel implements ActionListener {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		// TODO: different sizes for different animals; reminder: shape coordinates are the upper left point
+		// different sizes for different animals
 		for (int i = 0; i < swarm.length; i++) {
 			double x = swarm[i].xcoord;
 			double y = swarm[i].ycoord;
@@ -395,10 +392,9 @@ public class Test extends JPanel implements ActionListener {
         pw.close();
 	}
 	
-	// TODO: method to build simulations
+	// method to start up prebuilt simulations
 	public static void start(Swarm s, int size, int minD, String type) throws InterruptedException {
 		
-		// TODO: general movement rules
 		size = s.swarmsize;
 		minD = s.minDistance;
 		type = s.type;
@@ -426,9 +422,8 @@ public class Test extends JPanel implements ActionListener {
 		}
 		if (s.type == "Bird") {
 
-			int [] center = new int [2];
-			int averageX = 0;
-			int averageY = 0;
+			double [] center = new double [2];
+			double averageX = 0, averageY = 0;
 
 			// stressed & tired
 			for (int i = 0; i < s.flock.length; i++) {
@@ -442,7 +437,7 @@ public class Test extends JPanel implements ActionListener {
 				xdist = Math.pow((s.flock[i].xcoord - dangerX), 2);
 				ydist = Math.pow((s.flock[i].ycoord - dangerY), 2);
 				dist = Math.sqrt(xdist + ydist);
-				if ( dist > max) {
+				if (dist > max) {
 					closest = i;
 					max = dist;
 				}
@@ -480,29 +475,42 @@ public class Test extends JPanel implements ActionListener {
 			}
 			for (int i = 0; i < s.flock.length; i++) {
 				// TODO center & tired movement
-
+				s.flock[i].modifier = 1;
 				averageX += s.flock[i].xcoord;
 				averageY += s.flock[i].ycoord;
-
-
 				averageX = averageX / swarm.length;
 				averageY = averageY / swarm.length;
-
 				center [0] = averageX;
 				center [1] = averageY;
-
+			}
+			for (int i = 0; i < s.flock.length; i++) {
+				s.flock[i].recenter(center);
 			}
 		}
-		// TODO
+		// instead of neighbors these follow a leader and home in on his path
 		if (s.type == "Insect") {
 			makeswarm(s.type);
+			int leader = 0;
+			double xs = 0, max = 0;
 			for (int i = 0; i < s.colony.length; i++) {
-				
+				s.colony[i].follower = true;
+				xs = s.colony[i].xcoord;
+				if (xs > max) {
+					max = xs;
+					leader = i;
+				}
 			}
-		}
-		// TODO: formation
-		if (s.type == "LargeBird") {
-			s.select = 0;
+			s.colony[leader].follower = false;
+			for (int i = 0; i < s.colony.length; i++) {
+				for (int j = 0; j < 70; j++) {
+					if(s.colony[i].follower == false) {
+						s.colony[i].lane(11, 0);
+					}
+					if(s.colony[i].follower == true) {
+						s.colony[i].lane(10, s.colony[i].ycoord-s.colony[leader].ycoord);
+					}
+				}	
+			}
 		}
 	}
 
@@ -511,7 +519,7 @@ public class Test extends JPanel implements ActionListener {
 		swarmsize = s.swarmsize;
 		minDistance = s.minDistance;
 		typeToDraw = s.type;
-		if (s.type == "Animal" || s.type == "LargeBird") {
+		if (s.type == "Animal") {
 			swarm = s.swarm;
 		}
 		if (s.type == "Bird") {
@@ -548,46 +556,18 @@ public class Test extends JPanel implements ActionListener {
 		 * Parameters are: type, swarmsize, minDistance and the movement pattern (incl. a random distance component) of the swarm;
 		 * Animals themselves are quasi-randomly pre-generated
 		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeswarm)*/
-		
-		// TODO: make and simulate arrays for predetermined swarm
-		makeswarm("Animal");
-		
-		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
-		int select = (int) (Math.random() * swarm.length-1);
-		TimeUnit.SECONDS.sleep(2);
-		// ==> Nord-Ost Flug
-		double x = 4 + Math.random() * 14;
-		double y = 8 + Math.random() * 8;
-		for (int i = 0; i < 10; i++) {
-			moveAnimal(swarm[select], x, 0, 0, y);
-			resetMoved();
-		}
-		
-		resetMoved();
-		select = (int) (Math.random() * swarm.length-1);
-		// diagonal movement - works with NO, SO, SW, NO only
-		for (int i = 0; i < 200/4; i++) {
-			moveAnimal(swarm[select], 0, 8, 8, 0);
-			resetMoved();
-		}
-
-		// ==> Süd-Ost Flug
-		// moveAnimal(swarm[select], (120 + Math.random() * 60), 0, (80 + Math.random() * 80), 0);
-		
-		// ==> West Flug
-		// moveAnimal(swarm[select], 0, (60 + Math.random() * 120), 0, 0);
+	
 		
 		Swarm regular = new Swarm();
 		start(regular, 260, 12, "Animal");
+		TimeUnit.SECONDS.sleep(8);
 		
 		Swarm birds = new Swarm();
 		start(birds, 260, 12, "Bird");
+		TimeUnit.SECONDS.sleep(8);
 		
 		Swarm insects = new Swarm();
 		start(insects, 10000, 0, "Insect");
-		
-		Swarm large = new Swarm();
-		start(large, 9, 10, "LargeBird");
 	}
 }
 

@@ -29,4 +29,27 @@ public class Bird extends Animal {
 			this.tired = true;
 		}
 	}
+	
+	public void recenter(double[] center) throws InterruptedException {
+		double x = center[0];
+		double y = center[1];
+		if (!this.tired) {
+			if (this.xcoord - x > 0) moveLeft(Math.min(20, this.xcoord-x));
+			
+			if (this.xcoord - x < 0) moveRight(Math.min(20, x-this.xcoord));
+			
+			if (this.ycoord - y > 0) moveDown(Math.min(20, this.ycoord-y));
+			
+			if (this.ycoord - y < 0) moveUp(Math.min(20, y-this.ycoord));
+		}
+		if (this.tired) {
+			if (this.xcoord - x > 0) moveRight(16);
+			
+			if (this.xcoord - x < 0) moveLeft(16);
+			
+			if (this.ycoord - y > 0) moveUp(16);
+			
+			if (this.ycoord - y < 0) moveDown(16);
+		}
+	}
 }
