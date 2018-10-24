@@ -15,9 +15,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /* TODO:
- * Die Simulation soll in einem dreidimensionalen Raum ablaufen.
- * Zur einfachen Darstellung der dritten Dimension am Bildschirm eignen sich Helligkeitswerte und Farben.
- *  ===========
  * Der Flug ist durch die Physik und Physiologie eingeschränkt. Eine energiesparende Fortbewegung ist nur in bestimmten, 
  * engen Geschwindigkeitsbereichen möglich. Andere Geschwindigkeiten sowie Richtungsänderungen benötigen deutlich mehr Energie. 
  * Die für Anpassungen nötige Zeit hängt von der verfügbaren Kraft und Energie ab, aber auch von der Zeit für die Informationsverarbeitung 
@@ -38,28 +35,11 @@ import java.io.IOException;
 	Aufgrund dessen kann bei moveSwarm das Tier zusätzlich verschoben werden.
 	Dazu benötigen wir weiterhin eine Größe welche den Center, maxDistance von diesem Center des Schwarms bestimmt.
 	Feasible, maybe doable (nicht in allen Belangen; aber generell als feature) & realistic.
- *  ===========
-	Detaillierte Simulationen sind aufwendig. Große Schwärme werden in der nötigen Genauigkeit kaum in Echtzeit simulierbar sein.
-	Daher müssen Simulationsergebnisse aufgezeichnet und später, wenn gewünscht wiederholt dargestellt werden. Dennoch sollten, zumindest
-	für kleine Schwärme, Simulationen in Echtzeit angestrebt werden.
-
-	Doable - erstellen & speichern Daten von x/y Koordinaten und nutzen dies um unseren Schwarm zu erstellen - spart Zeit bei Programmstart
-	gegenüber unserer quasi-zufälligen Methode. Frage ist, ob dies notwendig ist. DIes ist auch ohnehin unsere erste Alternative zu zufällig 
-	erstellten Schwärmen.
- *  ===========
-	Simulationen von Schwärmen zahlreicher Tierarten sind nötig. Für jede Tierart sind die physischen Parameter und individuellen 
-	Verhaltensmuster separat festzulegen. Dennoch brauchen wir ein einheitliches Framework, das alle Teile der Simulation übernimmt, 
-	die nicht von diesen individuellen Mustern abhängen. Die vielen Tierarten und die Verschiedenartigkeit der Verhaltensmuster verursachen 
-	einen gewaltigen Implementierungsaufwand. Daher sollte das Framework so viel Arbeit wie möglich übernehmen und die Implementierung der 
-	Verhaltensmuster vereinfachen.
-
-	Hauptaufgabe. → Untertypen von Schwärmen.
-	Frage: Benötigen wir Untertypen für Tiere? Nur falls nicht alle Arten stressed[] & 
-	fitness[] brauchen.
-	Wichtige schwarmspezifische Parameter sind minDistance & swarmSize - von uns 
-	gesetzte Größen & nicht Teil des Schwarmobjekts. Diese Größen werden zur Simulation von uns gesetzt → Steuergrößen.*/
+	*/
 
 public class Test extends JPanel implements ActionListener {
+	
+	// TODO: CRITICAL all methods must work with class Swarm instead of array swarm
 	
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 	public static void neighborhood(Animal b, int radius) {
@@ -86,7 +66,6 @@ public class Test extends JPanel implements ActionListener {
 	 * Rekursiv fliegen alle Tiere in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
 	 * Angestoßen wird die Bewegung durch einen einzelnes gewähltes Tier*/
 	
-	// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
 	public static void moveAnimal (Animal b, double x1,double x2, double y1, double y2) throws InterruptedException {
 		if (!moved[b.index]){
 			b.moveUp(y1);
@@ -162,36 +141,36 @@ public class Test extends JPanel implements ActionListener {
 					double yMove = distanceHelper(helpDistance, xDistance, yDistance)[1];
 					
 					if(swarm[j].ycoord < swarm[i].ycoord && swarm[j].xcoord < swarm[i].xcoord){
-						swarm[j].moveDown((yMove));
-						swarm[j].moveLeft((xMove));
+						swarm[j].quickDown((yMove));
+						swarm[j].quickLeft((xMove));
 					}
 					else if(swarm[j].ycoord > swarm[i].ycoord && swarm[j].xcoord > swarm[i].xcoord){
-						swarm[j].moveUp((yMove));
-						swarm[j].moveRight((xMove));
+						swarm[j].quickUp((yMove));
+						swarm[j].quickRight((xMove));
 					}
 					else if(swarm[j].ycoord < swarm[i].ycoord && swarm[j].xcoord > swarm[i].xcoord) {
-						swarm[j].moveDown((yMove));
-						swarm[j].moveRight((xMove));
+						swarm[j].quickDown((yMove));
+						swarm[j].quickRight((xMove));
 					}
 					else if(swarm[j].ycoord > swarm[i].ycoord && swarm[j].xcoord < swarm[i].xcoord) {
-						swarm[j].moveUp((yMove));
-						swarm[j].moveLeft((xMove));
+						swarm[j].quickUp((yMove));
+						swarm[j].quickLeft((xMove));
 					}
 					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach rechts
 					else if(swarm[j].ycoord == swarm[i].ycoord) {
 						if(swarm[j].xcoord < swarm[i].xcoord) {
-							swarm[j].moveLeft(helpDistance);
+							swarm[j].quickLeft(helpDistance);
 						}
 						else if(swarm[j].xcoord > swarm[i].xcoord){
-							swarm[j].moveRight(helpDistance);
+							swarm[j].quickRight(helpDistance);
 						}
 					}
 					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
 					else if(swarm[j].xcoord == swarm[i].xcoord) {
 						if(swarm[j].ycoord < swarm[i].ycoord) {
-							swarm[j].moveDown(helpDistance);
+							swarm[j].quickDown(helpDistance);
 						} else if(swarm[j].ycoord < swarm[i].ycoord){
-							swarm[j].moveUp(helpDistance);
+							swarm[j].quickUp(helpDistance);
 						}
 					}
 				}
@@ -201,7 +180,7 @@ public class Test extends JPanel implements ActionListener {
 	
 	// TODO: transform to become a method of Swarm
 	// Make swarm within the center 400x400 of the JFrame; reminder: top-right = (0,0)
-	public static void makeswarm() throws InterruptedException {
+	public static void makeswarm(String type) throws InterruptedException {
 		double[] xvalues = new double[swarm.length];
 		double[] yvalues = new double[swarm.length];
 		for(int i = 0; i < swarm.length; i++) {
@@ -209,13 +188,23 @@ public class Test extends JPanel implements ActionListener {
 			yvalues[i] = (Math.random() * 400) + 200;
 		}
 		for(int i = 0; i < swarm.length; i++) {
-			// make new Animal Objects here
+			// TODO: remove this; only for testing
 			Animal b = new Animal();
 			b.xcoord = xvalues[i];
 			b.ycoord = yvalues[i];
 			b.index = i;
 			swarm[i] = b;
 			b.modifier = 1;
+		}
+		// make new Animal Objects here
+		if (type == "Bird") {
+			
+		}
+		else if (type == "Insect") {
+			
+		}
+		else if (type == "LargeBird") {
+
 		}
 		// Find neighbors for each Animal
 		for (int i = 0; i < swarm.length; i++) {
@@ -269,14 +258,16 @@ public class Test extends JPanel implements ActionListener {
 
 	}
 
-
-	// draw graphics using paint(g) with Graphics2D for double usage
-
 	// update by repaint every 4 milliseconds (==> after the intervals found in main)
 	Timer t = new Timer(4, this);
 	
+	public static String typeToDraw;
+	
+	// these coordinates for the danger to our birds needs to be set before paintComponent can be called
+	public static double dangerX = (450+Math.random()*100);
+	public static double dangerY = (120+Math.random()*70);
 	// draw graphics using paint(g) with Graphics2D for double variables
-
+	// issue: can't pass other parameters ... like the Swarm or type etc
 	public void paintComponent(Graphics g) {
 		// use this to draw the initial swarm via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
@@ -294,9 +285,60 @@ public class Test extends JPanel implements ActionListener {
                 g2d.setPaint(Color.BLACK);
             }
             g2d.fill(s);
+		}
+		if (typeToDraw == "Animal") {
+			for (int i = 0; i < swarm.length; i++) {
+			double x = swarm[i].xcoord;
+			double y = swarm[i].ycoord;
+	           Shape s = new Ellipse2D.Double(x, y, 4, 4);
 
+		 if (i % 4 == 0){
+			 g2d.setPaint(Color.gray);
+		 } else {
+			 g2d.setPaint(Color.BLACK);
+		 }
+		 g2d.fill(s);
+			}
+		}
+		if (typeToDraw == "Bird") {
+			Shape d = new Ellipse2D.Double(dangerX, dangerY, 8, 8);
+			g2d.setPaint(Color.red);
+			g2d.fill(d);
+			for (int i = 0; i < swarm.length; i++) {
+				double x = swarm[i].xcoord;
+				double y = swarm[i].ycoord;
+	            Shape s = new Ellipse2D.Double(x, y, 4, 4);
 
-			// maybe useful Swing methods: validate() & revalidate()
+				if (i % 4 == 0){
+	                g2d.setPaint(Color.gray);
+	            } else {
+	                g2d.setPaint(Color.BLACK);
+	            }
+	            g2d.fill(s);
+			}
+		}
+		if (typeToDraw == "Insect") {
+			for (int i = 0; i < swarm.length; i++) {
+				double x = swarm[i].xcoord;
+				double y = swarm[i].ycoord;
+	            Shape s = new Ellipse2D.Double(x, y, 2, 2);
+
+				if (i % 3 == 0){
+	                g2d.setPaint(Color.gray);
+	            } else {
+	                g2d.setPaint(Color.BLACK);
+	            }
+	            g2d.fill(s);
+			}
+		}
+		if (typeToDraw == "LargeBird") {
+			for (int i = 0; i < swarm.length; i++) {
+				double x = swarm[i].xcoord;
+				double y = swarm[i].ycoord;
+	            Shape s = new Ellipse2D.Double(x, y, 8, 8);
+                g2d.setPaint(Color.BLACK);
+	            g2d.fill(s);
+			}
 		}
 		// start Timer t
 		t.start();
@@ -304,12 +346,6 @@ public class Test extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		repaint();
-	}
-	// initialize moved array	
-	public static void resetMoved() {
-		for (int i = 0; i < swarm.length; i++) {
-			moved[i] = false;
-		}
 	}
 
 	private static void GUI() {
@@ -360,48 +396,127 @@ public class Test extends JPanel implements ActionListener {
 	}
 	
 	// TODO: method to build simulations
-	public void start(Swarm s, int size, int minD, double x, double y) throws InterruptedException {
-		// TODO: select an animal based on swarm type
+	public static void start(Swarm s, int size, int minD, String type) throws InterruptedException {
 		
 		// TODO: general movement rules
 		size = s.swarmsize;
 		minD = s.minDistance;
-		s.select = (int) (Math.random() * s.swarm.length-1);
+		type = s.type;
 		
-		double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-		//  TODO: helper variables for incremental movement
-		double a = x/4, b = y/4;
-		if (x < 0) x2 = x;
-		if (x > 0) x1 = x;
-		if (y < 0) y2 = y;
-		if (y > 0) y1 = y;
-		
-		if (x1 == 0 && y1 == 0) {
+		generate (s);
+
+		// all bird swarms behave the same ... the movement is predetermined by us
+		if (s.type == "Animal") {
+			makeswarm(s.type);
+			s.select = (int) (Math.random() * swarm.length-1);
+			double a = 4 + Math.random() * 14;
+			double b = 8 + Math.random() * 8;
+			for (int i = 0; i < 10; i++) {
+				moveAnimal(s.swarm[s.select], a, 0, 0, b);
+				resetMoved();
+			}
 			
-		} else if (x1 == 0 && y2 == 0) {
+			resetMoved();
+			s.select = (int) (Math.random() * swarm.length-1);
+			// diagonal movement - works with NO, SO, SW, NO only
+			for (int i = 0; i < 200/4; i++) {
+				moveAnimal(s.swarm[s.select], 0, 8, 8, 0);
+				resetMoved();
+			}
+		}
+		if (s.type == "Bird") {
+			// stressed & tired
+			for (int i = 0; i < s.flock.length; i++) {
+				s.flock[i].stressed = true;
+				s.flock[i].tired = false;
+				s.flock[i].danger(dangerX, dangerY);
+			}
+			makeswarm(s.type);
+			int closest = 0;
+			double max = 0, xdist, ydist, dist = 0;
+			for (int i = 0; i < s.flock.length; i++) {
+				xdist = Math.pow((s.flock[i].xcoord - dangerX), 2);
+				ydist = Math.pow((s.flock[i].ycoord - dangerY), 2);
+				dist = Math.sqrt(xdist + ydist);
+				if ( dist > max) {
+					closest = i;
+					max = dist;
+				}
+			}
 			
-		} else if (x2 == 0 && y1 == 0) {
-	
-		} else if (x1 == 0 && y2 == 0) {
-			
-		} else {
-			moveAnimal(s.swarm[s.select], x1, x2, y1, y2);
+			// the closest bird to danger starts fleeing
+			s.select = closest;
+			double x = s.flock[closest].xcoord;
+			double y = s.flock[closest].ycoord;
+			// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
+			// danger is east & south or equal
+			if (x >= dangerX && y >= dangerY) {
+				for (int i = 0; i < 20; i++) {
+					moveAnimal(s.flock[s.select], 90 - dist, 0, 90 - dist, 0);
+					resetMoved();
+				}	
+			}
+			// danger is 
+
+			if (x < dangerX && y > dangerY) {
+				for (int i = 0; i < 20; i++) {
+					moveAnimal(s.flock[s.select], 0, 90 - dist, 90 - dist, 0);
+					resetMoved();
+				}	
+			}
+			// danger is 
+			if (x > dangerX && y < dangerY) {
+				for (int i = 0; i < 20; i++) {
+					moveAnimal(s.flock[s.select], 90 - dist, 0, 0, 90 - dist);
+					resetMoved();
+				}	
+			}
+			// danger is 
+			if (x < dangerX && y < dangerY) {
+				for (int i = 0; i < 20; i++) {
+					moveAnimal(s.flock[s.select], 0, 90 - dist, 0, 90 - dist);
+					resetMoved();
+				}	
+			}
+		}
+		// TODO
+		if (s.type == "Insect") {
+			makeswarm(s.type);
+			s.select = (int) (Math.random() * s.swarm.length-1);
+		}
+		if (s.type == "LargeBird") {
+			s.select = 0;
+		}
+	}
+
+	// allows variables of Swarm to be readily used with all methods
+	public static void generate (Swarm s) throws InterruptedException {
+		swarmsize = s.swarmsize;
+		minDistance = s.minDistance;
+		typeToDraw = s.type;
+		if (s.type == "Animal" || s.type == "LargeBird") {
+			swarm = s.swarm;
+		}
+		if (s.type == "Bird") {
+			swarm = s.flock;
+		}
+		if (s.type == "Insect") {
+			swarm = s.colony;
 		}
 	}
 	
-	// TODO: Method which creates swarm object of chosen type and then calls makeSwarm to make Animals of the
-	// corresponding type
-	public static void generate (String type) {
-		
-	}
-	
 	// TODO: move variables to classes/objects if possible
-	public static int swarmsize = 200;
+	public static int swarmsize = 320;
 	public static Animal[] swarm = new Animal[swarmsize];
-	public static boolean[] moved = new boolean[swarm.length];
-	// Mindestabstand
-	public static double minDistance = 14;
+	public static double minDistance = 12;
 
+	// initialize moved array	
+	public static boolean[] moved = new boolean[swarm.length];
+	public static void resetMoved() {
+		for (int i = 0; i < swarm.length; i++) {
+			moved[i] = false;
+		}
+	}
 	
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -413,12 +528,12 @@ public class Test extends JPanel implements ActionListener {
 		});
 				
 		/* Simulations - each step starts after predetermined time (in seconds) - it takes runtime + 108 seconds of waiting to complete
-		 * Parameters are: swarmsize, minDistance and the movement (incl. a random distance component) of the swarm;
+		 * Parameters are: type, swarmsize, minDistance and the movement pattern (incl. a random distance component) of the swarm;
 		 * Animals themselves are quasi-randomly pre-generated
 		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeswarm)*/
 		
 		// TODO: make and simulate arrays for predetermined swarm
-		makeswarm();
+		makeswarm("Animal");
 		
 		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
 		int select = (int) (Math.random() * swarm.length-1);
@@ -435,41 +550,27 @@ public class Test extends JPanel implements ActionListener {
 		select = (int) (Math.random() * swarm.length-1);
 		// diagonal movement - works with NO, SO, SW, NO only
 		for (int i = 0; i < 200/4; i++) {
-			moveAnimal(swarm[select], 0, 4, 4, 0);
+			moveAnimal(swarm[select], 0, 8, 8, 0);
 			resetMoved();
 		}
-		
-		TimeUnit.SECONDS.sleep(2);
-		establishDistance();
 
-		// slightly less Animals who want to keep more distance
-		minDistance = 20;
-		swarmsize = 120;
-		
-		TimeUnit.SECONDS.sleep(20);
-
-		makeswarm();
-
-		select = (int) (Math.random() * swarm.length-1);
-		TimeUnit.SECONDS.sleep(12);
 		// ==> Süd-Ost Flug
-		moveAnimal(swarm[select], (120 + Math.random() * 60), 0, (80 + Math.random() * 80), 0);
-		TimeUnit.SECONDS.sleep(4);
-		establishDistance();
-
-		// a lot more Animals who accept flying more closely 
-		TimeUnit.SECONDS.sleep(20);
-		minDistance = 8;
-		swarmsize = 400;
-
-		makeswarm();
-
-		select = (int) (Math.random() * swarm.length-1);
-		TimeUnit.SECONDS.sleep(12);
+		// moveAnimal(swarm[select], (120 + Math.random() * 60), 0, (80 + Math.random() * 80), 0);
+		
 		// ==> West Flug
-		moveAnimal(swarm[select], 0, (60 + Math.random() * 120), 0, 0);
-		TimeUnit.SECONDS.sleep(4);
-		establishDistance();
+		// moveAnimal(swarm[select], 0, (60 + Math.random() * 120), 0, 0);
+		
+		Swarm regular = new Swarm();
+		start(regular, 260, 12, "Animal");
+		
+		Swarm birds = new Swarm();
+		start(birds, 260, 12, "Bird");
+		
+		Swarm insects = new Swarm();
+		start(insects, 10000, 0, "Insect");
+		
+		Swarm large = new Swarm();
+		start(large, 9, 10, "LargeBird");
 	}
 }
 
