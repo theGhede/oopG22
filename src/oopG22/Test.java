@@ -398,6 +398,8 @@ public class Test extends JPanel implements ActionListener {
 		size = s.swarmsize;
 		minD = s.minDistance;
 		type = s.type;
+		swarm = new Animal[size];
+		moved = new boolean[size];
 		
 		generate (s);
 
@@ -530,13 +532,12 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 	
-	// TODO: move variables to classes/objects if possible
-	public static int swarmsize = 320;
-	public static Animal[] swarm = new Animal[swarmsize];
-	public static double minDistance = 12;
+	public static int swarmsize;
+	public static Animal[] swarm;
+	public static double minDistance;
 
 	// initialize moved array	
-	public static boolean[] moved = new boolean[swarm.length];
+	public static boolean[] moved;
 	public static void resetMoved() {
 		for (int i = 0; i < swarm.length; i++) {
 			moved[i] = false;
@@ -557,7 +558,6 @@ public class Test extends JPanel implements ActionListener {
 		 * Animals themselves are quasi-randomly pre-generated
 		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeswarm)*/
 	
-		
 		Swarm regular = new Swarm();
 		start(regular, 260, 12, "Animal");
 		TimeUnit.SECONDS.sleep(8);
