@@ -16,9 +16,7 @@ import java.io.IOException;
 
 
 public class Test extends JPanel implements ActionListener {
-	
-	// TODO: CRITICAL all methods must work with class Swarm instead of array swarm
-	
+		
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 	public static void neighborhood(Animal b, int radius) {
 		int j = 0;
@@ -261,6 +259,19 @@ public class Test extends JPanel implements ActionListener {
 		// use this to draw the initial swarm via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		for (int i = 0; i < swarm.length; i++) {
+			double x = swarm[i].xcoord;
+			double y = swarm[i].ycoord;
+	           Shape s = new Ellipse2D.Double(x, y, 4, 4);
+
+	           if (i % 4 == 0){
+	        	   g2d.setPaint(Color.gray);
+	           } else {
+	        	   g2d.setPaint(Color.BLACK);
+	           }
+		 			g2d.fill(s);
+			}
 		
 		// different sizes for different animals
 		if (typeToDraw == "Animal") {
@@ -507,12 +518,12 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 	
-	public static int swarmsize;
-	public static Animal[] swarm;
-	public static double minDistance;
+	public static int swarmsize = 320;
+	public static Animal[] swarm = new Animal[swarmsize];
+	public static double minDistance = 12;
 
 	// initialize moved array	
-	public static boolean[] moved;
+	public static boolean[] moved = new boolean[swarm.length];
 	public static void resetMoved() {
 		for (int i = 0; i < swarm.length; i++) {
 			moved[i] = false;
@@ -532,6 +543,28 @@ public class Test extends JPanel implements ActionListener {
 		 * Parameters are: type, swarmsize, minDistance and the movement pattern (incl. a random distance component) of the swarm;
 		 * Animals themselves are quasi-randomly pre-generated
 		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeswarm)*/
+		
+		// TODO: make and simulate arrays for predetermined swarm
+		makeswarm("Animal");
+		
+		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
+		int select = (int) (Math.random() * swarm.length-1);
+		TimeUnit.SECONDS.sleep(2);
+		// ==> Nord-Ost Flug
+		double x = 4 + Math.random() * 14;
+		double y = 8 + Math.random() * 8;
+		for (int i = 0; i < 10; i++) {
+			moveAnimal(swarm[select], x, 0, 0, y);
+			resetMoved();
+		}
+		
+		resetMoved();
+		select = (int) (Math.random() * swarm.length-1);
+		// diagonal movement - works with NO, SO, SW, NO only
+		for (int i = 0; i < 200/4; i++) {
+			moveAnimal(swarm[select], 0, 8, 8, 0);
+			resetMoved();
+		}
 	
 		Swarm regular = new Swarm();
 		typeToDraw = regular.type;
