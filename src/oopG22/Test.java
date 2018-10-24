@@ -428,7 +428,6 @@ public class Test extends JPanel implements ActionListener {
 			// stressed & tired
 			for (int i = 0; i < s.flock.length; i++) {
 				s.flock[i].stressed = true;
-				s.flock[i].tired = false;
 				s.flock[i].danger(dangerX, dangerY);
 			}
 			makeswarm(s.type);
@@ -448,7 +447,7 @@ public class Test extends JPanel implements ActionListener {
 			s.select = closest;
 			double x = s.flock[closest].xcoord;
 			double y = s.flock[closest].ycoord;
-			// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
+			// moveRight = x1, moveLeft = x2, moveUp = y1, moveDown = y2
 			// danger is east & south or equal
 			if (x >= dangerX && y >= dangerY) {
 				for (int i = 0; i < 20; i++) {
@@ -456,34 +455,36 @@ public class Test extends JPanel implements ActionListener {
 					resetMoved();
 				}	
 			}
-			// danger is 
-
 			if (x < dangerX && y > dangerY) {
 				for (int i = 0; i < 20; i++) {
 					moveAnimal(s.flock[s.select], 0, 90 - dist, 90 - dist, 0);
 					resetMoved();
 				}	
 			}
-			// danger is 
 			if (x > dangerX && y < dangerY) {
 				for (int i = 0; i < 20; i++) {
 					moveAnimal(s.flock[s.select], 90 - dist, 0, 0, 90 - dist);
 					resetMoved();
 				}	
 			}
-			// danger is 
 			if (x < dangerX && y < dangerY) {
 				for (int i = 0; i < 20; i++) {
 					moveAnimal(s.flock[s.select], 0, 90 - dist, 0, 90 - dist);
 					resetMoved();
 				}	
 			}
+			for (int i = 0; i < s.flock.length; i++) {
+				// TODO center & tired movement
+			}
 		}
 		// TODO
 		if (s.type == "Insect") {
 			makeswarm(s.type);
-			s.select = (int) (Math.random() * s.swarm.length-1);
+			for (int i = 0; i < s.colony.length; i++) {
+				
+			}
 		}
+		// TODO: formation
 		if (s.type == "LargeBird") {
 			s.select = 0;
 		}
