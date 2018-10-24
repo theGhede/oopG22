@@ -164,14 +164,6 @@ public class Test extends JPanel implements ActionListener {
 			xvalues[i] = (Math.random() * 400) + 200;
 			yvalues[i] = (Math.random() * 400) + 200;
 		}
-		for(int i = 0; i < swarm.length; i++) {
-			Animal b = new Animal();
-			b.xcoord = xvalues[i];
-			b.ycoord = yvalues[i];
-			b.index = i;
-			swarm[i] = b;
-			b.modifier = 1;
-		}
 		// make new Animal Objects here
 		if (type == "Animal") {
 			for(int i = 0; i < swarm.length; i++) {
@@ -271,30 +263,18 @@ public class Test extends JPanel implements ActionListener {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		// different sizes for different animals
-		for (int i = 0; i < swarm.length; i++) {
-			double x = swarm[i].xcoord;
-			double y = swarm[i].ycoord;
-            Shape s = new Ellipse2D.Double(x, y, 4, 4);
-
-			if (i % 4 == 0){
-                g2d.setPaint(Color.gray);
-            } else {
-                g2d.setPaint(Color.BLACK);
-            }
-            g2d.fill(s);
-		}
 		if (typeToDraw == "Animal") {
 			for (int i = 0; i < swarm.length; i++) {
 			double x = swarm[i].xcoord;
 			double y = swarm[i].ycoord;
 	           Shape s = new Ellipse2D.Double(x, y, 4, 4);
 
-		 if (i % 4 == 0){
-			 g2d.setPaint(Color.gray);
-		 } else {
-			 g2d.setPaint(Color.BLACK);
-		 }
-		 g2d.fill(s);
+	           if (i % 4 == 0){
+	        	   g2d.setPaint(Color.gray);
+	           } else {
+	        	   g2d.setPaint(Color.BLACK);
+	           }
+		 			g2d.fill(s);
 			}
 		}
 		if (typeToDraw == "Bird") {
@@ -325,15 +305,6 @@ public class Test extends JPanel implements ActionListener {
 	            } else {
 	                g2d.setPaint(Color.BLACK);
 	            }
-	            g2d.fill(s);
-			}
-		}
-		if (typeToDraw == "LargeBird") {
-			for (int i = 0; i < swarm.length; i++) {
-				double x = swarm[i].xcoord;
-				double y = swarm[i].ycoord;
-	            Shape s = new Ellipse2D.Double(x, y, 8, 8);
-                g2d.setPaint(Color.BLACK);
 	            g2d.fill(s);
 			}
 		}
@@ -395,20 +366,20 @@ public class Test extends JPanel implements ActionListener {
 	// method to start up prebuilt simulations
 	public static void start(Swarm s, int size, int minD, String type) throws InterruptedException {
 		
-		size = s.swarmsize;
-		minD = s.minDistance;
-		type = s.type;
-		swarm = new Animal[size];
-		moved = new boolean[size];
+		s.swarmsize = size;
+		s.minDistance = minD;
+		s.type = type;
 		
-		generate (s);
+		generate(s);
 
 		// all bird swarms behave the same ... the movement is predetermined by us
 		if (s.type == "Animal") {
 			makeswarm(s.type);
+			generate(s);
 			s.select = (int) (Math.random() * swarm.length-1);
 			double a = 4 + Math.random() * 14;
 			double b = 8 + Math.random() * 8;
+			System.out.println(s.swarm.length);
 			for (int i = 0; i < 10; i++) {
 				moveAnimal(s.swarm[s.select], a, 0, 0, b);
 				resetMoved();
@@ -423,16 +394,14 @@ public class Test extends JPanel implements ActionListener {
 			}
 		}
 		if (s.type == "Bird") {
-
-			double [] center = new double [2];
-			double averageX = 0, averageY = 0;
+			
+			makeswarm(s.type);
 
 			// stressed & tired
 			for (int i = 0; i < s.flock.length; i++) {
 				s.flock[i].stressed = true;
 				s.flock[i].danger(dangerX, dangerY);
 			}
-			makeswarm(s.type);
 			int closest = 0;
 			double max = 0, xdist, ydist, dist = 0;
 			for (int i = 0; i < s.flock.length; i++) {
@@ -444,7 +413,6 @@ public class Test extends JPanel implements ActionListener {
 					max = dist;
 				}
 			}
-			
 			// the closest bird to danger starts fleeing
 			s.select = closest;
 			double x = s.flock[closest].xcoord;
@@ -475,8 +443,11 @@ public class Test extends JPanel implements ActionListener {
 					resetMoved();
 				}	
 			}
+			
+			double [] center = new double [2];
+			double averageX = 0, averageY = 0;
 			for (int i = 0; i < s.flock.length; i++) {
-				// TODO center & tired movement
+				// center & tired movement
 				s.flock[i].modifier = 1;
 				averageX += s.flock[i].xcoord;
 				averageY += s.flock[i].ycoord;
@@ -521,14 +492,18 @@ public class Test extends JPanel implements ActionListener {
 		swarmsize = s.swarmsize;
 		minDistance = s.minDistance;
 		typeToDraw = s.type;
+		swarm = new Animal[s.swarmsize];
+		moved = new boolean[s.swarmsize];
+	}
+	public static void swarming (Swarm s) {
 		if (s.type == "Animal") {
-			swarm = s.swarm;
+			s.swarm = swarm;
 		}
 		if (s.type == "Bird") {
-			swarm = s.flock;
+			s.flock = (Bird[]) swarm;
 		}
 		if (s.type == "Insect") {
-			swarm = s.colony;
+			s.colony = (Insect[]) swarm;
 		}
 	}
 	
@@ -559,19 +534,17 @@ public class Test extends JPanel implements ActionListener {
 		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeswarm)*/
 	
 		Swarm regular = new Swarm();
+		typeToDraw = regular.type;
 		start(regular, 260, 12, "Animal");
 		TimeUnit.SECONDS.sleep(8);
 		
 		Swarm birds = new Swarm();
+		typeToDraw = birds.type;
 		start(birds, 260, 12, "Bird");
 		TimeUnit.SECONDS.sleep(8);
 		
 		Swarm insects = new Swarm();
+		typeToDraw = insects.type;
 		start(insects, 10000, 0, "Insect");
 	}
 }
-
-/* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
- * Elias Nachbaur (01634010): 
- * Florian Fusstetter (00709759): 
- * Ignjat Karanovic (01529940): */
