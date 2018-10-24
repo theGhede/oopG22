@@ -14,7 +14,7 @@ public class Animal {
 	
 	void moveUp(double k) throws InterruptedException {
 		for (int i = 0; i < (k * this.modifier); i++) {
-			TimeUnit.MICROSECONDS.sleep(500);
+			TimeUnit.MICROSECONDS.sleep(200);
 			double move = this.ycoord + 1;
 			this.ycoord = move;
 		}
@@ -22,7 +22,7 @@ public class Animal {
 
 	void moveDown(double k) throws InterruptedException {
 		for (int i = 0; i < (k * this.modifier); i++) {
-			TimeUnit.MICROSECONDS.sleep(500);
+			TimeUnit.MICROSECONDS.sleep(200);
 			double move = this.ycoord - 1;
 			this.ycoord = move;
 		}
@@ -30,7 +30,7 @@ public class Animal {
 
 	void moveLeft(double k) throws InterruptedException {
 		for (int i = 0; i < (k * this.modifier); i++) {
-			TimeUnit.MICROSECONDS.sleep(500);
+			TimeUnit.MICROSECONDS.sleep(200);
 			double move = this.xcoord - 1;
 			this.xcoord = move;
 		}
@@ -38,9 +38,31 @@ public class Animal {
 
 	void moveRight(double k) throws InterruptedException {
 		for (int i = 0; i < (k * this.modifier); i++) {
-			TimeUnit.MICROSECONDS.sleep(500);
+			TimeUnit.MICROSECONDS.sleep(200);
 			double move = this.xcoord + 1;
 			this.xcoord = move;
 		}
+	}
+	
+	// quicker methods for keeping minimal distance while making swarms
+	// options: some amount of almost duplicate code or slower swarm generation or an additional parameter
+	void quickUp(double k) {
+		double move = this.ycoord + k;
+		this.ycoord = move;
+	}
+
+	void quickDown(double k) {
+		double move = this.ycoord - k;
+		this.ycoord = move;
+	}
+
+	void quickLeft(double k) {
+		double move = this.xcoord - k;
+		this.xcoord = move;
+	}
+
+	void quickRight(double k) {
+		double move = this.xcoord + k;
+		this.xcoord = move;
 	}
 }
