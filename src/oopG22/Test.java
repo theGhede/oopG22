@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -62,7 +61,6 @@ import java.io.IOException;
 
 public class Test extends JPanel implements ActionListener {
 	
-	// TODO: choose k neighbors to be rendered in grey
 	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
 	public static void neighborhood(Animal b, int radius) {
 		int j = 0;
@@ -91,73 +89,13 @@ public class Test extends JPanel implements ActionListener {
 	 * Rekursiv fliegen alle Tiere in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
 	 * Angestoßen wird die Bewegung durch einen einzelnes gewähltes Tier*/
 	
-	// TODO: diagonal movement
 	// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
 	public static void moveAnimal (Animal b, double x1,double x2, double y1, double y2) throws InterruptedException {
 		if (!moved[b.index]){
-			// helper variables
-			double x, y;
-			
-			// TODO: logic error for cardinal directions - needs fix
-			if (x1 == 0 && y1 == 0 && x2 != 0 && y2 != 0) {
-				System.out.println("SW");
-				x = x2%4; y = y2%4;
-				while (x2 > x) {
-					b.moveLeft(4);
-					x2 -= 4;
-				}
-				while (y2 > y) {
-					b.moveDown(4);
-					y2 -= 4;
-				}
-				// remainder of the movement
-				b.moveLeft(x);
-				b.moveDown(y);
-			}
-			if (x1 == 0 && y2 == 0 && x2 != 0 && y1 != 0) {
-				System.out.println("NW");
-				x = x2%4; y = y1%4;
-				while (x2 > x) {
-					b.moveLeft(4);
-				}
-				while (y1 > y) {
-					b.moveUp(4);	
-				}
-				b.moveLeft(x);
-				b.moveUp(y);
-			}
-			if (x2 == 0 && y1 == 0 && x1 != 0 && y2 != 0) {
-				System.out.println("SO");
-				x = x1%4; y = y2%4;
-				while (x1 > x) {
-					b.moveRight(4);	
-				}
-				while (y2 > y) {
-					b.moveDown(4);	
-				}
-				b.moveRight(x);
-				b.moveDown(y);
-			}
-			if (x2 == 0 && y2 == 0 && x1 != 0 && y1 != 0) {
-				System.out.println("NO");
-				x = x1%4; y = y1%4;
-				while (x1 > x) {
-					b.moveRight(4);
-				}
-				while (y1 > y) {
-					b.moveUp(4);
-				}
-				b.moveRight(x);
-				b.moveUp(y);
-			}
-			if ((x1 == 0 && x2 == 0 && y1 == 0) || (x1 == 0 && x2 == 0 && y2 == 0) || (x1 == 0 && y1 == 0 && y2 == 0)
-					|| (x2 == 0 && y1 == 0 && y2 == 0)) {
-				// no need for diagonal movement if 3 variables are 0
-				b.moveUp(y1);
-				b.moveDown(y2);
-				b.moveRight(x1);
-				b.moveLeft(x2);
-			}
+			b.moveUp(y1);
+			b.moveDown(y2);
+			b.moveRight(x1);
+			b.moveLeft(x2);
 			moved[b.index] = true;
 			movingDistance(b);
 			}
@@ -190,13 +128,20 @@ public class Test extends JPanel implements ActionListener {
 	// checks if testDistance & moves defined there are needed - this takes a couple of seconds while the randomized swarm is being made
 	public static void establishDistance () throws InterruptedException {
 		if (minDistance != 0) {
+			int cap = swarmsize /5;
 			for (int i = 0; i < swarm.length; i++) {
 				for (int j = 0; j < swarm.length; j++) {
-					if (distance(swarm[i], swarm[j]) > minDistance) {
+					if (distance(swarm[i], swarm[j]) > minDistance && cap != 0) {
 						testDistance();
+						cap--;
+					} else if (distance(swarm[i], swarm[j]) > minDistance) {
+						swarm[i].moveLeft(distance(swarm[i], swarm[j])); 
+						swarm[i].moveDown(distance(swarm[i], swarm[j]));
+						swarm[j].moveUp(distance(swarm[i], swarm[j]));
+						swarm[j].moveRight(distance(swarm[i], swarm[j]));
 					}
 				}
-			}	
+			}
 		}
 	}
 
@@ -261,12 +206,9 @@ public class Test extends JPanel implements ActionListener {
 		}
 	}
 	
-	// this is used to cut out time delays when first making and correcting a swarm
-	public static boolean existing;
 	// TODO: transform to become a method of Swarm
 	// Make swarm within the center 400x400 of the JFrame; reminder: top-right = (0,0)
 	public static void makeswarm() throws InterruptedException {
-		existing = false;
 		double[] xvalues = new double[swarm.length];
 		double[] yvalues = new double[swarm.length];
 		for(int i = 0; i < swarm.length; i++) {
@@ -288,10 +230,10 @@ public class Test extends JPanel implements ActionListener {
 		}
 		// check and repair minimal distance infringements
 		establishDistance();
-		existing = true;
 	}
 
-		public static void loadcsv() {
+	// csv loader	
+	public static void loadcsv() {
 
 		String csvFilex = "path to x coords";
 		String csvFiley = "path to y coords";
@@ -327,16 +269,16 @@ public class Test extends JPanel implements ActionListener {
 			swarm[i] = b;
 			b.modifier = 1;
 		}
-		for (int i = 0; i < swarm.length; i++) {
+		/*for (int i = 0; i < swarm.length; i++) {
 			neighborhood(swarm[i], 1);
-		}
+		}*/
 
 	}
 
 
 	// draw graphics using paint(g) with Graphics2D for double usage
 
-	// TODO: update by repaint every 4 milliseconds (==> after the intervals found in main)
+	// update by repaint every 4 milliseconds (==> after the intervals found in main)
 	Timer t = new Timer(4, this);
 	
 	// draw graphics using paint(g) with Graphics2D for double variables
@@ -350,16 +292,15 @@ public class Test extends JPanel implements ActionListener {
 		for (int i = 0; i < swarm.length; i++) {
 			double x = swarm[i].xcoord;
 			double y = swarm[i].ycoord;
+            Shape s = new Ellipse2D.Double(x, y, 4, 4);
+
 			if (i % 4 == 0){
-                Shape s = new Ellipse2D.Double(x, y, 4, 4);
                 g2d.setPaint(Color.gray);
-                g2d.fill(s);
-            }
-            else{
-                Shape s = new Ellipse2D.Double(x, y, 4, 4);
+            } else {
                 g2d.setPaint(Color.BLACK);
-                g2d.fill(s);
             }
+            g2d.fill(s);
+
 
 			// maybe useful Swing methods: validate() & revalidate()
 		}
@@ -434,7 +375,7 @@ public class Test extends JPanel implements ActionListener {
 		s.select = (int) (Math.random() * s.swarm.length-1);
 		
 		double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-		// helper variables for incremental movement
+		//  TODO: helper variables for incremental movement
 		double a = x/4, b = y/4;
 		if (x < 0) x2 = x;
 		if (x > 0) x1 = x;
@@ -469,9 +410,7 @@ public class Test extends JPanel implements ActionListener {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		// TODO: make and simulate arrays for predetermined swarm
 		resetMoved();
-		makeswarm();
 		
 		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
@@ -485,18 +424,23 @@ public class Test extends JPanel implements ActionListener {
 		 * Animals themselves are quasi-randomly pre-generated
 		 * Direction of movement is predetermined, magnitude partially random (to fit the style of makeswarm)*/
 		
+		// TODO: make and simulate arrays for predetermined swarm
+		makeswarm();
+		
 		// moveRight = x1, moveLeft = x2,moveUp = y1, moveDown = y2
 		int select = (int) (Math.random() * swarm.length-1);
 		TimeUnit.SECONDS.sleep(2);
 		// ==> Nord-Ost Flug
-		moveAnimal(swarm[select], (40 + Math.random() * 140), 0, 0, (80 + Math.random() * 80));
+		double x = 40 + Math.random() * 140;
+		double y = 80 + Math.random() * 80;
+		moveAnimal(swarm[select], x, 0, 0, y);
+		System.out.println(swarm[select].xcoord +",   " + swarm[select].ycoord);
 		TimeUnit.SECONDS.sleep(2);
 		establishDistance();
 
-		// slightly more Animals who want to keep more distance
-		TimeUnit.SECONDS.sleep(20);
+		// slightly less Animals who want to keep more distance
 		minDistance = 20;
-		swarmsize = 260;
+		swarmsize = 120;
 		
 		resetMoved();
 		makeswarm();
