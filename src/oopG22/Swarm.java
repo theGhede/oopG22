@@ -8,9 +8,9 @@ public class Swarm {
 	// selects first animal to move (type dependent rules)
 	int select;
 	Animal[] swarm;
-	
-	
-	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn gefunden wurden
+
+	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn
+	// gefunden wurden
 	public void neighborhood(Animal b, int radius) {
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
@@ -27,25 +27,26 @@ public class Swarm {
 			b.neighbors = neighbors;
 		}
 	}
-	
+
 	public void resetMoved() {
 		for (int i = 0; i < this.swarm.length; i++) {
 			this.swarm[i].moved = false;
 		}
 	}
-	
-	// Make swarm within the center 400x400 of the JFrame; reminder: top-right = (0,0)
+
+	// Make swarm within the center 400x400 of the JFrame; reminder: top-right =
+	// (0,0)
 	public void makeswarm(String type, int size, int minDistance) {
 		this.type = type;
 		this.swarmsize = size;
 		this.minDistance = minDistance;
 		double[] xvalues = new double[this.swarm.length];
 		double[] yvalues = new double[this.swarm.length];
-		for(int i = 0; i < this.swarm.length; i++) {
+		for (int i = 0; i < this.swarm.length; i++) {
 			xvalues[i] = (Math.random() * 400) + 200;
 			yvalues[i] = (Math.random() * 400) + 200;
 		}
-		for(int i = 0; i < this.swarm.length; i++) {
+		for (int i = 0; i < this.swarm.length; i++) {
 			Animal b = new Animal();
 			b.xcoord = xvalues[i];
 			b.ycoord = yvalues[i];
@@ -61,9 +62,10 @@ public class Swarm {
 		this.establishDistance();
 		this.resetMoved();
 	}
-	
+
+	// TODO: fix moving distance
 	public void movingDistance(Animal b) {
-		if(this.minDistance != 0) {
+		if (this.minDistance != 0) {
 			for (int i = 0; i < this.swarm.length; i++) {
 				if (this.swarm[b.index].distance(this.swarm[i]) < minDistance) {
 					this.testDistance();
@@ -71,12 +73,14 @@ public class Swarm {
 			}
 		}
 	}
-	
-	// checks if testDistance & moves defined there are needed - this takes a couple of seconds while the randomized swarm is being made
-	public void establishDistance () {
+
+	// checks if testDistance & moves defined there are needed - this takes a couple
+	// of seconds while the randomized swarm is being made
+	public void establishDistance() {
 		if (this.minDistance != 0) {
-			// cap improves runtime in cases where one node is caught on the line between two nodes
-			int cap = this.swarmsize /5;
+			// cap improves runtime in cases where one node is caught on the line between
+			// two nodes
+			int cap = this.swarmsize / 5;
 			for (int i = 0; i < this.swarm.length; i++) {
 				for (int j = 0; j < this.swarm.length; j++) {
 					if (this.swarm[i].distance(swarm[j]) > this.minDistance && cap != 0) {
@@ -89,59 +93,61 @@ public class Swarm {
 	}
 
 	// angle etc in eigene Methode ausgelagert
-	public double[] distanceHelper (double helpDistance, double xDistance, double yDistance) {
+	public double[] distanceHelper(double helpDistance, double xDistance, double yDistance) {
 		// [xMove, yMove]
 		double[] res = new double[2];
-		double angle = Math.atan(xDistance/yDistance);
+		double angle = Math.atan(xDistance / yDistance);
 		double xMove = helpDistance * Math.sin(angle);
-		double yMove = xMove/Math.tan(angle);
+		double yMove = xMove / Math.tan(angle);
 		res[0] = xMove;
 		res[1] = yMove;
 		return res;
 	}
-	
+
 	// Behandlung von Mindestabstandsverletzungen
-	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und geschieht entlang der Geraden zwischen Punkt i & j
-	public void testDistance () {
-		for(int i = 0; i < this.swarm.length; i++) {
-			for(int j = 0; j < this.swarm.length; j++) {
-				if(this.swarm[i].distance(this.swarm[j]) < minDistance) {
+	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und
+	// geschieht entlang der Geraden zwischen Punkt i & j
+	public void testDistance() {
+		for (int i = 0; i < this.swarm.length; i++) {
+			for (int j = 0; j < this.swarm.length; j++) {
+				if (this.swarm[i].distance(this.swarm[j]) < minDistance) {
 					double helpDistance = minDistance - this.swarm[i].distance(this.swarm[j]);
 					double xDistance = (this.swarm[i].ycoord - this.swarm[j].ycoord);
 					double yDistance = (this.swarm[i].xcoord - this.swarm[j].xcoord);
 					double xMove = this.distanceHelper(helpDistance, xDistance, yDistance)[0];
 					double yMove = this.distanceHelper(helpDistance, xDistance, yDistance)[1];
-					
-					if(this.swarm[j].ycoord < this.swarm[i].ycoord && this.swarm[j].xcoord < this.swarm[i].xcoord){
+
+					if (this.swarm[j].ycoord < this.swarm[i].ycoord && this.swarm[j].xcoord < this.swarm[i].xcoord) {
 						this.swarm[j].quickDown((yMove));
 						this.swarm[j].quickLeft((xMove));
-					}
-					else if(this.swarm[j].ycoord > this.swarm[i].ycoord && this.swarm[j].xcoord > this.swarm[i].xcoord){
+					} else if (this.swarm[j].ycoord > this.swarm[i].ycoord
+							&& this.swarm[j].xcoord > this.swarm[i].xcoord) {
 						this.swarm[j].quickUp((yMove));
 						this.swarm[j].quickRight((xMove));
-					}
-					else if(this.swarm[j].ycoord < this.swarm[i].ycoord && this.swarm[j].xcoord > this.swarm[i].xcoord) {
+					} else if (this.swarm[j].ycoord < this.swarm[i].ycoord
+							&& this.swarm[j].xcoord > this.swarm[i].xcoord) {
 						this.swarm[j].quickDown((yMove));
 						this.swarm[j].quickRight((xMove));
-					}
-					else if(this.swarm[j].ycoord > this.swarm[i].ycoord && this.swarm[j].xcoord < this.swarm[i].xcoord) {
+					} else if (this.swarm[j].ycoord > this.swarm[i].ycoord
+							&& this.swarm[j].xcoord < this.swarm[i].xcoord) {
 						this.swarm[j].quickUp((yMove));
 						this.swarm[j].quickLeft((xMove));
 					}
-					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet, sonst nach rechts
-					else if(this.swarm[j].ycoord == this.swarm[i].ycoord) {
-						if(this.swarm[j].xcoord < this.swarm[i].xcoord) {
+					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet,
+					// sonst nach rechts
+					else if (this.swarm[j].ycoord == this.swarm[i].ycoord) {
+						if (this.swarm[j].xcoord < this.swarm[i].xcoord) {
 							this.swarm[j].quickLeft(helpDistance);
-						}
-						else if(this.swarm[j].xcoord > this.swarm[i].xcoord){
+						} else if (this.swarm[j].xcoord > this.swarm[i].xcoord) {
 							this.swarm[j].quickRight(helpDistance);
 						}
 					}
-					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst nach oben
-					else if(this.swarm[j].xcoord == this.swarm[i].xcoord) {
-						if(this.swarm[j].ycoord < this.swarm[i].ycoord) {
+					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst
+					// nach oben
+					else if (this.swarm[j].xcoord == this.swarm[i].xcoord) {
+						if (this.swarm[j].ycoord < this.swarm[i].ycoord) {
 							this.swarm[j].quickDown(helpDistance);
-						} else if(this.swarm[j].ycoord > this.swarm[i].ycoord){
+						} else if (this.swarm[j].ycoord > this.swarm[i].ycoord) {
 							this.swarm[j].quickUp(helpDistance);
 						}
 					}
@@ -149,84 +155,68 @@ public class Swarm {
 			}
 		}
 	}
-	
+
+	// method to start up prebuilt simulations
+	public void start(Swarm s, int size, int minD, String type) throws InterruptedException {
+		// TODO: move s.type = type; to be fully within the method?
+		s.makeswarm(type, size, minD);
+
+		// all bird swarms behave the same ... the rules of movement are predetermined
+		s.makeswarm(type, size, minD);
+		s.select = (int) (Math.random() * s.swarm.length - 1);
+		double a = 4 + Math.random() * 14;
+		double b = 8 + Math.random() * 8;
+		for (int i = 0; i < 10; i++) {
+			s.swarm[s.select].moveAnimal(s, a, 0, 0, b);
+			s.resetMoved();
+		}
+
+		s.resetMoved();
+		s.select = (int) (Math.random() * s.swarm.length - 1);
+		// diagonal movement - works with NO, SO, SW, NO only
+		for (int i = 0; i < 200 / 4; i++) {
+			s.swarm[s.select].moveAnimal(s, 0, 8, 8, 0);
+			s.resetMoved();
+		}
+	}
+
 	/*
-	public static void printCoords(String xfile, String yfile) {
-	
-	double[] xsaved = new double[swarmsize];
-	double[] ysaved = new double[swarmsize];
-	for (int i = 0; i < swarm.length; i++) {
-		xsaved[i] = (double) Math.round(swarm[i].xcoord * 10000) / 10000;
-		ysaved[i] = (double) Math.round(swarm[i].ycoord * 10000) / 10000;
-	}       
-	
-	PrintWriter pw = null;
-	try {
-		pw = new PrintWriter(new File(xfile+".csv"));
-	} catch (FileNotFoundException e) {
-		e.printStackTrace();
-	}
-    StringBuilder sbx = new StringBuilder();
-    for (int i = 0; i < xsaved.length; i++) {
-    	sbx.append(xsaved[i]);
-        sbx.append(',');
-	}
-    pw.write(sbx.toString());
-    pw.close();
-    
-    try {
-		pw = new PrintWriter(new File(yfile+".csv"));
-	} catch (FileNotFoundException e) {
-		e.printStackTrace();
-	}
-    StringBuilder sby = new StringBuilder();
-    for (int i = 0; i < xsaved.length; i++) {
-    	sby.append(ysaved[i]);
-        sby.append(',');
-	}
-    pw.write(sby.toString());
-    pw.close();
-	}
-	// csv loader	
-	public static void loadcsv() {
-
-	String csvFilex = "path to x coords";
-	String csvFiley = "path to y coords";
-	String line = "";
-	String line2 = "";
-	String csvSplitBy = ",";
-	String[] xcoords = null;
-	String[] ycoords = null;
-
-
-	try (BufferedReader br = new BufferedReader(new FileReader(csvFilex))) {
-		while ((line = br.readLine()) != null) {
-			xcoords = line.split(csvSplitBy);
-			}
-		}
- 	catch (IOException e) {
-		e.printStackTrace();
-	}
-
-	try (BufferedReader br2 = new BufferedReader(new FileReader(csvFiley))) {
-		while ((line2 = br2.readLine()) != null) {
-			ycoords = line2.split(csvSplitBy);
-		}
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-
-	for(int i = 0; i < xcoords.length; i++) {
-		Animal b = new Animal();
-		b.xcoord = Double.valueOf(xcoords[i]);
-		b.ycoord = Double.valueOf(ycoords[i]);
-		b.index = i;
-		swarm[i] = b;
-		b.modifier = 1;
-	}
-	for (int i = 0; i < swarm.length; i++) {
-		neighborhood(swarm[i], 1);
-	}
-	}*/
+	 * public static void printCoords(String xfile, String yfile) {
+	 * 
+	 * double[] xsaved = new double[swarmsize]; double[] ysaved = new
+	 * double[swarmsize]; for (int i = 0; i < swarm.length; i++) { xsaved[i] =
+	 * (double) Math.round(swarm[i].xcoord * 10000) / 10000; ysaved[i] = (double)
+	 * Math.round(swarm[i].ycoord * 10000) / 10000; }
+	 * 
+	 * PrintWriter pw = null; try { pw = new PrintWriter(new File(xfile+".csv")); }
+	 * catch (FileNotFoundException e) { e.printStackTrace(); } StringBuilder sbx =
+	 * new StringBuilder(); for (int i = 0; i < xsaved.length; i++) {
+	 * sbx.append(xsaved[i]); sbx.append(','); } pw.write(sbx.toString());
+	 * pw.close();
+	 * 
+	 * try { pw = new PrintWriter(new File(yfile+".csv")); } catch
+	 * (FileNotFoundException e) { e.printStackTrace(); } StringBuilder sby = new
+	 * StringBuilder(); for (int i = 0; i < xsaved.length; i++) {
+	 * sby.append(ysaved[i]); sby.append(','); } pw.write(sby.toString());
+	 * pw.close(); } // csv loader public static void loadcsv() {
+	 * 
+	 * String csvFilex = "path to x coords"; String csvFiley = "path to y coords";
+	 * String line = ""; String line2 = ""; String csvSplitBy = ","; String[]
+	 * xcoords = null; String[] ycoords = null;
+	 * 
+	 * 
+	 * try (BufferedReader br = new BufferedReader(new FileReader(csvFilex))) {
+	 * while ((line = br.readLine()) != null) { xcoords = line.split(csvSplitBy); }
+	 * } catch (IOException e) { e.printStackTrace(); }
+	 * 
+	 * try (BufferedReader br2 = new BufferedReader(new FileReader(csvFiley))) {
+	 * while ((line2 = br2.readLine()) != null) { ycoords = line2.split(csvSplitBy);
+	 * } } catch (IOException e) { e.printStackTrace(); }
+	 * 
+	 * for(int i = 0; i < xcoords.length; i++) { Animal b = new Animal(); b.xcoord =
+	 * Double.valueOf(xcoords[i]); b.ycoord = Double.valueOf(ycoords[i]); b.index =
+	 * i; swarm[i] = b; b.modifier = 1; } for (int i = 0; i < swarm.length; i++) {
+	 * neighborhood(swarm[i], 1); } }
+	 */
 
 }
