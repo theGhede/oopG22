@@ -3,6 +3,23 @@ package oopG22;
 public class Colony extends Swarm {
 
 	Insect[] swarm;
+	
+	public void neighborhood(Insect b, int radius) {
+		int j = 0;
+		int amount = (int) (5 + (15 * Math.random()));
+		Insect[] neighbors = new Insect[amount];
+		for (int i = 0; i < this.swarm.length; i++) {
+			if (i != b.index && j < amount && b.distance(this.swarm[i]) <= radius) {
+				neighbors[j] = this.swarm[i];
+				j++;
+			}
+		}
+		if (j < amount) {
+			this.neighborhood(b, radius + 1);
+		} else {
+			b.neighbors = neighbors;
+		}
+	}
 
 	// Make swarm within the center 400x400 of the JFrame; reminder: top-right =
 	// (0,0)
@@ -38,7 +55,7 @@ public class Colony extends Swarm {
 
 	// method to start up prebuilt simulations
 	@Override
-	public void start(int size, int minD, String type) throws InterruptedException {
+	public void start() throws InterruptedException {
 		/* NOTE: leader is used in order to save the one non-follower in the swarm instead of having to look for it each time
 		 * 		 follower itself is a property that could be called leader and inverted
 		 */
