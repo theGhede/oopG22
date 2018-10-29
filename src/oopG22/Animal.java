@@ -9,6 +9,7 @@ public class Animal {
 	double ycoord;
 	Animal[] neighbors;
 	int index;
+	boolean moved;
 	// this lets us manipulate the length of an animals movement
 	double modifier;
 	
@@ -65,4 +66,37 @@ public class Animal {
 		double move = this.xcoord + k;
 		this.xcoord = move;
 	}
+	
+	/*
+	 * Im Flug wird überprüft ob der sich gerade fortbewegende Vogel zu nah an andere annähert
+	 * Rekursiv fliegen alle Tiere in alle Nachbarschaften mit gleicher Entfernung in die gleiche Richtung
+	 * Angestoßen wird die Bewegung durch einen einzelnes gewähltes Tier*/
+	
+	public void moveAnimal (double x1,double x2, double y1, double y2) throws InterruptedException {
+		if (!this.moved){
+			this.moveUp(y1);
+			this.moveDown(y2);
+			this.moveRight(x1);
+			this.moveLeft(x2);
+			this.moved = true;
+			movingDistance(this);
+			}
+		if (this.neighbors != null) {
+			for (int i = 0; i < this.neighbors.length ; i++) {
+				if (!this.neighbors[i].moved) {
+					this.neighbors[i].moveAnimal(x1,x2,y1,y2);}
+			}
+		}
+	}
+	
+	
+	// Berechnen der euklidischen Distanz
+	public double distance (Animal b) {
+		double xdist = Math.pow((this.xcoord - b.xcoord), 2);
+		double ydist = Math.pow((this.ycoord - b.ycoord), 2);
+		double dist = Math.sqrt(xdist + ydist);
+		return dist;
+	}
+
+	
 }
