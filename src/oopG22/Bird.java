@@ -2,8 +2,28 @@ package oopG22;
 
 // regular Animal including new behavior for tiring and stress
 public class Bird extends Animal {
+	
+	Bird[] neighbors;
 	boolean stressed;
 	boolean tired;
+	
+	public void moveAnimal(Flock s, double x1, double x2, double y1, double y2) throws InterruptedException {
+		if (!this.moved) {
+			this.moveUp(y1);
+			this.moveDown(y2);
+			this.moveRight(x1);
+			this.moveLeft(x2);
+			this.moved = true;
+			s.movingDistance(this);
+		}
+		if (this.neighbors != null) {
+			for (int i = 0; i < this.neighbors.length; i++) {
+				if (!this.neighbors[i].moved) {
+					this.neighbors[i].moveAnimal(s, x1, x2, y1, y2);
+				}
+			}
+		}
+	}
 
 	// method to be periodically called while moving away from danger to update
 	// 'modifier' depending on distance to dangerzone

@@ -69,13 +69,11 @@ public class Animal {
 		this.xcoord = move;
 	}
 
-	/*
-	 * Im Flug wird überprüft ob der sich gerade fortbewegende Vogel zu nah an
+	/* Im Flug wird überprüft ob der sich gerade fortbewegende Vogel zu nah an
 	 * andere annähert Rekursiv fliegen alle Tiere in alle Nachbarschaften mit
 	 * gleicher Entfernung in die gleiche Richtung Angestoßen wird die Bewegung
 	 * durch einen einzelnes gewähltes Tier
 	 */
-
 	public void moveAnimal(Swarm s, double x1, double x2, double y1, double y2) throws InterruptedException {
 		if (!this.moved) {
 			this.moveUp(y1);

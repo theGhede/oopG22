@@ -31,8 +31,8 @@ public class Test extends JPanel implements ActionListener {
 
 	// these coordinates for the danger to our birds needs to be set before
 	// paintComponent can be called
-	public static double dangerX = (450 + Math.random() * 100);
-	public static double dangerY = (120 + Math.random() * 70);
+	public static double dangerX = (120 + Math.random() * 70);
+	public static double dangerY = (450 + Math.random() * 100);
 
 	// draw graphics using paint(g) with Graphics2D for double variables
 	// issue: can't pass other parameters ... like the Swarm or type etc
@@ -60,7 +60,7 @@ public class Test extends JPanel implements ActionListener {
 		}
 		if (typeToDraw == "Bird") {
 			//System.out.println("painting birds");
-			Shape d = new Ellipse2D.Double(dangerX, dangerY, 8, 8);
+			Shape d = new Ellipse2D.Double(dangerX, dangerY, 12, 12);
 			g2d.setPaint(Color.RED);
 			g2d.fill(d);
 			for (int i = 0; i < birds.swarm.length; i++) {
@@ -118,13 +118,13 @@ public class Test extends JPanel implements ActionListener {
 		});
 
 		// TODO: proper starting & testing
-		regular.makeswarm("Animal", 320, 12);
+		/*regular.makeswarm("Animal", 320, 12);
 		System.out.println("made animal swarm");
 		typeToDraw = regular.type;
 		System.out.println("type: "+typeToDraw);
 		regular.start();
 		System.out.println("started");
-		TimeUnit.SECONDS.sleep(8);
+		TimeUnit.SECONDS.sleep(4);*/
 
 		birds.makeswarm("Bird", 240, 12);
 		System.out.println("made bird swarm");
@@ -132,7 +132,7 @@ public class Test extends JPanel implements ActionListener {
 		System.out.println("type: "+typeToDraw);
 		birds.start(dangerX, dangerY);
 		System.out.println("started");
-		TimeUnit.SECONDS.sleep(8);
+		TimeUnit.SECONDS.sleep(4);
 
 		insects.makeswarm("Insect", 10000, 0);
 		System.out.println("made insect swarm");
