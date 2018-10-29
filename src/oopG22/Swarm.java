@@ -158,23 +158,29 @@ public class Swarm {
 	}
 
 	// method to start up prebuilt simulations
-	public void start(int size, int minD, String type) throws InterruptedException {
-		// TODO: move s.type = type; to be fully within the method?
-		this.makeswarm(type, size, minD);
+	public void start() throws InterruptedException {		
 		
 		// all bird swarms behave the same ... the rules of movement are predetermined
 		this.select = (int) (Math.random() * this.swarm.length - 1);
 		double a = 4 + (double) Math.round((Math.random() * 14) *100) / 100;
 		double b = 8 + (double) Math.round((Math.random() * 8) *100) / 100;
+		System.out.println(this.swarm[this.select].xcoord);
+		System.out.println(this.swarm[this.select].ycoord);
 		for (int i = 0; i < 10; i++) {
 			this.swarm[this.select].moveAnimal(this, a, 0, 0, b);
+			this.resetMoved();
+			System.out.println(this.swarm[this.select].xcoord);
+			System.out.println(this.swarm[this.select].ycoord);
 		}
+		System.out.println("finished first move");
 		
 		this.select = (int) (Math.random() * this.swarm.length - 1);
 		// diagonal movement - works with NO, SO, SW, NO only
 		for (int i = 0; i < 200 / 4; i++) {
 			this.swarm[this.select].moveAnimal(this, 0, 8, 8, 0);
+			this.resetMoved();
 		}
+		System.out.println("finished second move");
 	}
 
 	/*

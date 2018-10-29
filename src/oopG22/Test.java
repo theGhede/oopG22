@@ -44,7 +44,7 @@ public class Test extends JPanel implements ActionListener {
 		// TODO: fix drawing & beware of out of bounds exceptions
 		// different sizes for different animals
 		if (typeToDraw == "Animal") {
-			System.out.println("painting animals");
+			//System.out.println("painting animals");
 			for (int i = 0; i < regular.swarm.length; i++) {
 				double x = regular.swarm[i].xcoord;
 				double y = regular.swarm[i].ycoord;
@@ -59,7 +59,7 @@ public class Test extends JPanel implements ActionListener {
 			}
 		}
 		if (typeToDraw == "Bird") {
-			System.out.println("painting birds");
+			//System.out.println("painting birds");
 			Shape d = new Ellipse2D.Double(dangerX, dangerY, 8, 8);
 			g2d.setPaint(Color.RED);
 			g2d.fill(d);
@@ -118,17 +118,27 @@ public class Test extends JPanel implements ActionListener {
 		});
 
 		// TODO: proper starting & testing
-		regular.start(100, 12, "Animal");
-		System.out.println("started");
+		regular.makeswarm("Animal", 320, 12);
+		System.out.println("made animal swarm");
 		typeToDraw = regular.type;
-		System.out.println(typeToDraw);
+		System.out.println("type: "+typeToDraw);
+		regular.start();
+		System.out.println("started");
 		TimeUnit.SECONDS.sleep(8);
 
-		birds.start(240, 12, "Bird", dangerX, dangerY);
+		birds.makeswarm("Bird", 240, 12);
+		System.out.println("made bird swarm");
 		typeToDraw = birds.type;
+		System.out.println("type: "+typeToDraw);
+		birds.start(dangerX, dangerY);
+		System.out.println("started");
 		TimeUnit.SECONDS.sleep(8);
 
-		insects.start(10000, 0, "Insect");
+		insects.makeswarm("Insect", 10000, 0);
+		System.out.println("made insect swarm");
 		typeToDraw = insects.type;
+		birds.start();
+		System.out.println("started");
+		System.out.println("type: "+typeToDraw);
 	}
 }

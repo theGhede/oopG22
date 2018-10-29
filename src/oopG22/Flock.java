@@ -4,6 +4,22 @@ public class Flock extends Swarm {
 
 	Bird[] swarm;
 
+	public void neighborhood(Bird b, int radius) {
+		int j = 0;
+		int amount = (int) (5 + (15 * Math.random()));
+		Bird[] neighbors = new Bird[amount];
+		for (int i = 0; i < this.swarm.length; i++) {
+			if (i != b.index && j < amount && b.distance(this.swarm[i]) <= radius) {
+				neighbors[j] = this.swarm[i];
+				j++;
+			}
+		}
+		if (j < amount) {
+			this.neighborhood(b, radius + 1);
+		} else {
+			b.neighbors = neighbors;
+		}
+	}
 	// Make swarm within the center 400x400 of the JFrame; reminder: top-right =
 	// (0,0)
 	@Override
@@ -37,9 +53,7 @@ public class Flock extends Swarm {
 	}
 
 	// method to start up prebuilt simulations
-	public void start(int size, int minD, String type, double dangerX, double dangerY) throws InterruptedException {
-
-		this.makeswarm(type, size, minD);
+	public void start(double dangerX, double dangerY) throws InterruptedException {
 		// stressed & tired
 		for (int i = 0; i < this.swarm.length; i++) {
 			this.swarm[i].stressed = true;
