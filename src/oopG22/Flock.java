@@ -20,6 +20,14 @@ public class Flock extends Swarm {
 			b.neighbors = neighbors;
 		}
 	}
+	
+	@Override
+	public void resetMoved() {
+		for (int i = 0; i < this.swarm.length; i++) {
+			this.swarm[i].moved = false;
+		}
+	}
+	
 	// Make swarm within the center 400x400 of the JFrame; reminder: top-right =
 	// (0,0)
 	@Override
@@ -48,8 +56,87 @@ public class Flock extends Swarm {
 			this.neighborhood(this.swarm[i], 1);
 		}
 		// check and repair minimal distance infringements
+		System.out.println("flock swarm.length:  "+ this.swarm.length);
 		this.establishDistance();
+		System.out.println("checkpoint");
 		this.resetMoved();
+	}
+	
+	public void movingDistance(Bird b) {
+		if (this.minDistance != 0) {
+			for (int i = 0; i < this.swarm.length; i++) {
+				if (this.swarm[b.index].distance(this.swarm[i]) < minDistance) {
+					this.testDistance();
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void testDistance() {
+		for (int i = 0; i < this.swarm.length; i++) {
+			for (int j = 0; j < this.swarm.length; j++) {
+				if (this.swarm[i].distance(this.swarm[j]) < minDistance && i != j) {
+					double helpDistance = minDistance - this.swarm[i].distance(this.swarm[j]);
+					double xDistance = (this.swarm[i].xcoord - this.swarm[j].xcoord);
+					double yDistance = (this.swarm[i].ycoord - this.swarm[j].ycoord);
+					double xMove = this.distanceHelper(helpDistance, xDistance, yDistance)[0];
+					double yMove = this.distanceHelper(helpDistance, xDistance, yDistance)[1];
+					
+					if (this.swarm[j].ycoord < this.swarm[i].ycoord && this.swarm[j].xcoord < this.swarm[i].xcoord) {
+						this.swarm[j].quickDown((yMove));
+						this.swarm[j].quickLeft((xMove));
+					} else if (this.swarm[j].ycoord > this.swarm[i].ycoord
+							&& this.swarm[j].xcoord > this.swarm[i].xcoord) {
+						this.swarm[j].quickUp((yMove));
+						this.swarm[j].quickRight((xMove));
+					} else if (this.swarm[j].ycoord < this.swarm[i].ycoord
+							&& this.swarm[j].xcoord > this.swarm[i].xcoord) {
+						this.swarm[j].quickDown((yMove));
+						this.swarm[j].quickRight((xMove));
+					} else if (this.swarm[j].ycoord > this.swarm[i].ycoord
+							&& this.swarm[j].xcoord < this.swarm[i].xcoord) {
+						this.swarm[j].quickUp((yMove));
+						this.swarm[j].quickLeft((xMove));
+					}
+					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet,
+					// sonst nach rechts
+					else if (this.swarm[j].ycoord == this.swarm[i].ycoord) {
+						if (this.swarm[j].xcoord < this.swarm[i].xcoord) {
+							this.swarm[j].quickLeft(helpDistance);
+						} else if (this.swarm[j].xcoord > this.swarm[i].xcoord) {
+							this.swarm[j].quickRight(helpDistance);
+						}
+					}
+					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst
+					// nach oben
+					else if (this.swarm[j].xcoord == this.swarm[i].xcoord) {
+						if (this.swarm[j].ycoord < this.swarm[i].ycoord) {
+							this.swarm[j].quickDown(helpDistance);
+						} else if (this.swarm[j].ycoord > this.swarm[i].ycoord) {
+							this.swarm[j].quickUp(helpDistance);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// checks if testDistance & moves defined there are needed - this takes a couple
+	// of seconds while the randomized swarm is being made
+	public void establishDistance() {
+		if (this.minDistance != 0) {
+			// cap improves runtime in cases where one node is caught on the line between two nodes
+			int cap = this.swarmsize / 5;
+			for (int i = 0; i < this.swarm.length; i++) {
+				for (int j = 0; j < this.swarm.length; j++) {
+					if (this.swarm[i].distance(swarm[j]) > this.minDistance && cap != 0) {
+						this.testDistance();
+						cap--;
+					}
+				}
+			}
+		}
 	}
 
 	// method to start up prebuilt simulations

@@ -64,7 +64,6 @@ public class Swarm {
 		this.resetMoved();
 	}
 
-	// TODO: fix moving distance
 	public void movingDistance(Animal b) {
 		if (this.minDistance != 0) {
 			for (int i = 0; i < this.swarm.length; i++) {
@@ -79,8 +78,7 @@ public class Swarm {
 	// of seconds while the randomized swarm is being made
 	public void establishDistance() {
 		if (this.minDistance != 0) {
-			// cap improves runtime in cases where one node is caught on the line between
-			// two nodes
+			// cap improves runtime in cases where one node is caught on the line between two nodes
 			int cap = this.swarmsize / 5;
 			for (int i = 0; i < this.swarm.length; i++) {
 				for (int j = 0; j < this.swarm.length; j++) {
@@ -164,62 +162,15 @@ public class Swarm {
 		this.select = (int) (Math.random() * this.swarm.length - 1);
 		double a = 4 + (double) Math.round((Math.random() * 14) *100) / 100;
 		double b = 8 + (double) Math.round((Math.random() * 8) *100) / 100;
-		System.out.println(this.swarm[this.select].xcoord);
-		System.out.println(this.swarm[this.select].ycoord);
 		for (int i = 0; i < 10; i++) {
 			this.swarm[this.select].moveAnimal(this, a, 0, 0, b);
 			this.resetMoved();
-			System.out.println(this.swarm[this.select].xcoord);
-			System.out.println(this.swarm[this.select].ycoord);
-		}
-		System.out.println("finished first move");
-		
+		}		
 		this.select = (int) (Math.random() * this.swarm.length - 1);
 		// diagonal movement - works with NO, SO, SW, NO only
 		for (int i = 0; i < 200 / 4; i++) {
 			this.swarm[this.select].moveAnimal(this, 0, 8, 8, 0);
 			this.resetMoved();
 		}
-		System.out.println("finished second move");
 	}
-
-	/*
-	 * public static void printCoords(String xfile, String yfile) {
-	 * 
-	 * double[] xsaved = new double[swarmsize]; double[] ysaved = new
-	 * double[swarmsize]; for (int i = 0; i < swarm.length; i++) { xsaved[i] =
-	 * (double) Math.round(swarm[i].xcoord * 10000) / 10000; ysaved[i] = (double)
-	 * Math.round(swarm[i].ycoord * 10000) / 10000; }
-	 * 
-	 * PrintWriter pw = null; try { pw = new PrintWriter(new File(xfile+".csv")); }
-	 * catch (FileNotFoundException e) { e.printStackTrace(); } StringBuilder sbx =
-	 * new StringBuilder(); for (int i = 0; i < xsaved.length; i++) {
-	 * sbx.append(xsaved[i]); sbx.append(','); } pw.write(sbx.toString());
-	 * pw.close();
-	 * 
-	 * try { pw = new PrintWriter(new File(yfile+".csv")); } catch
-	 * (FileNotFoundException e) { e.printStackTrace(); } StringBuilder sby = new
-	 * StringBuilder(); for (int i = 0; i < xsaved.length; i++) {
-	 * sby.append(ysaved[i]); sby.append(','); } pw.write(sby.toString());
-	 * pw.close(); } // csv loader public static void loadcsv() {
-	 * 
-	 * String csvFilex = "path to x coords"; String csvFiley = "path to y coords";
-	 * String line = ""; String line2 = ""; String csvSplitBy = ","; String[]
-	 * xcoords = null; String[] ycoords = null;
-	 * 
-	 * 
-	 * try (BufferedReader br = new BufferedReader(new FileReader(csvFilex))) {
-	 * while ((line = br.readLine()) != null) { xcoords = line.split(csvSplitBy); }
-	 * } catch (IOException e) { e.printStackTrace(); }
-	 * 
-	 * try (BufferedReader br2 = new BufferedReader(new FileReader(csvFiley))) {
-	 * while ((line2 = br2.readLine()) != null) { ycoords = line2.split(csvSplitBy);
-	 * } } catch (IOException e) { e.printStackTrace(); }
-	 * 
-	 * for(int i = 0; i < xcoords.length; i++) { Animal b = new Animal(); b.xcoord =
-	 * Double.valueOf(xcoords[i]); b.ycoord = Double.valueOf(ycoords[i]); b.index =
-	 * i; swarm[i] = b; b.modifier = 1; } for (int i = 0; i < swarm.length; i++) {
-	 * neighborhood(swarm[i], 1); } }
-	 */
-
 }

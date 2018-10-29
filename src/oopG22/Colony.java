@@ -48,8 +48,6 @@ public class Colony extends Swarm {
 		for (int i1 = 0; i1 < this.swarm.length; i1++) {
 			this.neighborhood(this.swarm[i1], 1);
 		}
-		// check and repair minimal distance infringements
-		this.establishDistance();
 		this.resetMoved();
 	}
 
@@ -59,7 +57,6 @@ public class Colony extends Swarm {
 		/* NOTE: leader is used in order to save the one non-follower in the swarm instead of having to look for it each time
 		 * 		 follower itself is a property that could be called leader and inverted
 		 */
-		this.makeswarm(type, size, minD);
 		int leader = 0;
 		double xs = 0, max = 0;
 		for (int i = 0; i < this.swarm.length; i++) {
