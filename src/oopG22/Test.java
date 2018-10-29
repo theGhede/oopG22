@@ -44,34 +44,36 @@ public class Test extends JPanel implements ActionListener {
 		// TODO: fix drawing & beware of out of bounds exceptions
 		// different sizes for different animals
 		if (typeToDraw == "Animal") {
+			System.out.println("painting animals");
 			for (int i = 0; i < regular.swarm.length; i++) {
 				double x = regular.swarm[i].xcoord;
 				double y = regular.swarm[i].ycoord;
-				Shape s = new Ellipse2D.Double(x, y, 4, 4);
+				Shape a = new Ellipse2D.Double(x, y, 4, 4);
 
 				if (i % 4 == 0) {
-					g2d.setPaint(Color.gray);
+					g2d.setPaint(Color.GRAY);
 				} else {
 					g2d.setPaint(Color.BLACK);
 				}
-				g2d.fill(s);
+				g2d.fill(a);
 			}
 		}
 		if (typeToDraw == "Bird") {
+			System.out.println("painting birds");
 			Shape d = new Ellipse2D.Double(dangerX, dangerY, 8, 8);
-			g2d.setPaint(Color.red);
+			g2d.setPaint(Color.RED);
 			g2d.fill(d);
 			for (int i = 0; i < birds.swarm.length; i++) {
 				double x = birds.swarm[i].xcoord;
 				double y = birds.swarm[i].ycoord;
-				Shape s = new Ellipse2D.Double(x, y, 4, 4);
+				Shape b = new Ellipse2D.Double(x, y, 5, 5);
 
 				if (i % 4 == 0) {
-					g2d.setPaint(Color.gray);
+					g2d.setPaint(Color.GRAY);
 				} else {
 					g2d.setPaint(Color.BLACK);
 				}
-				g2d.fill(s);
+				g2d.fill(b);
 			}
 		}
 		if (typeToDraw == "Insect") {
@@ -81,7 +83,7 @@ public class Test extends JPanel implements ActionListener {
 				Shape s = new Ellipse2D.Double(x, y, 2, 2);
 
 				if (i % 3 == 0) {
-					g2d.setPaint(Color.gray);
+					g2d.setPaint(Color.GRAY);
 				} else {
 					g2d.setPaint(Color.BLACK);
 				}
@@ -93,6 +95,7 @@ public class Test extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		validate();
 		repaint();
 	}
 
@@ -108,7 +111,6 @@ public class Test extends JPanel implements ActionListener {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		// Run GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GUI();
@@ -116,15 +118,17 @@ public class Test extends JPanel implements ActionListener {
 		});
 
 		// TODO: proper starting & testing
-		regular.start(regular, 320, 12, "Animal");
+		regular.start(100, 12, "Animal");
+		System.out.println("started");
 		typeToDraw = regular.type;
+		System.out.println(typeToDraw);
 		TimeUnit.SECONDS.sleep(8);
 
-		birds.start(birds, 240, 12, "Bird", dangerX, dangerY);
+		birds.start(240, 12, "Bird", dangerX, dangerY);
 		typeToDraw = birds.type;
 		TimeUnit.SECONDS.sleep(8);
 
-		insects.start(insects, 10000, 0, "Insect");
+		insects.start(10000, 0, "Insect");
 		typeToDraw = insects.type;
 	}
 }
