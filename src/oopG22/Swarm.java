@@ -40,11 +40,12 @@ public class Swarm {
 		this.type = type;
 		this.swarmsize = size;
 		this.minDistance = minDistance;
+		this.swarm = new Animal[size];
 		double[] xvalues = new double[this.swarm.length];
 		double[] yvalues = new double[this.swarm.length];
 		for (int i = 0; i < this.swarm.length; i++) {
-			xvalues[i] = (Math.random() * 400) + 200;
-			yvalues[i] = (Math.random() * 400) + 200;
+			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) *100) / 100;
+			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) *100) / 100;
 		}
 		for (int i = 0; i < this.swarm.length; i++) {
 			Animal b = new Animal();
@@ -110,13 +111,13 @@ public class Swarm {
 	public void testDistance() {
 		for (int i = 0; i < this.swarm.length; i++) {
 			for (int j = 0; j < this.swarm.length; j++) {
-				if (this.swarm[i].distance(this.swarm[j]) < minDistance) {
+				if (this.swarm[i].distance(this.swarm[j]) < minDistance && i != j) {
 					double helpDistance = minDistance - this.swarm[i].distance(this.swarm[j]);
-					double xDistance = (this.swarm[i].ycoord - this.swarm[j].ycoord);
-					double yDistance = (this.swarm[i].xcoord - this.swarm[j].xcoord);
+					double xDistance = (this.swarm[i].xcoord - this.swarm[j].xcoord);
+					double yDistance = (this.swarm[i].ycoord - this.swarm[j].ycoord);
 					double xMove = this.distanceHelper(helpDistance, xDistance, yDistance)[0];
 					double yMove = this.distanceHelper(helpDistance, xDistance, yDistance)[1];
-
+					
 					if (this.swarm[j].ycoord < this.swarm[i].ycoord && this.swarm[j].xcoord < this.swarm[i].xcoord) {
 						this.swarm[j].quickDown((yMove));
 						this.swarm[j].quickLeft((xMove));
@@ -157,26 +158,22 @@ public class Swarm {
 	}
 
 	// method to start up prebuilt simulations
-	public void start(Swarm s, int size, int minD, String type) throws InterruptedException {
+	public void start(int size, int minD, String type) throws InterruptedException {
 		// TODO: move s.type = type; to be fully within the method?
-		s.makeswarm(type, size, minD);
-
+		this.makeswarm(type, size, minD);
+		
 		// all bird swarms behave the same ... the rules of movement are predetermined
-		s.makeswarm(type, size, minD);
-		s.select = (int) (Math.random() * s.swarm.length - 1);
-		double a = 4 + Math.random() * 14;
-		double b = 8 + Math.random() * 8;
+		this.select = (int) (Math.random() * this.swarm.length - 1);
+		double a = 4 + (double) Math.round((Math.random() * 14) *100) / 100;
+		double b = 8 + (double) Math.round((Math.random() * 8) *100) / 100;
 		for (int i = 0; i < 10; i++) {
-			s.swarm[s.select].moveAnimal(s, a, 0, 0, b);
-			s.resetMoved();
+			this.swarm[this.select].moveAnimal(this, a, 0, 0, b);
 		}
-
-		s.resetMoved();
-		s.select = (int) (Math.random() * s.swarm.length - 1);
+		
+		this.select = (int) (Math.random() * this.swarm.length - 1);
 		// diagonal movement - works with NO, SO, SW, NO only
 		for (int i = 0; i < 200 / 4; i++) {
-			s.swarm[s.select].moveAnimal(s, 0, 8, 8, 0);
-			s.resetMoved();
+			this.swarm[this.select].moveAnimal(this, 0, 8, 8, 0);
 		}
 	}
 

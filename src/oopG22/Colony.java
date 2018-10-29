@@ -11,11 +11,12 @@ public class Colony extends Swarm {
 		this.type = type;
 		this.swarmsize = size;
 		this.minDistance = minDistance;
+		this.swarm = new Insect[size];
 		double[] xvalues = new double[this.swarm.length];
 		double[] yvalues = new double[this.swarm.length];
 		for (int i = 0; i < this.swarm.length; i++) {
-			xvalues[i] = (Math.random() * 400) + 200;
-			yvalues[i] = (Math.random() * 400) + 200;
+			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) *100) / 100;
+			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) *100) / 100;
 		}
 
 		for (int i = 0; i < this.swarm.length; i++) {
@@ -36,26 +37,27 @@ public class Colony extends Swarm {
 	}
 
 	// method to start up prebuilt simulations
-	public void start(Colony s, int size, int minD, String type) throws InterruptedException {
+	@Override
+	public void start(int size, int minD, String type) throws InterruptedException {
 		/* NOTE: leader is used in order to save the one non-follower in the swarm instead of having to look for it each time
 		 * 		 follower itself is a property that could be called leader and inverted
 		 */
-		s.makeswarm(type, size, minD);
+		this.makeswarm(type, size, minD);
 		int leader = 0;
 		double xs = 0, max = 0;
-		for (int i = 0; i < s.swarm.length; i++) {
-			s.swarm[i].follower = true;
-			xs = s.swarm[i].xcoord;
+		for (int i = 0; i < this.swarm.length; i++) {
+			this.swarm[i].follower = true;
+			xs = this.swarm[i].xcoord;
 			if (xs > max) {
 				max = xs;
 				leader = i;
 			}
 		}
-		s.swarm[leader].follower = false;
-		for (int i = 0; i < s.swarm.length; i++) {
+		this.swarm[leader].follower = false;
+		for (int i = 0; i < this.swarm.length; i++) {
 			for (int j = 0; j < 70; j++) {
-				if (!s.swarm[i].follower) s.swarm[i].lane(11, 0);
-				if (s.swarm[i].follower) s.swarm[i].lane(10, s.swarm[i].ycoord - s.swarm[leader].ycoord);
+				if (!this.swarm[i].follower) this.swarm[i].lane(11, 0);
+				if (this.swarm[i].follower) this.swarm[i].lane(10, this.swarm[i].ycoord - this.swarm[leader].ycoord);
 			}
 		}
 	}
