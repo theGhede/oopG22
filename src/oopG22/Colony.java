@@ -4,8 +4,6 @@ public class Colony extends Swarm {
 
 	Insect[] swarm;
 
-	// Make swarm within the center 400x400 of the JFrame; reminder: top-right =
-	// (0,0)
 	@Override
 	public void makeswarm(String type, int size, int minDistance) {
 		this.type = type;
@@ -29,7 +27,6 @@ public class Colony extends Swarm {
 		}
 	}
 
-	// method to start up prebuilt simulations
 	@Override
 	public void start() throws InterruptedException {
 		/*

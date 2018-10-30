@@ -6,42 +6,24 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
-/*
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException; */
 
 public class Test extends JPanel implements ActionListener {
 
-	// update by repaint every 4 milliseconds (==> after the intervals found in
-	// main)
 	Timer t = new Timer(4, this);
 
 	public static String typeToDraw;
 
-	// these are public so paintComponent(g) can see them & static because the
-	// swarms are required for starting the simulations in main
 	public static Swarm regular = new Swarm();
 	public static Flock birds = new Flock();
 	public static Colony insects = new Colony();
 
-	// these coordinates for the danger to our birds needs to be set before
-	// paintComponent can be called
-	//public static double dangerX = (120 + Math.random() * 70);
-	//public static double dangerY = (450 + Math.random() * 100);
 	public static double dangerX = (double) Math.round((100 + Math.random() * 80) * 100) / 100;
 	public static double dangerY = (double) Math.round((400 + Math.random() * 150) * 100) / 100;
 
-	// draw graphics using paint(g) with Graphics2D for double variables
-	// issue: can't pass other parameters ... like the Swarm or type etc
 	public void paintComponent(Graphics g) {
-		// use this to draw the initial swarm via for loop as dots
+		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		// different sizes for different animals
 		if (typeToDraw == "Animal") {
 			for (int i = 0; i < regular.swarm.length; i++) {
 				double x = regular.swarm[i].xcoord;
@@ -64,7 +46,7 @@ public class Test extends JPanel implements ActionListener {
 				double x = birds.swarm[i].xcoord;
 				double y = birds.swarm[i].ycoord;
 				Shape b = new Ellipse2D.Double(x, y, 5, 5);
-				
+
 				if (i % 4 == 0) {
 					g2d.setPaint(Color.GRAY);
 				} else {
@@ -90,12 +72,10 @@ public class Test extends JPanel implements ActionListener {
 				g2d.fill(s);
 			}
 		}
-		// start Timer t
 		t.start();
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		revalidate();
 		repaint();
 	}
 
@@ -116,9 +96,7 @@ public class Test extends JPanel implements ActionListener {
 				GUI();
 			}
 		});
-		
-		/* NOTE: we are aware that setting and using swarm.type can be replaced with hasClass(),
-		 * 		 in our mind this method simply is more appearant and readable and checks itself */
+
 		regular.makeswarm("Animal", 320, 12);
 		typeToDraw = regular.type;
 		regular.start();

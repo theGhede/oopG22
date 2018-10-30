@@ -1,16 +1,12 @@
 package oopG22;
 
 public class Swarm {
-	// what kind of swarm it is
 	String type;
 	int swarmsize;
 	int minDistance;
-	// selects first animal to move (type dependent rules)
 	int select;
 	Animal[] swarm;
 
-	// Aufbau der Nachbarschaft eines Vogels mittels "Sonar" bis (5-20) Nachbarn
-	// gefunden wurden
 	public void neighborhood(Animal b, int radius) {
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
@@ -34,8 +30,6 @@ public class Swarm {
 		}
 	}
 
-	// Make swarm within the center 400x400 of the JFrame; reminder: top-right =
-	// (0,0)
 	public void makeswarm(String type, int size, int minDistance) {
 		this.type = type;
 		this.swarmsize = size;
@@ -44,8 +38,8 @@ public class Swarm {
 		double[] xvalues = new double[this.swarm.length];
 		double[] yvalues = new double[this.swarm.length];
 		for (int i = 0; i < this.swarm.length; i++) {
-			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) *100) / 100;
-			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) *100) / 100;
+			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
+			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
 		}
 		for (int i = 0; i < this.swarm.length; i++) {
 			Animal b = new Animal();
@@ -55,11 +49,9 @@ public class Swarm {
 			this.swarm[i] = b;
 			b.modifier = 1;
 		}
-		// Find neighbors for each Animal
 		for (int i = 0; i < this.swarm.length; i++) {
 			this.neighborhood(this.swarm[i], 1);
 		}
-		// check and repair minimal distance infringements
 		this.establishDistance();
 		this.resetMoved();
 	}
@@ -74,11 +66,8 @@ public class Swarm {
 		}
 	}
 
-	// checks if testDistance & moves defined there are needed - this takes a couple
-	// of seconds while the randomized swarm is being made
 	public void establishDistance() {
 		if (this.minDistance != 0) {
-			// cap improves runtime in cases where one node is caught on the line between two nodes
 			int cap = this.swarmsize / 5;
 			for (int i = 0; i < this.swarm.length; i++) {
 				for (int j = 0; j < this.swarm.length; j++) {
@@ -91,9 +80,7 @@ public class Swarm {
 		}
 	}
 
-	// angle etc in eigene Methode ausgelagert
 	public double[] distanceHelper(double helpDistance, double xDistance, double yDistance) {
-		// [xMove, yMove]
 		double[] res = new double[2];
 		double angle = Math.atan(xDistance / yDistance);
 		double xMove = helpDistance * Math.sin(angle);
@@ -103,9 +90,6 @@ public class Swarm {
 		return res;
 	}
 
-	// Behandlung von Mindestabstandsverletzungen
-	// Die Magnitüde & Richtung der Bewegung richtet sich nach helpDistance und
-	// geschieht entlang der Geraden zwischen Punkt i & j
 	public void testDistance() {
 		for (int i = 0; i < this.swarm.length; i++) {
 			for (int j = 0; j < this.swarm.length; j++) {
@@ -115,7 +99,7 @@ public class Swarm {
 					double yDistance = (this.swarm[i].ycoord - this.swarm[j].ycoord);
 					double xMove = this.distanceHelper(helpDistance, xDistance, yDistance)[0];
 					double yMove = this.distanceHelper(helpDistance, xDistance, yDistance)[1];
-					
+
 					if (this.swarm[j].ycoord < this.swarm[i].ycoord && this.swarm[j].xcoord < this.swarm[i].xcoord) {
 						this.swarm[j].quickDown((yMove));
 						this.swarm[j].quickLeft((xMove));
@@ -131,19 +115,13 @@ public class Swarm {
 							&& this.swarm[j].xcoord < this.swarm[i].xcoord) {
 						this.swarm[j].quickUp((yMove));
 						this.swarm[j].quickLeft((xMove));
-					}
-					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet,
-					// sonst nach rechts
-					else if (this.swarm[j].ycoord == this.swarm[i].ycoord) {
+					} else if (this.swarm[j].ycoord == this.swarm[i].ycoord) {
 						if (this.swarm[j].xcoord < this.swarm[i].xcoord) {
 							this.swarm[j].quickLeft(helpDistance);
 						} else if (this.swarm[j].xcoord > this.swarm[i].xcoord) {
 							this.swarm[j].quickRight(helpDistance);
 						}
-					}
-					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst
-					// nach oben
-					else if (this.swarm[j].xcoord == this.swarm[i].xcoord) {
+					} else if (this.swarm[j].xcoord == this.swarm[i].xcoord) {
 						if (this.swarm[j].ycoord < this.swarm[i].ycoord) {
 							this.swarm[j].quickDown(helpDistance);
 						} else if (this.swarm[j].ycoord > this.swarm[i].ycoord) {
@@ -155,19 +133,16 @@ public class Swarm {
 		}
 	}
 
-	// method to start up prebuilt simulations
-	public void start() throws InterruptedException {		
-		
-		// all bird swarms behave the same ... the rules of movement are predetermined
+	public void start() throws InterruptedException {
+
 		this.select = (int) (Math.random() * this.swarm.length - 1);
-		double a = 4 + (double) Math.round((Math.random() * 14) *100) / 100;
-		double b = 8 + (double) Math.round((Math.random() * 8) *100) / 100;
+		double a = 4 + (double) Math.round((Math.random() * 14) * 100) / 100;
+		double b = 8 + (double) Math.round((Math.random() * 8) * 100) / 100;
 		for (int i = 0; i < 10; i++) {
 			this.swarm[this.select].moveAnimal(this, a, 0, 0, b);
 			this.resetMoved();
-		}		
+		}
 		this.select = (int) (Math.random() * this.swarm.length - 1);
-		// diagonal movement - works with NO, SO, SW, NO only
 		for (int i = 0; i < 10; i++) {
 			this.swarm[this.select].moveAnimal(this, 0, 8, 8, 0);
 			this.resetMoved();
