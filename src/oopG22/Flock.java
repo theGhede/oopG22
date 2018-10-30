@@ -28,8 +28,6 @@ public class Flock extends Swarm {
 		}
 	}
 
-	// Make swarm within the center 400x400 of the JFrame; reminder: top-right =
-	// (0,0)
 	@Override
 	public void makeswarm(String type, int size, int minDistance) {
 		this.type = type;
@@ -51,11 +49,9 @@ public class Flock extends Swarm {
 			this.swarm[i] = b;
 			b.modifier = 1;
 		}
-		// Find neighbors for each Animal
 		for (int i = 0; i < this.swarm.length; i++) {
 			this.neighborhood(this.swarm[i], 1);
 		}
-		// check and repair minimal distance infringements
 		this.establishDistance();
 		this.resetMoved();
 	}
@@ -97,8 +93,6 @@ public class Flock extends Swarm {
 						this.swarm[j].quickUp((yMove));
 						this.swarm[j].quickLeft((xMove));
 					}
-					// Vogel wird nach links bewegt, falls er sich rechts von dem Anderen befindet,
-					// sonst nach rechts
 					else if (this.swarm[j].ycoord == this.swarm[i].ycoord) {
 						if (this.swarm[j].xcoord < this.swarm[i].xcoord) {
 							this.swarm[j].quickLeft(helpDistance);
@@ -106,8 +100,6 @@ public class Flock extends Swarm {
 							this.swarm[j].quickRight(helpDistance);
 						}
 					}
-					// Vogel wird nach unten bewegt, falls er sich unter dem Anderen befindet, sonst
-					// nach oben
 					else if (this.swarm[j].xcoord == this.swarm[i].xcoord) {
 						if (this.swarm[j].ycoord < this.swarm[i].ycoord) {
 							this.swarm[j].quickDown(helpDistance);
@@ -120,13 +112,9 @@ public class Flock extends Swarm {
 		}
 	}
 
-	// checks if testDistance & moves defined there are needed - this takes a couple
-	// of seconds while the randomized swarm is being made
 	@Override
 	public void establishDistance() {
 		if (this.minDistance != 0) {
-			// cap improves runtime in cases where one node is caught on the line between
-			// two nodes
 			int cap = this.swarmsize / 5;
 			for (int i = 0; i < this.swarm.length; i++) {
 				for (int j = 0; j < this.swarm.length; j++) {
@@ -139,9 +127,7 @@ public class Flock extends Swarm {
 		}
 	}
 
-	// method to start up prebuilt simulations
 	public void start(double dangerX, double dangerY) throws InterruptedException {
-		// stressed & tired
 		for (int i = 0; i < this.swarm.length; i++) {
 			this.swarm[i].stressed = true;
 			this.swarm[i].danger(dangerX, dangerY);
@@ -157,16 +143,12 @@ public class Flock extends Swarm {
 				min = dist;
 			}
 		}
-		// the closest bird to danger starts fleeing
 		this.select = closest;
 		double x = this.swarm[closest].xcoord;
 		double y = this.swarm[closest].ycoord;
 
-		// moveRight = x1, moveLeft = x2, moveUp = y1, moveDown = y2
-		// danger is east & south or equal
-		/*
-		 * NOTE: all animals start moving away with 20* (90 - dist), where dist is the
-		 * distance of the bird sensing the danger (= closest to it) - so the further
+		/* NOTE: all animals start moving away with 20* (90 - dist), where dist is the
+		 * distance of the bird sensing the danger to the danger (= closest to it) - so the further
 		 * away the danger the slower the first and overall movement, additionally all
 		 * birds in a certain radius to the danger are stressed and fly faster on an
 		 * individual basis
@@ -211,7 +193,6 @@ public class Flock extends Swarm {
 		double[] center = new double[2];
 		double averageX = 0, averageY = 0;
 		for (int i = 0; i < this.swarm.length; i++) {
-			// center & tired movement
 			this.swarm[i].stressed = false;
 			this.swarm[i].modifier = 1;
 			averageX += this.swarm[i].xcoord;

@@ -2,7 +2,6 @@ package oopG22;
 
 import java.util.concurrent.TimeUnit;
 
-// Tiere bestehen aus Koordinaten & einer Nachbarschaft; jeder Vogel hat für einfacheren Zugriff einen ID als index gespeichert
 public class Animal {
 
 	double xcoord;
@@ -10,8 +9,6 @@ public class Animal {
 	Animal[] neighbors;
 	int index;
 	boolean moved;
-	// this lets us manipulate the range of each animals movement without
-	// manipulating the movement instructions themselves
 	double modifier;
 
 	void moveUp(double k) throws InterruptedException {
@@ -46,9 +43,6 @@ public class Animal {
 		}
 	}
 
-	// quicker methods for keeping minimal distance while making swarms
-	// options: some amount of almost duplicate code or slower swarm generation or
-	// an additional parameter
 	void quickUp(double k) {
 		double move = this.ycoord + k;
 		this.ycoord = move;
@@ -69,11 +63,6 @@ public class Animal {
 		this.xcoord = move;
 	}
 
-	/* Im Flug wird überprüft ob der sich gerade fortbewegende Vogel zu nah an
-	 * andere annähert Rekursiv fliegen alle Tiere in alle Nachbarschaften mit
-	 * gleicher Entfernung in die gleiche Richtung Angestoßen wird die Bewegung
-	 * durch einen einzelnes gewähltes Tier
-	 */
 	public void moveAnimal(Swarm s, double x1, double x2, double y1, double y2) throws InterruptedException {
 		if (!this.moved) {
 			this.moveUp(y1);
@@ -92,7 +81,6 @@ public class Animal {
 		}
 	}
 
-	// Berechnen der euklidischen Distanz
 	public double distance(Animal b) {
 		double xdist = Math.pow((this.xcoord - b.xcoord), 2);
 		double ydist = Math.pow((this.ycoord - b.ycoord), 2);
