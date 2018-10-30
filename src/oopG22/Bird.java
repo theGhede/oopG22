@@ -2,11 +2,11 @@ package oopG22;
 
 // regular Animal including new behavior for tiring and stress
 public class Bird extends Animal {
-	
+
 	Bird[] neighbors;
 	boolean stressed;
 	boolean tired;
-	
+
 	public void moveAnimal(Flock s, double x1, double x2, double y1, double y2) throws InterruptedException {
 		if (!this.moved) {
 			this.moveUp(y1);
@@ -52,7 +52,7 @@ public class Bird extends Animal {
 		}
 	}
 
-	public void recenter(double[] center) throws InterruptedException {
+	public void recenter(Flock s, double[] center) throws InterruptedException {
 		double x = center[0];
 		double y = center[1];
 		if (!this.tired) {
@@ -68,18 +68,26 @@ public class Bird extends Animal {
 			if (this.ycoord - y < 0)
 				moveUp(Math.min(20, y - this.ycoord));
 		}
+		double pushed = 0, min = 800;
 		if (this.tired) {
+			for (int i = 0; i < s.swarm.length; i++) {
+				if (!s.swarm[i].tired && this.distance(s.swarm[i]) < min) {
+					min = this.distance(s.swarm[i]);
+					pushed = 2 * Math.sqrt(min);
+				}
+			}
 			if (this.xcoord - x > 0)
-				moveRight(16);
+				moveRight(pushed);
 
 			if (this.xcoord - x < 0)
-				moveLeft(16);
+				moveLeft(pushed);
 
 			if (this.ycoord - y > 0)
-				moveUp(16);
+				moveUp(pushed);
 
 			if (this.ycoord - y < 0)
-				moveDown(16);
+				moveDown(pushed);
 		}
+		s.movingDistance(this);
 	}
 }

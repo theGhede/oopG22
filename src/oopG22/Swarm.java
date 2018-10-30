@@ -168,7 +168,7 @@ public class Swarm {
 		}		
 		this.select = (int) (Math.random() * this.swarm.length - 1);
 		// diagonal movement - works with NO, SO, SW, NO only
-		for (int i = 0; i < 200 / 4; i++) {
+		for (int i = 0; i < 10; i++) {
 			this.swarm[this.select].moveAnimal(this, 0, 8, 8, 0);
 			this.resetMoved();
 		}

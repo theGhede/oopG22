@@ -3,23 +3,6 @@ package oopG22;
 public class Colony extends Swarm {
 
 	Insect[] swarm;
-	
-	public void neighborhood(Insect b, int radius) {
-		int j = 0;
-		int amount = (int) (5 + (15 * Math.random()));
-		Insect[] neighbors = new Insect[amount];
-		for (int i = 0; i < this.swarm.length; i++) {
-			if (i != b.index && j < amount && b.distance(this.swarm[i]) <= radius) {
-				neighbors[j] = this.swarm[i];
-				j++;
-			}
-		}
-		if (j < amount) {
-			this.neighborhood(b, radius + 1);
-		} else {
-			b.neighbors = neighbors;
-		}
-	}
 
 	// Make swarm within the center 400x400 of the JFrame; reminder: top-right =
 	// (0,0)
@@ -32,8 +15,8 @@ public class Colony extends Swarm {
 		double[] xvalues = new double[this.swarm.length];
 		double[] yvalues = new double[this.swarm.length];
 		for (int i = 0; i < this.swarm.length; i++) {
-			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) *100) / 100;
-			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) *100) / 100;
+			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
+			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
 		}
 
 		for (int i = 0; i < this.swarm.length; i++) {
@@ -44,18 +27,15 @@ public class Colony extends Swarm {
 			this.swarm[i] = b;
 			b.modifier = 1;
 		}
-		// Find neighbors for each Animal
-		for (int i1 = 0; i1 < this.swarm.length; i1++) {
-			this.neighborhood(this.swarm[i1], 1);
-		}
-		this.resetMoved();
 	}
 
 	// method to start up prebuilt simulations
 	@Override
 	public void start() throws InterruptedException {
-		/* NOTE: leader is used in order to save the one non-follower in the swarm instead of having to look for it each time
-		 * 		 follower itself is a property that could be called leader and inverted
+		/*
+		 * NOTE: leader is used in order to save the one non-follower in the swarm
+		 * instead of having to look for it each time follower itself is a property that
+		 * could be called leader and inverted
 		 */
 		int leader = 0;
 		double xs = 0, max = 0;
@@ -68,10 +48,14 @@ public class Colony extends Swarm {
 			}
 		}
 		this.swarm[leader].follower = false;
-		for (int i = 0; i < this.swarm.length; i++) {
-			for (int j = 0; j < 70; j++) {
-				if (!this.swarm[i].follower) this.swarm[i].lane(11, 0);
-				if (this.swarm[i].follower) this.swarm[i].lane(10, this.swarm[i].ycoord - this.swarm[leader].ycoord);
+		for (int j = 0; j < 38; j++) {
+			for (int i = 0; i < this.swarm.length; i++) {
+				if (!this.swarm[i].follower)
+					this.swarm[i].lane(19, (double)Math.round(Math.random() * 6) - 3);
+				if (this.swarm[i].follower && this.swarm[i].ycoord - this.swarm[leader].ycoord > 0)
+					this.swarm[i].lane(16, (double)Math.min(16, this.swarm[i].ycoord - this.swarm[leader].ycoord));
+				if (this.swarm[i].follower && this.swarm[i].ycoord - this.swarm[leader].ycoord < 0)
+					this.swarm[i].lane(16, (double)Math.max(-16, this.swarm[i].ycoord - this.swarm[leader].ycoord));
 			}
 		}
 	}
