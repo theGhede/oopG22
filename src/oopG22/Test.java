@@ -24,15 +24,16 @@ public class Test extends JPanel implements ActionListener {
 
 	// these are public so paintComponent(g) can see them & static because the
 	// swarms are required for starting the simulations in main
-	// TODO: find a way for this to not be necessary for paintComponent(g)  
 	public static Swarm regular = new Swarm();
 	public static Flock birds = new Flock();
 	public static Colony insects = new Colony();
 
 	// these coordinates for the danger to our birds needs to be set before
 	// paintComponent can be called
-	public static double dangerX = (120 + Math.random() * 70);
-	public static double dangerY = (450 + Math.random() * 100);
+	//public static double dangerX = (120 + Math.random() * 70);
+	//public static double dangerY = (450 + Math.random() * 100);
+	public static double dangerX = (double) Math.round((100 + Math.random() * 80) * 100) / 100;
+	public static double dangerY = (double) Math.round((400 + Math.random() * 150) * 100) / 100;
 
 	// draw graphics using paint(g) with Graphics2D for double variables
 	// issue: can't pass other parameters ... like the Swarm or type etc
@@ -40,11 +41,8 @@ public class Test extends JPanel implements ActionListener {
 		// use this to draw the initial swarm via for loop as dots
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		// TODO: fix drawing & beware of out of bounds exceptions
 		// different sizes for different animals
 		if (typeToDraw == "Animal") {
-			//System.out.println("painting animals");
 			for (int i = 0; i < regular.swarm.length; i++) {
 				double x = regular.swarm[i].xcoord;
 				double y = regular.swarm[i].ycoord;
@@ -59,7 +57,6 @@ public class Test extends JPanel implements ActionListener {
 			}
 		}
 		if (typeToDraw == "Bird") {
-			//System.out.println("painting birds");
 			Shape d = new Ellipse2D.Double(dangerX, dangerY, 12, 12);
 			g2d.setPaint(Color.RED);
 			g2d.fill(d);
@@ -67,11 +64,14 @@ public class Test extends JPanel implements ActionListener {
 				double x = birds.swarm[i].xcoord;
 				double y = birds.swarm[i].ycoord;
 				Shape b = new Ellipse2D.Double(x, y, 5, 5);
-
+				
 				if (i % 4 == 0) {
 					g2d.setPaint(Color.GRAY);
 				} else {
 					g2d.setPaint(Color.BLACK);
+				}
+				if (i == birds.select) {
+					g2d.setPaint(Color.RED);
 				}
 				g2d.fill(b);
 			}
@@ -95,7 +95,7 @@ public class Test extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		validate();
+		revalidate();
 		repaint();
 	}
 
@@ -116,29 +116,21 @@ public class Test extends JPanel implements ActionListener {
 				GUI();
 			}
 		});
-
-		// TODO: proper starting & testing
-		/*regular.makeswarm("Animal", 320, 12);
-		System.out.println("made animal swarm");
+		
+		/* NOTE: we are aware that setting and using swarm.type can be replaced with hasClass(),
+		 * 		 in our mind this method simply is more appearant and readable and checks itself */
+		regular.makeswarm("Animal", 320, 12);
 		typeToDraw = regular.type;
-		System.out.println("type: "+typeToDraw);
 		regular.start();
-		System.out.println("started");
-		TimeUnit.SECONDS.sleep(4);*/
+		TimeUnit.SECONDS.sleep(4);
 
-		birds.makeswarm("Bird", 240, 12);
-		System.out.println("made bird swarm");
+		birds.makeswarm("Bird", 240, 14);
 		typeToDraw = birds.type;
-		System.out.println("type: "+typeToDraw);
 		birds.start(dangerX, dangerY);
-		System.out.println("started");
 		TimeUnit.SECONDS.sleep(4);
 
 		insects.makeswarm("Insect", 10000, 0);
-		System.out.println("made insect swarm");
 		typeToDraw = insects.type;
-		birds.start();
-		System.out.println("started");
-		System.out.println("type: "+typeToDraw);
+		insects.start();
 	}
 }
