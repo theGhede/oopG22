@@ -122,10 +122,9 @@ public class Test extends JPanel implements ActionListener {
 			}
 		});
 
-<<<<<<< HEAD
+
 		regular.makeswarm("Animal", 20, 12);
-=======
->>>>>>> d0d33179f67d3b9e5ec76d056201732d87051d97
+
 		/*
 		 * NOTE: While the program has no input at runtime, testing and designing the
 		 * simulations is much easier by having makeswarm use certain parameters that
@@ -155,10 +154,9 @@ public class Test extends JPanel implements ActionListener {
 		regular.start();
 		TimeUnit.SECONDS.sleep(4);
 
-<<<<<<< HEAD
+
 		birds.makeswarm("Bird", 20, 14);
-=======
->>>>>>> d0d33179f67d3b9e5ec76d056201732d87051d97
+
 		birds.makeswarm("Bird", 240, 14);
 		/* assertion { birds.swarmsize >= 20 } & { birds.minDistance >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
@@ -167,10 +165,9 @@ public class Test extends JPanel implements ActionListener {
 		birds.start(dangerX, dangerY);
 		TimeUnit.SECONDS.sleep(4);
 
-<<<<<<< HEAD
+
 		insects.makeswarm("Insect", 100, 0);
-=======
->>>>>>> d0d33179f67d3b9e5ec76d056201732d87051d97
+
 		insects.makeswarm("Insect", 10000, 0);
 		/* assertion { regular.swarmsize >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
