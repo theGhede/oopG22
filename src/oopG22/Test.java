@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 public class Test extends JPanel implements ActionListener {
-
 	Timer t = new Timer(4, this);
 
 	public static String typeToDraw;
@@ -97,17 +96,17 @@ public class Test extends JPanel implements ActionListener {
 			}
 		});
 
-		regular.makeswarm("Animal", 320, 12);
+		regular.makeswarm("Animal", 20, 12);
 		typeToDraw = regular.type;
 		regular.start();
 		TimeUnit.SECONDS.sleep(4);
 
-		birds.makeswarm("Bird", 240, 14);
+		birds.makeswarm("Bird", 20, 14);
 		typeToDraw = birds.type;
 		birds.start(dangerX, dangerY);
 		TimeUnit.SECONDS.sleep(4);
 
-		insects.makeswarm("Insect", 10000, 0);
+		insects.makeswarm("Insect", 100, 0);
 		typeToDraw = insects.type;
 		insects.start();
 	}
