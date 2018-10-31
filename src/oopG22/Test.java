@@ -122,9 +122,7 @@ public class Test extends JPanel implements ActionListener {
 			}
 		});
 
-<<<<<<< HEAD
 		regular.makeswarm("Animal", 20, 12);
-=======
 		/*
 		 * NOTE: While the program has no input at runtime, testing and designing the
 		 * simulations is much easier by having makeswarm use certain parameters that
@@ -150,26 +148,20 @@ public class Test extends JPanel implements ActionListener {
 		/* BAD: object coupling could've been improved by implementing a getter method for type,
 		 * however this would add complexity without actually reaping the benefits from this
 		 * encapsulation */
->>>>>>> ecdb45e9d92850713b981537170cd364ee38dbc1
 		typeToDraw = regular.type;
 		regular.start();
 		TimeUnit.SECONDS.sleep(4);
 
-<<<<<<< HEAD
 		birds.makeswarm("Bird", 20, 14);
-=======
 		birds.makeswarm("Bird", 240, 14);
 		/* assertion { birds.swarmsize >= 20 } & { birds.minDistance >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
 		 * birds.swarm.length & creation of a neighborhood requires swarmsize to be >= 20 */
->>>>>>> ecdb45e9d92850713b981537170cd364ee38dbc1
 		typeToDraw = birds.type;
 		birds.start(dangerX, dangerY);
 		TimeUnit.SECONDS.sleep(4);
 
-<<<<<<< HEAD
 		insects.makeswarm("Insect", 100, 0);
-=======
 		insects.makeswarm("Insect", 10000, 0);
 		/* assertion { regular.swarmsize >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
@@ -177,7 +169,6 @@ public class Test extends JPanel implements ActionListener {
 		 * minimal distance is a property inherited from Swarm & helps understanding,
 		 * however Colony and Insect work fine if any number would be chosen;
 		 * the fact that it's there and 0 is mainly for transparency */
->>>>>>> ecdb45e9d92850713b981537170cd364ee38dbc1
 		typeToDraw = insects.type;
 		insects.start();
 	}
