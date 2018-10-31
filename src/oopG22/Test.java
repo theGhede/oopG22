@@ -182,3 +182,10 @@ public class Test extends JPanel implements ActionListener {
 		insects.start();
 	}
 }
+
+/* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
+ * Elias Nachbaur (01634010): Comments for version from last Wednesday, made testDistance and it's calculations
+ * Florian Fusstetter (00709759): Comments for Test, Animal & Swarm, Swing, start & makeswarm, distance (keep & moving),
+ * 								  testDistance debugging, restructuring into Test + 3 class pairs
+ * Ignjat Karanovic (01529940): Comments for Bird, Flock, Insect & Colony, neighborhood, center for Flock, moveBird,
+ * 							    testDistance debugging */

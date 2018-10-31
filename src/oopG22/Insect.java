@@ -3,7 +3,7 @@ package oopG22;
 import java.util.concurrent.TimeUnit;
 /* GUT: Unterklassen darstellen eine hohe Klassenzusammenhalt. Mit Unterklassen unterscheiden wir verschiede Sorten
  Super Klassen, eine Insekt Colony unterscheidet sich von ein Bird Flock. Das könnte einfacher gemacht werden, ohne
- Unterklassen, aber dann würde das Program weniger Details haben & der Klassenzusammenhang würde stark darunter leiden.
+ Unterklassen, aber dann würde das Program weniger Details haben & der Klassenzusammenhang würde darunter leiden.
 */
 public class Insect extends Animal {
 	
