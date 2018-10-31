@@ -3,8 +3,9 @@ package oopG22;
 public class Colony extends Swarm {
 
 	Insect[] swarm;
-/* GUT:  makeswarm und star sind die Methode,
-	die von Superklasse Swarm vererbt wurden */
+/* GUT:  Dynamishes Binden.Eine Colony ist ein Swarm von insekten. Man könnte weniger Code schreiben und diese Methoden
+	vererben, aber so könnte man verschiede Sorten von Swarm nicht darstellen.
+	*/
 	@Override
 	public void makeswarm(String type, int size, int minDistance) {
 		this.type = type;

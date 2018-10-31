@@ -1,16 +1,13 @@
 package oopG22;
 
 public class Flock extends Swarm {
-	/* SCHLECHT: Objekt variablen von Flock und Swarm sind package, daher ist die Objektkopplung stark, es könnte
-           schwach sein wenn mann die variablen auf private setzt, dann bräuchte man Getters.
+	/* NOITZE: Objekt variablen von Flock und Swarm sind package, potentiel kann die Objektkopplung stärker werden,
+	   sie könnten private sein, dann bräuchte man Getters.
     */
 	Bird[] swarm;
-	/* FEHLER: es muss mindestens 20 Vögel in ein Flock sein, damit die Mehtode neighborhood funtionieren kann, weil
-	   die Methode neighborhood 5-20 Nachbarn sucht, falls die Methode 20 Nachbarn sucht, aber weniger Vögel gibt,
-	   dann passiert ein Fehler
-	   GUT: Die Methode neighborhood ist dynamisch verbindet. Diese Methode gibt es sowohl in Swarm, als auch in Flock.
-	   Das erleichtert die Berechnung von neighborhood, überall wo wir das brauchen, unabhängig davon, ob es ein Swarm
-	   oder Flock ist. Falls zwei Verschiede Methode implementiert wurden, würde es nicht übersichtlich sein.
+	/* NOTIZE: assesrtion { birds.swarmsize >= 20 } schon früher etwähnt.
+	   GUT: Die Methode neighborhood ist  overloaded und statisch verbunden. Diese Methode gibt es sowohl in Swarm, als auch in Flock.
+	   Das erleichtert die Berechnung von 2 verschiedene neighborhoods, Swarm und Flock neighborhood
 	*/
 
 	public void neighborhood(Bird b, int radius) {
@@ -29,23 +26,23 @@ public class Flock extends Swarm {
 			b.neighbors = neighbors;
 		}
 	}
- 	/* GUT: resetMoved, makeswarm, testDistance, establishDistance sind die Methode,
- 	 die von Superklasse Swarm vererbt wurden */
+ 	/* GUT: Dynamisches Binden resetMoved, makeswarm, testDistance, establishDistance sind die Methode,
+ 	 die dynamisch verbunden sind mit der Methoden von Superklasse Swarm, so unterscheidet man Methoden für Bird Array,
+ 	  und für Swarm Array.
+ 	  */
 	@Override
 	public void resetMoved() {
 		for (int i = 0; i < this.swarm.length; i++) {
 			this.swarm[i].moved = false;
 		}
 	}
-	/* FEHLER: swarm.length darf nicht negative sein, sonst bekommen wir ein Error. das gilt für alle Methoden
-		die swarm.length benutzen.
-	 */
+
 	@Override
 	public void makeswarm(String type, int size, int minDistance) {
 		this.type = type;
 		this.swarmsize = size;
 		this.minDistance = minDistance;
-		this.swarm = new Bird[size];
+		this.swarm = new Bird[size]; // tu je razlika
 		double[] xvalues = new double[this.swarm.length];
 		double[] yvalues = new double[this.swarm.length];
 		for (int i = 0; i < this.swarm.length; i++) {
@@ -79,9 +76,7 @@ public class Flock extends Swarm {
 			}
 		}
 	}
-	/* FEHLER: helpDistance darf nicht negative sein, sonst bekommen wir ein Error, weil sich ein Punkt nicht um ein
-		negatives Anzahl von Pixel bewegen kann.
-	*/
+
 	@Override
 	public void testDistance() {
 		for (int i = 0; i < this.swarm.length; i++) {
@@ -142,7 +137,7 @@ public class Flock extends Swarm {
 			}
 		}
 	}
-	//Good: Dynamisches Binden. Methode start befindet sich auch in der Klasse Swarm, aber mit unterschiedlichen Prametern
+	//Good: Overloaded. Methode start befindet sich auch in der Klasse Swarm, aber mit unterschiedlichen Prametern.
 	public void start(double dangerX, double dangerY) throws InterruptedException {
 		for (int i = 0; i < this.swarm.length; i++) {
 			this.swarm[i].stressed = true;
