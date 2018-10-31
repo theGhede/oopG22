@@ -8,7 +8,7 @@ public class Flock extends Swarm {
 	/* FEHLER: es muss mindestens 20 Vögel in ein Flock sein, damit die Mehtode neighborhood funtionieren kann, weil
 	   die Methode neighborhood 5-20 Nachbarn sucht, falls die Methode 20 Nachbarn sucht, aber weniger Vögel gibt,
 	   dann passiert ein Fehler
-	   GOOD: Die Methode neighborhood ist dynamisch verbindet. Diese Methode gibt es sowohl in Swarm, als auch in Flock.
+	   GUT: Die Methode neighborhood ist dynamisch verbindet. Diese Methode gibt es sowohl in Swarm, als auch in Flock.
 	   Das erleichtert die Berechnung von neighborhood, überall wo wir das brauchen, unabhängig davon, ob es ein Swarm
 	   oder Flock ist. Falls zwei Verschiede Methode implementiert wurden, würde es nicht übersichtlich sein.
 	*/
