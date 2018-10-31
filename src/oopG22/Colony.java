@@ -3,7 +3,7 @@ package oopG22;
 public class Colony extends Swarm {
 
 	Insect[] swarm;
-/* GUT:  makeswarm und star sind die Methode,
+/* GUT:  makeswarm und start sind die Methode,
 	die von Superklasse Swarm vererbt wurden */
 	@Override
 	public void makeswarm(String type, int size, int minDistance) {
