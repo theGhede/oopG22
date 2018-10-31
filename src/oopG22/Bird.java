@@ -1,11 +1,20 @@
 package oopG22;
 
 public class Bird extends Animal {
+//overloaded kad su ista imena metoda ali drugi parametri, ako ima zagrada punih onda kompajl odlucuje, ako nema run time
 
+	/* GUT: Die Methode distance wurde von Animal vererbt, das ist eine Methode die Klassenzusammenhält erhöht,
+		die Methode wird ganz oft benutzt. Genau so wie alle move Methoden.
+	*/
+	/* SCHLECHT: Objekt variablen von Bird und Animal sind package, daher ist die Objektkopplung stark, es könnte
+	   schwach sein wenn mann die variablen auf private setzt, dann bräuchte man Getters.
+	 */
 	Bird[] neighbors;
 	boolean stressed;
 	boolean tired;
-
+	/* GUT: dynamishes Binden verwendet. Die Methode moveAnimal befindet sich sowohl in Klasse Bird als auch in die
+	Klasse Anmial. Anstatt dass wir 2 verschieden Methode haben, was unübersichtlich ist, benutzen wir die gleiche
+	Methode sowohl für ein Swarm, als auch für ein Flock */
 	public void moveAnimal(Flock s, double x1, double x2, double y1, double y2) throws InterruptedException {
 		if (!this.moved) {
 			this.moveUp(y1);
@@ -46,6 +55,8 @@ public class Bird extends Animal {
 		}
 	}
 
+	/* GUT: eine Objektmethode die Klassenzusammenhält erhöht. Recenter ist eine Methode, die auch wie andere
+	   Objektmethoden, von Objekten ausgeführt werden kann. */
 	public void recenter(Flock s, double[] center) throws InterruptedException {
 		double x = center[0];
 		double y = center[1];
