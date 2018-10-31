@@ -1,7 +1,6 @@
 package oopG22;
 
 public class Bird extends Animal {
-//overloaded kad su ista imena metoda ali drugi parametri, ako ima zagrada punih onda kompajl odlucuje, ako nema run time
 
 	/* GUT: Die Methode distance wurde von Animal vererbt, das ist eine Methode die Klassenzusammenhält erhöht,
 		die Methode wird ganz oft benutzt. Genau so wie alle move Methoden.
