@@ -160,6 +160,7 @@ public class Swarm {
 			for (int j = 0; j < this.swarm.length; j++) {
 				if (this.swarm[i].distance(this.swarm[j]) < minDistance && i != j) {
 					double helpDistance = minDistance - this.swarm[i].distance(this.swarm[j]);
+					// assertion { helpDistance > 0 }
 					double xDistance = (this.swarm[i].xcoord - this.swarm[j].xcoord);
 					double yDistance = (this.swarm[i].ycoord - this.swarm[j].ycoord);
 					double xMove = this.distanceHelper(helpDistance, xDistance, yDistance)[0];
