@@ -7,8 +7,18 @@ public class Test {
 	 * 					and all PackAnimals are HerdAnimals and Mammals - HerdMammal helps distinguish HerdAnimals (Bird/Mammal)
 	 * 	- ShoalingFish: without this either no or all Fish would have to be swarming
 	 * */
+	
+	/*
+	 * TODO: missing subtyping
+	 */
 
 	public static void main(String[] args) {
 		
 	}
 }
+
+/* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
+ * Elias Nachbaur (01634010): 
+ * Florian Fusstetter (00709759): 
+ * Ignjat Karanovic (01529940):
+ */
