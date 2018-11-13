@@ -1,6 +1,6 @@
 package Aufgabe4;
 
-public interface MigratoryLocust {
+public interface MigratoryLocust extends Insect, SwarmAnimal {
 
     void touch();
 }

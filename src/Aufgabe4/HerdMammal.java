@@ -1,5 +1,5 @@
 package Aufgabe4;
 
-public interface HerdMammal {
+public interface HerdMammal extends Mammal, HerdAnimal{
 
 }

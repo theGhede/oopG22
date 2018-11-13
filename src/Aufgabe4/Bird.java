@@ -1,5 +1,5 @@
 package Aufgabe4;
 
-public interface Bird {
+public interface Bird extends Animal {
 
 }

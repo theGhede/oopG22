@@ -1,6 +1,6 @@
 package Aufgabe4;
 
-public interface SwarmAnimal {
+public interface SwarmAnimal extends SocialAnimal{
 
     void swarm();
     void leave();
