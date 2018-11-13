@@ -9,11 +9,14 @@ public class Test {
 	 * */
 	
 	/*
-	 * TODO: missing subtyping
+	 * TODO:
+	 * nicht bestehende Untertypenbeziehungen
+	 * 		- 
 	 */
 
 	public static void main(String[] args) {
-		
+		// TODO: make test classes & test them
+		// TODO: decide which ones and how abstract they should be
 	}
 }
 
