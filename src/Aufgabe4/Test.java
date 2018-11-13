@@ -2,7 +2,8 @@ package Aufgabe4;
 
 public class Test {
 
-	private void psvm() {
+
+	public static void main(String[] args) {
 
 	}
 }
