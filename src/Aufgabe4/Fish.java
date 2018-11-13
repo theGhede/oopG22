@@ -1,5 +1,5 @@
 package Aufgabe4;
 
-public interface Fish {
+public interface Fish extends Animal {
 
 }

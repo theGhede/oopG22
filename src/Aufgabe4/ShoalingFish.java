@@ -1,5 +1,5 @@
 package Aufgabe4;
 
-public interface ShoalingFish {
+public interface ShoalingFish extends Fish, SwarmAnimal{
 
 }
