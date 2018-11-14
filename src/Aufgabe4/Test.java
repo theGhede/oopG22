@@ -107,6 +107,7 @@ public class Test {
 
 /* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
  * Elias Nachbaur (01634010): UML & structuring
- * Florian Fusstetter (00709759): UML & structuring, test methods/objects/cases, conditions (except Animal), 
+ * Florian Fusstetter (00709759): UML & structuring, structural adjustments to adhere to Liskov Substitution Principle,
+ * 								  test methods/objects/cases, conditions (except Animal)
  * Ignjat Karanovic (01529940): UML & structuring, conditions for Animal
  */
