@@ -45,9 +45,10 @@ public class Wolf implements PackAnimal {
 	}
 
 	@Override
-	public PackAnimal getAlpha() {
+	public HerdMammal getAlpha() {
 		// TODO Auto-generated method stub
-		return null;
+		//just for testing
+		return this;
 	}
 
 }
