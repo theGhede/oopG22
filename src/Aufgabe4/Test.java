@@ -9,8 +9,15 @@ public class Test {
 	 * */
 	
 	/*
-	 * TODO: CHECK:
-	 * nicht bestehende Untertypenbeziehungen:
+	 * potentiell nicht bestehende Untertypenbeziehungen:
+	 * 
+	 * 		- Überall wo Vererbungen vorkommen haben wir Java subtypes, welche auf Ersetzbarkeit entsprechend LSP
+	 * 		  überprüft werden. Genauer betrachten wir hier HerdAnimal und HerdAnimal.getAlpha() (& all dessen subtypes)
+	 * 		  und Animal (in Betracht auf Zusicherungen von air, water, ground und subtypes von Animal).
+	 * 		  Im ersten Fall konnten wir eine bestehende Untertypenbeziehung sicherstellen (new HerdMammal & HerdAnimal
+	 * 		  als Interface für FlightlessBird & HerdMammal).
+	 * 		  Im zweiten Fall ist Ersetzbarkeit auch erfüllt, da air(), water(), ground() Zusicherungen, aber keinerlei
+	 * 		  Vorbedingungen besitzen (Preconditions sind also equally strict für super- & subtypes; nämlich nicht gegeben)
 	 * 											
 	 * 		- alle Typen welche nicht auf dem selben Vererbungs-Pfad liegen (z.B. MigratoryLocust & PackAnimal);
 	 * 		  da Untertypen Vererbung vorraussetzen
@@ -55,14 +62,10 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
-		/* TODO: make test classes & test them
-		 * 		 decide which ones to keep and use */
-		// Wolf, Whale, Locust, Penguin, TestBird, Sardine
-		Wolf wolf = new Wolf();	Whale whale = new Whale(); Locust locust = new Locust();
-		Penguin pengu = new Penguin(); TestBird bird = new TestBird(); Sardine sardine = new Sardine();
-		TestInsect insect = new TestInsect(); TestMammal mammal = new TestMammal();
+		// Wolf, Whale, Penguin
+		Wolf wolf = new Wolf();	Whale whale = new Whale(); Penguin pengu = new Penguin();
 		
-		System.err.println("Taking a look at PackAnimals & HerdAnimals with a wolf object: \n");
+		System.out.println("Taking a look at PackAnimals & HerdAnimals with a wolf object: \n");
 		listInterfaces(PackAnimal.class);
 		superface(HerdAnimal.class, PackAnimal.class);
 		imp(PackAnimal.class, wolf);
@@ -71,28 +74,30 @@ public class Test {
 		imp(HerdAnimal.class, wolf.getAlpha());
 		
 		
-		System.err.println("Whale as an example of SchoolAnimal: \n");
-		imp(SocialAnimal.class, whale);
-		imp(Mammal.class, whale);
+		System.out.println("Whale as an example of SchoolAnimal: \n");
+		listface(SchoolAnimal.class);
 		imp(SchoolAnimal.class, whale);
-		imp(PackAnimal.class, whale);
+		superface(Mammal.class, SchoolAnimal.class);
+		superface(SocialAnimal.class, SchoolAnimal.class);
+		imp(HerdAnimal.class, whale);
 		superface(Animal.class, SchoolAnimal.class);
 		
-		System.err.println("Penguins are FlighlessBirds, which are Birds and HerdAnimals but no Mammals \n");
+		System.out.println("Penguins are FlighlessBirds, which are Birds and HerdAnimals but no Mammals \n");
 		listInterfaces(FlightlessBird.class);
 		imp(FlightlessBird.class, pengu);
-		imp(Bird.class, pengu);
-		imp(HerdAnimal.class, pengu);
+		superface(Bird.class, FlightlessBird.class);
+		superface(HerdAnimal.class, FlightlessBird.class);
 		imp(Mammal.class, pengu);
-		System.out.println("Obviously there are Birds that are not FlightlessBirds as well");
+		System.out.println("Obviously there are Birds that are not FlightlessBirds as well:");
 		superface(FlightlessBird.class, Bird.class);
+		System.out.println("But whereever we require a Bird object a FlightlessBird would still do because a lack of preconditions. \n");
 		
-		System.err.println("PackAnimals are Mammals and HerdAnimals but no Birds\n");
+		System.out.println("PackAnimals are Mammals and HerdAnimals but no Birds \n");
 		superface(Mammal.class, PackAnimal.class);
 		superface(HerdAnimal.class, PackAnimal.class);
 		superface(Bird.class, PackAnimal.class);
 		
-		System.err.println("Mammals are Animals and HerdMammals are SocialAnimals but not all Mammals are social \n");
+		System.out.println("Mammals are Animals and HerdMammals are SocialAnimals but not all Mammals are social \n");
 		superface(Animal.class, Mammal.class);
 		superface(SocialAnimal.class, HerdMammal.class);
 		superface(SocialAnimal.class, Mammal.class);
@@ -101,7 +106,7 @@ public class Test {
 }
 
 /* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
- * Elias Nachbaur (01634010): 
- * Florian Fusstetter (00709759): 
- * Ignjat Karanovic (01529940):
+ * Elias Nachbaur (01634010): UML & structuring
+ * Florian Fusstetter (00709759): UML & structuring, test methods/objects/cases, conditions (except Animal), 
+ * Ignjat Karanovic (01529940): UML & structuring, conditions for Animal
  */
