@@ -19,7 +19,7 @@ public class Test {
 	 * 
 	 * 		- Animal & Fish:							!(Fish <: Animal), da Fische, anders als Tiere, nur im Wasser leben können
 	 * 													(strengere Bedingungen im Java subtype bezüglich air() und ground())
-	 * 		- Mammal & SchoolAnimal:					!(SchoolAnimal <: Mammal), da Saeugetiere nicht nur im Wasser leben
+	 * 		- Mammal/Animal & SchoolAnimal:				!(SchoolAnimal <: Mammal/Animal), da Saeugetiere nicht nur im Wasser leben
 	 * 											
 	 * 		- alle Typen welche nicht auf dem selben Vererbungs-Pfad liegen (z.B. MigratoryLocust & PackAnimal);
 	 * 		  da Untertypen Vererbung vorraussetzen
@@ -71,25 +71,24 @@ public class Test {
 		Penguin pengu = new Penguin(); TestBird bird = new TestBird(); Sardine sardine = new Sardine();
 		TestInsect insect = new TestInsect(); TestMammal mammal = new TestMammal();
 		
-		/*System.out.println("Wolf:");
-		imp(Animal.class, wolf);
-		imp(Mammal.class, wolf);
-		imp(PackAnimal.class, wolf);
-		imp(HerdAnimal.class, wolf);*/
-		superface(HerdAnimal.class, PackAnimal.class);
+		System.out.println("Taking a look at PackAnimals & HerdAnimals with a wolf object: \n");
 		listInterfaces(PackAnimal.class);
-		imp(HerdAnimal.class, wolf.getAlpha());
+		superface(HerdAnimal.class, PackAnimal.class);
+		imp(PackAnimal.class, wolf);
+		imp(HerdAnimal.class, wolf);
 		System.out.println(wolf.getAlpha().getClass().getSimpleName());
+		imp(HerdAnimal.class, wolf.getAlpha());
 		
 		/*
-		System.out.println("Whale as an example of SchoolAnimal");
+		System.out.println("Whale as an example of SchoolAnimal: \n");
 		imp(SocialAnimal.class, whale);
 		imp(Mammal.class, whale);
 		imp(SchoolAnimal.class, whale);
 		imp(PackAnimal.class, whale);
 		superface(Animal.class, SchoolAnimal.class);
 		
-		System.out.println("Penguins are FlighlessBirds, which are Birds and HerdAnimals but no Mammals");
+		System.out.println("Penguins are FlighlessBirds, which are Birds and HerdAnimals but no Mammals \n");
+		listInterfaces(FlightlessBird.class);
 		imp(FlightlessBird.class, pengu);
 		imp(Bird.class, pengu);
 		imp(HerdAnimal.class, pengu);
@@ -97,17 +96,16 @@ public class Test {
 		System.out.println("Obviously there are Birds that are not FlightlessBirds as well");
 		superface(FlightlessBird.class, Bird.class);
 		
-		System.out.println("PackAnimals are Mammals and HerdAnimals but no Birds");
+		System.out.println("PackAnimals are Mammals and HerdAnimals but no Birds\n");
 		superface(Mammal.class, PackAnimal.class);
 		superface(HerdAnimal.class, PackAnimal.class);
 		superface(Bird.class, PackAnimal.class);
 		
-		System.out.println("Mammals are Animals and HerdMammals are SocialAnimals but not all Mammals are social");
+		System.out.println("Mammals are Animals and HerdMammals are SocialAnimals but not all Mammals are social \n");
 		superface(Animal.class, Mammal.class);
 		superface(SocialAnimal.class, HerdMammal.class);
 		superface(SocialAnimal.class, Mammal.class);*/
 		
-		listInterfaces(FlightlessBird.class);
 	}
 }
 
