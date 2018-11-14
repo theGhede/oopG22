@@ -1,4 +1,4 @@
-package Aufgabe4;
+package aufgabe4;
 
 public interface Fish extends Animal {
 	// assertion { time spent in air = 0, on ground = 0 }

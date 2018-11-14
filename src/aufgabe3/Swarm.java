@@ -1,4 +1,4 @@
-package oopG22;
+package aufgabe3;
 
 /* GOOD: High class cohesion - With one exception all methods here are concerned with
  * the swarm itself and the relation between multiple animals: making it, filling it with animals,

@@ -1,4 +1,4 @@
-package oopG22;
+package aufgabe3;
 
 public class Flock extends Swarm {
 	/* NOITZE: Objekt variablen von Flock und Swarm sind package, potentiel kann die Objektkopplung stärker werden,

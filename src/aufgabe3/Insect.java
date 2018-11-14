@@ -1,4 +1,4 @@
-package oopG22;
+package aufgabe3;
 
 import java.util.concurrent.TimeUnit;
 /* GUT: Unterklassen führen oft zu stärkerem Klassenzusammenhalt und Übersichtlichkeit. Mit Unterklassen unterscheiden

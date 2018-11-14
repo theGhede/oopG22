@@ -1,4 +1,4 @@
-package Aufgabe4;
+package aufgabe4;
 
 /* Note: There is an opportunity to have this be a subtype of Animal & have Bird/Fish/Insect/Mammal extend SocialAnimal.
  * 		 However since there are Bird/Fish/Insect/Mammal types possible that aren't actually social this would require
