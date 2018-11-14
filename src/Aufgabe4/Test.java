@@ -3,19 +3,23 @@ package Aufgabe4;
 public class Test {
 	/* Two new Interfaces:
 	 * 	- HerdMammal:   new addition for Bird-FlightlessBird-HerdAnimal-PackAnimal-Mammal cluster
-	 * 					because some HerdAnimals are FliglessBirds (which all are Birds) and some HerdAnimals are Mammals
+	 * 					because some HerdAnimals are FliglessBirds (which are Birds) and some HerdAnimals are Mammals
 	 * 					and all PackAnimals are HerdAnimals and Mammals - HerdMammal helps distinguish HerdAnimals (Bird/Mammal)
 	 * 	- ShoalingFish: without this either no or all Fish would have to be swarming
 	 * */
 	
 	/*
-	 * TODO:
+	 * TODO: CHECK:
 	 * nicht bestehende Untertypenbeziehungen:
 	 * 
 	 * 		- HerdAnimal & HerdMammal / FlightlessBird: Vererbung vorhanden, aber keine Untertypen, da getAlpha() einen return type
 	 * 													des ensprechenden Tiers hat (Ersetzbarkeit also nur möglich falls
 	 * 													HerdAnimal = HerdMammal [bzw. FlightlessBird] gilt)
 	 * 		- HerdMammal & PackMammal:					!(PackMammal <: Herdmammal) [wegen getAlpha() return type]
+	 * 
+	 * 		- Animal & Fish:							!(Fish <: Animal), da Fische, anders als Tiere, nur im Wasser leben können
+	 * 													(strengere Bedingungen im Java subtype bezüglich air() und ground())
+	 * 		- Mammal & SchoolAnimal:					!(SchoolAnimal <: Mammal), da Saeugetiere nicht nur im Wasser leben
 	 * 											
 	 * 		- alle Typen welche nicht auf dem selben Vererbungs-Pfad liegen (z.B. MigratoryLocust & PackAnimal);
 	 * 		  da Untertypen Vererbung vorraussetzen
@@ -39,7 +43,12 @@ public class Test {
 		}
 	}
 	
-	// list all direct superinterfaces of an interface
+	// list all superinterfaces of an interface
+	public static void listInterfaces(Class inter) {
+		System.out.println("Superinterfaces of interface " + inter.getSimpleName() + ":");
+		System.out.println(listface(inter) + "\n");
+	}
+	
 	public static String listface (Class inter) {
 		String s = "";
 		for (int i = 0; i < inter.getInterfaces().length; i++) {
@@ -67,10 +76,12 @@ public class Test {
 		imp(Mammal.class, wolf);
 		imp(PackAnimal.class, wolf);
 		imp(HerdAnimal.class, wolf);*/
-		// TODO: PackAnimal erbt zwar von HerdAnimal, ist aber kein Untertyp ... dies gilt es per Test zu zeigen
 		superface(HerdAnimal.class, PackAnimal.class);
-		superface(PackAnimal.class, HerdAnimal.class);
+		listInterfaces(PackAnimal.class);
+		imp(HerdAnimal.class, wolf.getAlpha());
+		System.out.println(wolf.getAlpha().getClass().getSimpleName());
 		
+		/*
 		System.out.println("Whale as an example of SchoolAnimal");
 		imp(SocialAnimal.class, whale);
 		imp(Mammal.class, whale);
@@ -94,12 +105,9 @@ public class Test {
 		System.out.println("Mammals are Animals and HerdMammals are SocialAnimals but not all Mammals are social");
 		superface(Animal.class, Mammal.class);
 		superface(SocialAnimal.class, HerdMammal.class);
-		superface(SocialAnimal.class, Mammal.class);
+		superface(SocialAnimal.class, Mammal.class);*/
 		
-		System.out.println(listface(FlightlessBird.class));
-		System.out.println(listface(PackAnimal.class));
-		
-		
+		listInterfaces(FlightlessBird.class);
 	}
 }
 
