@@ -1,4 +1,4 @@
-package oopG22;
+package aufgabe3;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,4 +1,4 @@
-package Aufgabe4;
+package aufgabe4;
 
 public interface PackAnimal extends HerdMammal {
 	// Note: considering this is a derived type of HerdMammal the assertion regarding air/water/ground

@@ -1,4 +1,4 @@
-package Aufgabe4;
+package aufgabe4;
 
 public class Whale implements SchoolAnimal {
 

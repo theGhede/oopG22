@@ -1,4 +1,4 @@
-package oopG22;
+package aufgabe3;
 
 public class Bird extends Animal {
 
