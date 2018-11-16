@@ -10,8 +10,8 @@ import javax.swing.*;
 /* TODO:
  * 
  * neighborhood fix for small swarms
- * 	- Swarm
- *  - Flock
+ * 	- Swarm +
+ *  - Flock +
  * 
  * data hiding
  *  - Test

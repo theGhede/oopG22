@@ -29,7 +29,8 @@ public class Swarm {
 		// as it doesn't tell us what it is or what's it for
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
-		Animal[] neighbors = new Animal[amount];
+		if (amount <= swarmsize || swarmsize <= 5) amount = swarmsize;
+			Animal[] neighbors = new Animal[amount];
 		for (int i = 0; i < this.swarm.length; i++) {
 			if (i != b.index && j < amount && b.distance(this.swarm[i]) <= radius) {
 				neighbors[j] = this.swarm[i];

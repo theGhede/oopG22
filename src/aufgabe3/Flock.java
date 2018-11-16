@@ -13,6 +13,7 @@ public class Flock extends Swarm {
 	public void neighborhood(Bird b, int radius) {
 		int j = 0;
 		int amount = (int) (5 + (15 * Math.random()));
+		if (amount <= swarmsize || swarmsize <= 5) amount = swarmsize;
 		Bird[] neighbors = new Bird[amount];
 		for (int i = 0; i < this.swarm.length; i++) {
 			if (i != b.index && j < amount && b.distance(this.swarm[i]) <= radius) {
