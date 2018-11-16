@@ -6,7 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
-// ignjat
+
+// ignjat2
+
 /* TODO:
  * 
  * neighborhood fix for small swarms
