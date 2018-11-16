@@ -3,7 +3,7 @@ package aufgabe3;
 public class Colony extends Swarm {
 
 	Insect[] swarm;
-/* GUT:  Dynamishes Binden.Eine Colony ist ein Swarm von insekten. Man könnte weniger Code schreiben und diese Methoden
+	/* GUT:  Dynamishes Binden.Eine Colony ist ein Swarm von insekten. Man könnte weniger Code schreiben und diese Methoden
 	vererben, aber so könnte man verschiede Sorten von Swarm nicht darstellen.
 	*/
 	@Override

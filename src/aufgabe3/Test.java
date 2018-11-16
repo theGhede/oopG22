@@ -7,6 +7,34 @@ import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
+/* TODO:
+ * 
+ * neighborhood fix for small swarms
+ * 	- Swarm
+ *  - Flock
+ * 
+ * data hiding
+ *  - Test
+ *  - Animal
+ *  - Bird
+ *  - Insect
+ *  - Swarm
+ *  - Flock
+ *  - Colony
+ * 
+ * dynamic binding email
+ * 
+ * ERRORs
+ * 
+ * Preconditions & Postconditions ... Invarianten
+ *  - Test
+ *  - Animal
+ *  - Bird
+ *  - Insect
+ *  - Swarm
+ *  - Flock
+ *  - Colony */ 
+
 /* Concerning cohesion & coupling
  * To us having high cohesion is much more intuitive than loose coupling and while cohesion may vary
  * from class to class it's never low. Coupling on the other hand is tight in a few spots where it
@@ -26,8 +54,6 @@ public class Test extends JPanel implements ActionListener {
 	Timer t = new Timer(4, this);
 
 	public static String typeToDraw;
-	// ERROR: overall we have been not as much on top of naming conventions and
-	// the use of capital letters for naming objects as we could've been
 	public static Swarm regular = new Swarm();
 	public static Flock birds = new Flock();
 	public static Colony insects = new Colony();
@@ -122,8 +148,6 @@ public class Test extends JPanel implements ActionListener {
 			}
 		});
 
-
-		regular.makeswarm("Animal", 20, 12);
 
 		/*
 		 * NOTE: While the program has no input at runtime, testing and designing the
