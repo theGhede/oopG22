@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
-
+// florian
 /* TODO:
  * 
  * neighborhood fix for small swarms
