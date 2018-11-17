@@ -7,7 +7,15 @@ import java.util.concurrent.TimeUnit;
 */
 public class Insect extends Animal {
 	
-	boolean follower;
+	private boolean follower;
+
+	public boolean isFollower() {
+		return follower;
+	}
+
+	public void setFollower(boolean follower) {
+		this.follower = follower;
+	}
 
 	public void lane(double x, double y) throws InterruptedException {
 		TimeUnit.MICROSECONDS.sleep(20);
