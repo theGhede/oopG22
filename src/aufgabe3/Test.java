@@ -166,7 +166,7 @@ public class Test extends JPanel implements ActionListener {
 		 * 3. negative minimal distance is pointless but the program actually could handle it,
 		 * 	  even if it made no sense to do that
 		 */
-		regular.makeswarm("Animal", 320, 12);
+		regular.makeswarm("Animal", 320, 8);
 		/* assertion { regular.swarmsize >= 0 } & { regular.minDistance >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
 		 * regular.swarm.length to be >= 0 */
