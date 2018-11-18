@@ -2,30 +2,36 @@ package aufgabe3;
 
 public class Colony extends Swarm {
 
-	Insect[] swarm;
-	/* GUT:  Dynamishes Binden.Eine Colony ist ein Swarm von insekten. Man könnte weniger Code schreiben und diese Methoden
-	vererben, aber so könnte man verschiede Sorten von Swarm nicht darstellen.
-	*/
+	private Insect[] swarm;
+	
+	public Insect[] getSwarm() {
+		return swarm;
+	}
+
+	public void setSwarm(Insect[] swarm) {
+		this.swarm = swarm;
+	}
+
 	@Override
 	public void makeswarm(String type, int size, int minDistance) {
-		this.type = type;
-		this.swarmsize = size;
-		this.minDistance = minDistance;
-		this.swarm = new Insect[size];
-		double[] xvalues = new double[this.swarm.length];
-		double[] yvalues = new double[this.swarm.length];
-		for (int i = 0; i < this.swarm.length; i++) {
+		this.setType(type);
+		this.setSwarmsize(size);
+		this.setMinDistance(minDistance);
+		this.setSwarm(new Insect[size]);
+		double[] xvalues = new double[this.getSwarm().length];
+		double[] yvalues = new double[this.getSwarm().length];
+		for (int i = 0; i < this.getSwarm().length; i++) {
 			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
 			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
 		}
 
-		for (int i = 0; i < this.swarm.length; i++) {
+		for (int i = 0; i < this.getSwarm().length; i++) {
 			Insect b = new Insect();
-			b.xcoord = xvalues[i];
-			b.ycoord = yvalues[i];
-			b.index = i;
-			this.swarm[i] = b;
-			b.modifier = 1;
+			b.setXcoord(xvalues[i]);
+			b.setYcoord(yvalues[i]);
+			b.setIndex(i);
+			this.getSwarm()[i] = b;
+			b.setModifier(1);
 		}
 	}
 
@@ -38,23 +44,23 @@ public class Colony extends Swarm {
 		 */
 		int leader = 0;
 		double xs = 0, max = 0;
-		for (int i = 0; i < this.swarm.length; i++) {
-			this.swarm[i].follower = true;
-			xs = this.swarm[i].xcoord;
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			this.getSwarm()[i].setFollower(true);
+			xs = this.getSwarm()[i].getXcoord();
 			if (xs > max) {
 				max = xs;
 				leader = i;
 			}
 		}
-		this.swarm[leader].follower = false;
+		this.getSwarm()[leader].setFollower(false);
 		for (int j = 0; j < 38; j++) {
-			for (int i = 0; i < this.swarm.length; i++) {
-				if (!this.swarm[i].follower)
-					this.swarm[i].lane(19, (double)Math.round(Math.random() * 6) - 3);
-				if (this.swarm[i].follower && this.swarm[i].ycoord - this.swarm[leader].ycoord > 0)
-					this.swarm[i].lane(16, (double)Math.min(16, this.swarm[i].ycoord - this.swarm[leader].ycoord));
-				if (this.swarm[i].follower && this.swarm[i].ycoord - this.swarm[leader].ycoord < 0)
-					this.swarm[i].lane(16, (double)Math.max(-16, this.swarm[i].ycoord - this.swarm[leader].ycoord));
+			for (int i = 0; i < this.getSwarm().length; i++) {
+				if (!this.getSwarm()[i].isFollower())
+					this.getSwarm()[i].lane(19, (double)Math.round(Math.random() * 6) - 3);
+				if (this.getSwarm()[i].isFollower() && this.getSwarm()[i].getYcoord() - this.getSwarm()[leader].getYcoord() > 0)
+					this.getSwarm()[i].lane(16, (double)Math.min(16, this.getSwarm()[i].getYcoord() - this.getSwarm()[leader].getYcoord()));
+				if (this.getSwarm()[i].isFollower() && this.getSwarm()[i].getYcoord() - this.getSwarm()[leader].getYcoord() < 0)
+					this.getSwarm()[i].lane(16, (double)Math.max(-16, this.getSwarm()[i].getYcoord() - this.getSwarm()[leader].getYcoord()));
 			}
 		}
 	}
