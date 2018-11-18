@@ -7,8 +7,6 @@ import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
-// ignjat2
-
 /* TODO:
  * 
  * neighborhood fix for small swarms
@@ -16,17 +14,17 @@ import javax.swing.*;
  *  - Flock +
  * 
  * data hiding
- *  - Test
- *  - Animal
- *  - Bird
- *  - Insect
- *  - Swarm
- *  - Flock
- *  - Colony
+ *  - Test +
+ *  - Animal +
+ *  - Bird +
+ *  - Insect +
+ *  - Swarm +
+ *  - Flock +
+ *  - Colony +
  * 
- * dynamic binding email
+ * ERRORs +
  * 
- * ERRORs
+ * testDistance fixes +
  * 
  * Preconditions & Postconditions ... Invarianten
  *  - Test
@@ -35,7 +33,8 @@ import javax.swing.*;
  *  - Insect
  *  - Swarm
  *  - Flock
- *  - Colony */ 
+ *  - Colony
+ */ 
 
 /* Concerning cohesion & coupling
  * To us having high cohesion is much more intuitive than loose coupling and while cohesion may vary
@@ -55,16 +54,16 @@ import javax.swing.*;
 public class Test extends JPanel implements ActionListener {
 	Timer t = new Timer(4, this);
 
-	public static String typeToDraw;
-	public static Swarm regular = new Swarm();
-	public static Flock birds = new Flock();
-	public static Colony insects = new Colony();
+	private static String typeToDraw;
+	private static Swarm regular = new Swarm();
+	private static Flock birds = new Flock();
+	private static Colony insects = new Colony();
 	// assertion: all of these exist and can be used; especially important for paintComponent
 
 	// NOTE: these coordinates could be made final
-	public static double dangerX = (double) Math.round((100 + Math.random() * 80) * 100) / 100;
-	public static double dangerY = (double) Math.round((400 + Math.random() * 150) * 100) / 100;
-	// logical assertion { dangerX, dangerY are a number between 0 and 800 }
+	private static double dangerX = (double) Math.round((100 + Math.random() * 80) * 100) / 100;
+	private static double dangerY = (double) Math.round((400 + Math.random() * 150) * 100) / 100;
+	// assertion { dangerX, dangerY are a number between 0 and 800 }
 	// while the program could handle any double some are pointless to use since the
 	// JFrame is 800x800 (same for the other two types)
 
@@ -77,9 +76,9 @@ public class Test extends JPanel implements ActionListener {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		if (typeToDraw == "Animal") {
-			for (int i = 0; i < regular.swarm.length; i++) {
-				double x = regular.swarm[i].xcoord;
-				double y = regular.swarm[i].ycoord;
+			for (int i = 0; i < regular.getSwarm().length; i++) {
+				double x = regular.getSwarm()[i].getXcoord();
+				double y = regular.getSwarm()[i].getYcoord();
 				Shape a = new Ellipse2D.Double(x, y, 4, 4);
 
 				if (i % 4 == 0) {
@@ -94,9 +93,9 @@ public class Test extends JPanel implements ActionListener {
 			Shape d = new Ellipse2D.Double(dangerX, dangerY, 12, 12);
 			g2d.setPaint(Color.RED);
 			g2d.fill(d);
-			for (int i = 0; i < birds.swarm.length; i++) {
-				double x = birds.swarm[i].xcoord;
-				double y = birds.swarm[i].ycoord;
+			for (int i = 0; i < birds.getSwarm().length; i++) {
+				double x = birds.getSwarm()[i].getXcoord();
+				double y = birds.getSwarm()[i].getYcoord();
 				Shape b = new Ellipse2D.Double(x, y, 5, 5);
 
 				if (i % 4 == 0) {
@@ -104,16 +103,16 @@ public class Test extends JPanel implements ActionListener {
 				} else {
 					g2d.setPaint(Color.BLACK);
 				}
-				if (i == birds.select) {
+				if (i == birds.getSelect()) {
 					g2d.setPaint(Color.RED);
 				}
 				g2d.fill(b);
 			}
 		}
 		if (typeToDraw == "Insect") {
-			for (int i = 0; i < insects.swarm.length; i++) {
-				double x = insects.swarm[i].xcoord;
-				double y = insects.swarm[i].ycoord;
+			for (int i = 0; i < insects.getSwarm().length; i++) {
+				double x = insects.getSwarm()[i].getXcoord();
+				double y = insects.getSwarm()[i].getYcoord();
 				Shape s = new Ellipse2D.Double(x, y, 2, 2);
 
 				if (i % 3 == 0) {
@@ -133,7 +132,7 @@ public class Test extends JPanel implements ActionListener {
 
 	private static void GUI() {
 		// ERROR: we missed adjusting the frame title
-		JFrame frame = new JFrame("oopG22 Aufgabe 1 - Vogelschwarm");
+		JFrame frame = new JFrame("oopG22 Aufgabe 3");
 		frame.getContentPane().add(new Test());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 800);
@@ -160,23 +159,22 @@ public class Test extends JPanel implements ActionListener {
 		 * small price to pray for the benefits
 		 */
 		/*
-		 * BAD: said parameters of course need to fulfill specific criteria:
+		 * NOTE: said parameters of course need to fulfill specific criteria:
 		 * 1. the string is basically only used to confirm which type of swarm we're making and
 		 * 	  must be specific, it's just sugar for ourselves
-		 * 2. swarmsize generally only make sense if > 0; but because of how neighborhoods are
-		 * 	  calculated it must be >= 20 (only true for the 2 types that require neighbors)
+		 * 2. swarmsize generally only make sense if > 0
 		 * 3. negative minimal distance is pointless but the program actually could handle it,
 		 * 	  even if it made no sense to do that
 		 */
 		regular.makeswarm("Animal", 320, 12);
-		/* assertion { regular.swarmsize >= 20 } & { regular.minDistance >= 0 }
+		/* assertion { regular.swarmsize >= 0 } & { regular.minDistance >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
-		 * regular.swarm.length & creation of a neighborhood requires swarmsize to be >= 20 */
+		 * regular.swarm.length to be >= 0 */
 		
 		/* BAD: object coupling could've been improved by implementing a getter method for type,
 		 * however this would add complexity without actually reaping the benefits from this
 		 * encapsulation */
-		typeToDraw = regular.type;
+		typeToDraw = regular.getType();
 		regular.start();
 		TimeUnit.SECONDS.sleep(4);
 
@@ -184,10 +182,10 @@ public class Test extends JPanel implements ActionListener {
 		birds.makeswarm("Bird", 20, 14);
 
 		birds.makeswarm("Bird", 240, 14);
-		/* assertion { birds.swarmsize >= 20 } & { birds.minDistance >= 0 }
+		/* assertion { birds.swarmsize > 0 } & { birds.minDistance >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
-		 * birds.swarm.length & creation of a neighborhood requires swarmsize to be >= 20 */
-		typeToDraw = birds.type;
+		 * birds.swarm.length >= 0 */
+		typeToDraw = birds.getType();
 		birds.start(dangerX, dangerY);
 		TimeUnit.SECONDS.sleep(4);
 
@@ -201,7 +199,7 @@ public class Test extends JPanel implements ActionListener {
 		 * minimal distance is a property inherited from Swarm & helps understanding,
 		 * however Colony and Insect work fine if any number would be chosen;
 		 * the fact that it's there and 0 is mainly for transparency */
-		typeToDraw = insects.type;
+		typeToDraw = insects.getType();
 		insects.start();
 	}
 }
