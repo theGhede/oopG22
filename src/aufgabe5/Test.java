@@ -19,7 +19,7 @@ TODO:
 • Ostrich (Untertyp von SteppeHerdAnimal)
 – hierarchical
 – mayBeAlpha
-– Strauße können sich mit ihren kräftigen Krallen gut verteidi- gen. Die Methode power gibt eine ganze Zahl zurück, die die Schlagkraft einer Kralle des Tieres in Newton angibt.
+– power
 
 • Starling (Untertyp von FitAnimal)
 – fitter

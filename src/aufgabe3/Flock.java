@@ -1,12 +1,11 @@
 package aufgabe3;
 
 public class Flock extends Swarm {
-	/* NOITZE: Objekt variablen von Flock und Swarm sind package, potentiel kann die Objektkopplung stärker werden,
+	/* NOITZ: Objekt variablen von Flock und Swarm sind package, potentiel kann die Objektkopplung stärker werden,
 	   sie könnten private sein, dann bräuchte man Getters.
     */
 	private Bird[] swarm;
-	/* NOTIZE: assesrtion { birds.swarmsize >= 20 } schon früher etwähnt.
-	   GUT: Die Methode neighborhood ist  overloaded und statisch verbunden. Diese Methode gibt es sowohl in Swarm, als auch in Flock.
+	/* GUT: Die Methode neighborhood ist  overloaded und statisch verbunden. Diese Methode gibt es sowohl in Swarm, als auch in Flock.
 	   Das erleichtert die Berechnung von 2 verschiedene neighborhoods, Swarm und Flock neighborhood
 	*/
 
@@ -37,9 +36,9 @@ public class Flock extends Swarm {
 		}
 	}
  	/* GUT: Dynamisches Binden resetMoved, makeswarm, testDistance, establishDistance sind die Methode,
- 	 die dynamisch verbunden sind mit der Methoden von Superklasse Swarm, so unterscheidet man Methoden für Bird Array,
- 	  und für Swarm Array.
- 	  */
+ 	 	die dynamisch verbunden sind mit der Methoden von Superklasse Swarm, so unterscheidet man Methoden für Bird Array,
+ 	  	und für Swarm Array.
+ 	 */
 	@Override
 	public void resetMoved() {
 		for (int i = 0; i < this.getSwarm().length; i++) {
@@ -52,7 +51,7 @@ public class Flock extends Swarm {
 		this.setType(type);
 		this.setSwarmsize(size);
 		this.setMinDistance(minDistance);
-		this.setSwarm(new Bird[size]); // tu je razlika
+		this.setSwarm(new Bird[size]);
 		double[] xvalues = new double[this.getSwarm().length];
 		double[] yvalues = new double[this.getSwarm().length];
 		for (int i = 0; i < this.getSwarm().length; i++) {
@@ -74,9 +73,7 @@ public class Flock extends Swarm {
 		this.establishDistance();
 		this.resetMoved();
 	}
-	/* SCHLECHT: Klasse Flock kann den Animal Attributen zugreifen was eine starke Objektkopplung ist, zum beispiel
-		b.index
-	*/
+	
 	public void movingDistance(Bird b) {
 		if (this.getMinDistance() != 0) {
 			for (int i = 0; i < this.getSwarm().length; i++) {
@@ -144,7 +141,7 @@ public class Flock extends Swarm {
 			}
 		}
 	}
-	//Good: Overloaded. Methode start befindet sich auch in der Klasse Swarm, aber mit unterschiedlichen Prametern.
+	//Notitz: Overloaded. Methode start befindet sich auch in der Klasse Swarm, aber mit unterschiedlichen Prametern.
 	public void start(double dangerX, double dangerY) throws InterruptedException {
 		for (int i = 0; i < this.getSwarm().length; i++) {
 			this.getSwarm()[i].setStressed(true);

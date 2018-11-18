@@ -5,12 +5,10 @@ public class Bird extends Animal {
 	/* GUT: Die Methode distance wurde von Animal vererbt, das ist eine Methode die Klassenzusammenhält erhöht,
 		die Methode wird ganz oft benutzt. Genau so wie alle move Methoden.
 	*/
-	/* NOTIZE: Objekt variablen von Bird und Animal sind package, daher könnte die Objektkopplung potentiel stärker sein,
-	   sie könnten private sein, dann bräuchte man Getters.
-	 */
 	private Bird[] neighbors;
 	private boolean stressed;
 	private boolean tired;
+	
 	public boolean isStressed() {
 		return stressed;
 	}
@@ -78,6 +76,8 @@ public class Bird extends Animal {
 		if (!this.tired) {
 			if (this.getXcoord() - x > 0)
 				moveLeft(Math.min(20, this.getXcoord() - x));
+			// Postcondition: assertion { Wert ist min(20, Abstand zur Mitte) }
+			// equivalent für die folgenden 3 if
 
 			if (this.getXcoord() - x < 0)
 				moveRight(Math.min(20, x - this.getXcoord()));

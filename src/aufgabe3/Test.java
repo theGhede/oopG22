@@ -9,10 +9,6 @@ import javax.swing.*;
 
 /* TODO:
  * 
- * neighborhood fix for small swarms
- * 	- Swarm +
- *  - Flock +
- * 
  * data hiding
  *  - Test +
  *  - Animal +
@@ -22,18 +18,14 @@ import javax.swing.*;
  *  - Flock +
  *  - Colony +
  * 
- * ERRORs +
- * 
- * testDistance fixes +
- * 
  * Preconditions & Postconditions ... Invarianten
- *  - Test
- *  - Animal
- *  - Bird
- *  - Insect
- *  - Swarm
- *  - Flock
- *  - Colony
+ *  - Test +
+ *  - Animal +
+ *  - Bird +
+ *  - Insect +
+ *  - Swarm +
+ *  - Flock +
+ *  - Colony +
  */ 
 
 /* Concerning cohesion & coupling
@@ -52,18 +44,18 @@ import javax.swing.*;
  * that's done. While we would not give this an ERROR or BAD tag, we certainly don't think it's GOOD. */
 
 public class Test extends JPanel implements ActionListener {
-	Timer t = new Timer(4, this);
+	public Timer t = new Timer(4, this);
 
 	private static String typeToDraw;
 	private static Swarm regular = new Swarm();
 	private static Flock birds = new Flock();
 	private static Colony insects = new Colony();
-	// assertion: all of these exist and can be used; especially important for paintComponent
+	// Postcondition: assertion: all of these exist and can be used; especially important for paintComponent
 
 	// NOTE: these coordinates could be made final
 	private static double dangerX = (double) Math.round((100 + Math.random() * 80) * 100) / 100;
 	private static double dangerY = (double) Math.round((400 + Math.random() * 150) * 100) / 100;
-	// assertion { dangerX, dangerY are a number between 0 and 800 }
+	// Postcondition: assertion { dangerX, dangerY are a number between 0 and 800 }
 	// while the program could handle any double some are pointless to use since the
 	// JFrame is 800x800 (same for the other two types)
 
@@ -167,7 +159,7 @@ public class Test extends JPanel implements ActionListener {
 		 * 	  even if it made no sense to do that
 		 */
 		regular.makeswarm("Animal", 320, 8);
-		/* assertion { regular.swarmsize >= 0 } & { regular.minDistance >= 0 }
+		/* Invariante (Server & Client): assertion { regular.swarmsize >= 0 } & { regular.minDistance >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
 		 * regular.swarm.length to be >= 0 */
 		
@@ -178,22 +170,16 @@ public class Test extends JPanel implements ActionListener {
 		regular.start();
 		TimeUnit.SECONDS.sleep(4);
 
-
-		birds.makeswarm("Bird", 20, 14);
-
 		birds.makeswarm("Bird", 240, 14);
-		/* assertion { birds.swarmsize > 0 } & { birds.minDistance >= 0 }
+		/* Invariante (Server & Client): assertion { birds.swarmsize > 0 } & { birds.minDistance >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
 		 * birds.swarm.length >= 0 */
 		typeToDraw = birds.getType();
 		birds.start(dangerX, dangerY);
 		TimeUnit.SECONDS.sleep(4);
 
-
-		insects.makeswarm("Insect", 100, 0);
-
 		insects.makeswarm("Insect", 10000, 0);
-		/* assertion { regular.swarmsize >= 0 }
+		/* Invariante (Server & Client): assertion { regular.swarmsize >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
 		 * insects.swarm.length
 		 * minimal distance is a property inherited from Swarm & helps understanding,

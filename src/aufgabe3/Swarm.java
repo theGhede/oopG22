@@ -82,7 +82,7 @@ public class Swarm {
 			this.neighborhood(b, radius + 1);
 		} else {
 			b.setNeighbors(neighbors);
-			// assertion { b now has between 5 and 20 neighbors }
+			// Postcondition: assertion { b now has (between 5 and 20 neighbors) or (min(amount, swarmsize) neighbors) }
 		}
 	}
 
@@ -108,7 +108,7 @@ public class Swarm {
 		for (int i = 0; i < this.getSwarm().length; i++) {
 			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
 			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
-			// assertion { x & y values = (200,600) }
+			// Postcondtion: assertion { x & y values = (200,600) }
 			// so all animals start in the center of the JFrame, which can be a bit of a
 			// downside for large swarms
 		}

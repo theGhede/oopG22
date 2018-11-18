@@ -17,6 +17,7 @@ public class Animal {
 	private Animal[] neighbors;
 	private int index;
 	private boolean moved;
+	// Invariante (Server & Client) zu modifier: macht inhaltlich nur für positive Werte Sinn
 	private double modifier;
 
 	public int getIndex() {
