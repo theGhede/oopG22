@@ -1,77 +1,83 @@
 package aufgabe3;
 
 public class Flock extends Swarm {
-	/* NOITZE: Objekt variablen von Flock und Swarm sind package, potentiel kann die Objektkopplung stärker werden,
+	/* NOITZ: Objekt variablen von Flock und Swarm sind package, potentiel kann die Objektkopplung stärker werden,
 	   sie könnten private sein, dann bräuchte man Getters.
     */
-	Bird[] swarm;
-	/* NOTIZE: assesrtion { birds.swarmsize >= 20 } schon früher etwähnt.
-	   GUT: Die Methode neighborhood ist  overloaded und statisch verbunden. Diese Methode gibt es sowohl in Swarm, als auch in Flock.
+	private Bird[] swarm;
+	/* GUT: Die Methode neighborhood ist  overloaded und statisch verbunden. Diese Methode gibt es sowohl in Swarm, als auch in Flock.
 	   Das erleichtert die Berechnung von 2 verschiedene neighborhoods, Swarm und Flock neighborhood
 	*/
 
+	public Bird[] getSwarm() {
+		return swarm;
+	}
+	public void setSwarm(Bird[] swarm) {
+		this.swarm = swarm;
+	}
+	
 	public void neighborhood(Bird b, int radius) {
-		int j = 0;
+		int current = 0;
 		int amount = (int) (5 + (15 * Math.random()));
-		if (amount <= swarmsize || swarmsize <= 5) amount = swarmsize;
+		if (amount > getSwarmsize() || getSwarmsize() <= 5) {
+			amount = getSwarmsize();
+		}
 		Bird[] neighbors = new Bird[amount];
-		for (int i = 0; i < this.swarm.length; i++) {
-			if (i != b.index && j < amount && b.distance(this.swarm[i]) <= radius) {
-				neighbors[j] = this.swarm[i];
-				j++;
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			if (i != b.getIndex() && current < amount && b.distance(this.getSwarm()[i]) <= radius) {
+				neighbors[current] = this.getSwarm()[i];
+				current++;
 			}
 		}
-		if (j < amount) {
+		if (current < amount) {
 			this.neighborhood(b, radius + 1);
 		} else {
-			b.neighbors = neighbors;
+			b.setNeighbors(neighbors);
 		}
 	}
  	/* GUT: Dynamisches Binden resetMoved, makeswarm, testDistance, establishDistance sind die Methode,
- 	 die dynamisch verbunden sind mit der Methoden von Superklasse Swarm, so unterscheidet man Methoden für Bird Array,
- 	  und für Swarm Array.
- 	  */
+ 	 	die dynamisch verbunden sind mit der Methoden von Superklasse Swarm, so unterscheidet man Methoden für Bird Array,
+ 	  	und für Swarm Array.
+ 	 */
 	@Override
 	public void resetMoved() {
-		for (int i = 0; i < this.swarm.length; i++) {
-			this.swarm[i].moved = false;
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			this.getSwarm()[i].setMoved(false);
 		}
 	}
 
 	@Override
 	public void makeswarm(String type, int size, int minDistance) {
-		this.type = type;
-		this.swarmsize = size;
-		this.minDistance = minDistance;
-		this.swarm = new Bird[size]; // tu je razlika
-		double[] xvalues = new double[this.swarm.length];
-		double[] yvalues = new double[this.swarm.length];
-		for (int i = 0; i < this.swarm.length; i++) {
+		this.setType(type);
+		this.setSwarmsize(size);
+		this.setMinDistance(minDistance);
+		this.setSwarm(new Bird[size]);
+		double[] xvalues = new double[this.getSwarm().length];
+		double[] yvalues = new double[this.getSwarm().length];
+		for (int i = 0; i < this.getSwarm().length; i++) {
 			xvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
 			yvalues[i] = (double) Math.round(((Math.random() * 400) + 200) * 100) / 100;
 		}
 
-		for (int i = 0; i < this.swarm.length; i++) {
+		for (int i = 0; i < this.getSwarm().length; i++) {
 			Bird b = new Bird();
-			b.xcoord = xvalues[i];
-			b.ycoord = yvalues[i];
-			b.index = i;
-			this.swarm[i] = b;
-			b.modifier = 1;
+			b.setXcoord(xvalues[i]);
+			b.setYcoord(yvalues[i]);
+			b.setIndex(i);
+			this.getSwarm()[i] = b;
+			b.setModifier(1);
 		}
-		for (int i = 0; i < this.swarm.length; i++) {
-			this.neighborhood(this.swarm[i], 1);
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			this.neighborhood(this.getSwarm()[i], 1);
 		}
 		this.establishDistance();
 		this.resetMoved();
 	}
-	/* SCHLECHT: Klasse Flock kann den Animal Attributen zugreifen was eine starke Objektkopplung ist, zum beispiel
-		b.index
-	*/
+	
 	public void movingDistance(Bird b) {
-		if (this.minDistance != 0) {
-			for (int i = 0; i < this.swarm.length; i++) {
-				if (this.swarm[b.index].distance(this.swarm[i]) < minDistance) {
+		if (this.getMinDistance() != 0) {
+			for (int i = 0; i < this.getSwarm().length; i++) {
+				if (this.getSwarm()[b.getIndex()].distance(this.getSwarm()[i]) < getMinDistance()) {
 					this.testDistance();
 				}
 			}
@@ -80,43 +86,40 @@ public class Flock extends Swarm {
 
 	@Override
 	public void testDistance() {
-		for (int i = 0; i < this.swarm.length; i++) {
-			for (int j = 0; j < this.swarm.length; j++) {
-				if (this.swarm[i].distance(this.swarm[j]) < minDistance && i != j) {
-					double helpDistance = minDistance - this.swarm[i].distance(this.swarm[j]);
-					double xDistance = (this.swarm[i].xcoord - this.swarm[j].xcoord);
-					double yDistance = (this.swarm[i].ycoord - this.swarm[j].ycoord);
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			for (int j = 0; j < this.getSwarm().length; j++) {
+				if (this.getSwarm()[i].distance(this.getSwarm()[j]) < getMinDistance() && i != j) {
+					double helpDistance = getMinDistance() - this.getSwarm()[i].distance(this.getSwarm()[j]);
+					double xDistance = (this.getSwarm()[j].getXcoord() - this.getSwarm()[i].getXcoord());
+					double yDistance = (this.getSwarm()[j].getYcoord() - this.getSwarm()[i].getYcoord());
 					double xMove = this.distanceHelper(helpDistance, xDistance, yDistance)[0];
 					double yMove = this.distanceHelper(helpDistance, xDistance, yDistance)[1];
-
-					if (this.swarm[j].ycoord < this.swarm[i].ycoord && this.swarm[j].xcoord < this.swarm[i].xcoord) {
-						this.swarm[j].quickDown((yMove));
-						this.swarm[j].quickLeft((xMove));
-					} else if (this.swarm[j].ycoord > this.swarm[i].ycoord
-							&& this.swarm[j].xcoord > this.swarm[i].xcoord) {
-						this.swarm[j].quickUp((yMove));
-						this.swarm[j].quickRight((xMove));
-					} else if (this.swarm[j].ycoord < this.swarm[i].ycoord
-							&& this.swarm[j].xcoord > this.swarm[i].xcoord) {
-						this.swarm[j].quickDown((yMove));
-						this.swarm[j].quickRight((xMove));
-					} else if (this.swarm[j].ycoord > this.swarm[i].ycoord
-							&& this.swarm[j].xcoord < this.swarm[i].xcoord) {
-						this.swarm[j].quickUp((yMove));
-						this.swarm[j].quickLeft((xMove));
-					}
-					else if (this.swarm[j].ycoord == this.swarm[i].ycoord) {
-						if (this.swarm[j].xcoord < this.swarm[i].xcoord) {
-							this.swarm[j].quickLeft(helpDistance);
-						} else if (this.swarm[j].xcoord > this.swarm[i].xcoord) {
-							this.swarm[j].quickRight(helpDistance);
+					if (this.getSwarm()[j].getYcoord() < this.getSwarm()[i].getYcoord() && this.getSwarm()[j].getXcoord() < this.getSwarm()[i].getXcoord()) {
+						this.getSwarm()[j].quickUp(yMove);
+						this.getSwarm()[j].quickLeft(xMove);
+					} else if (this.getSwarm()[j].getYcoord() > this.getSwarm()[i].getYcoord()
+							&& this.getSwarm()[j].getXcoord() > this.getSwarm()[i].getXcoord()) {
+						this.getSwarm()[j].quickDown(yMove);
+						this.getSwarm()[j].quickRight(xMove);
+					} else if (this.getSwarm()[j].getYcoord() < this.getSwarm()[i].getYcoord()
+							&& this.getSwarm()[j].getXcoord() > this.getSwarm()[i].getXcoord()) {
+						this.getSwarm()[j].quickUp(yMove);
+						this.getSwarm()[j].quickRight(xMove);
+					} else if (this.getSwarm()[j].getYcoord() > this.getSwarm()[i].getYcoord()
+							&& this.getSwarm()[j].getXcoord() < this.getSwarm()[i].getXcoord()) {
+						this.getSwarm()[j].quickDown(yMove);
+						this.getSwarm()[j].quickLeft(xMove);
+					} else if (this.getSwarm()[j].getYcoord() == this.getSwarm()[i].getYcoord()) {
+						if (this.getSwarm()[j].getXcoord() < this.getSwarm()[i].getXcoord()) {
+							this.getSwarm()[j].quickLeft(helpDistance);
+						} else if (this.getSwarm()[j].getXcoord() > this.getSwarm()[i].getXcoord()) {
+							this.getSwarm()[j].quickRight(helpDistance);
 						}
-					}
-					else if (this.swarm[j].xcoord == this.swarm[i].xcoord) {
-						if (this.swarm[j].ycoord < this.swarm[i].ycoord) {
-							this.swarm[j].quickDown(helpDistance);
-						} else if (this.swarm[j].ycoord > this.swarm[i].ycoord) {
-							this.swarm[j].quickUp(helpDistance);
+					} else if (this.getSwarm()[j].getXcoord() == this.getSwarm()[i].getXcoord()) {
+						if (this.getSwarm()[j].getYcoord() < this.getSwarm()[i].getYcoord()) {
+							this.getSwarm()[j].quickUp(helpDistance);
+						} else if (this.getSwarm()[j].getYcoord() > this.getSwarm()[i].getYcoord()) {
+							this.getSwarm()[j].quickDown(helpDistance);
 						}
 					}
 				}
@@ -126,11 +129,11 @@ public class Flock extends Swarm {
 
 	@Override
 	public void establishDistance() {
-		if (this.minDistance != 0) {
-			int cap = this.swarmsize / 5;
-			for (int i = 0; i < this.swarm.length; i++) {
-				for (int j = 0; j < this.swarm.length; j++) {
-					if (this.swarm[i].distance(swarm[j]) > this.minDistance && cap != 0) {
+		if (this.getMinDistance() != 0) {
+			int cap = this.getSwarmsize() / 5;
+			for (int i = 0; i < this.getSwarm().length; i++) {
+				for (int j = 0; j < this.getSwarm().length; j++) {
+					if (this.getSwarm()[i].distance(getSwarm()[j]) > this.getMinDistance() && cap != 0) {
 						this.testDistance();
 						cap--;
 					}
@@ -138,26 +141,26 @@ public class Flock extends Swarm {
 			}
 		}
 	}
-	//Good: Overloaded. Methode start befindet sich auch in der Klasse Swarm, aber mit unterschiedlichen Prametern.
+	//Notitz: Overloaded. Methode start befindet sich auch in der Klasse Swarm, aber mit unterschiedlichen Prametern.
 	public void start(double dangerX, double dangerY) throws InterruptedException {
-		for (int i = 0; i < this.swarm.length; i++) {
-			this.swarm[i].stressed = true;
-			this.swarm[i].danger(dangerX, dangerY);
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			this.getSwarm()[i].setStressed(true);
+			this.getSwarm()[i].danger(dangerX, dangerY);
 		}
 		int closest = 0;
 		double min = 800, xdist, ydist, dist = 0;
-		for (int i = 0; i < this.swarm.length; i++) {
-			xdist = Math.pow((this.swarm[i].xcoord - dangerX), 2);
-			ydist = Math.pow((this.swarm[i].ycoord - dangerY), 2);
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			xdist = Math.pow((this.getSwarm()[i].getXcoord() - dangerX), 2);
+			ydist = Math.pow((this.getSwarm()[i].getYcoord() - dangerY), 2);
 			dist = Math.sqrt(xdist + ydist);
 			if (dist < min) {
 				closest = i;
 				min = dist;
 			}
 		}
-		this.select = closest;
-		double x = this.swarm[closest].xcoord;
-		double y = this.swarm[closest].ycoord;
+		this.setSelect(closest);
+		double x = this.getSwarm()[closest].getXcoord();
+		double y = this.getSwarm()[closest].getYcoord();
 
 		/* NOTE: all animals start moving away with 20* (90 - dist), where dist is the
 		 * distance of the bird sensing the danger to the danger (= closest to it) - so the further
@@ -179,42 +182,42 @@ public class Flock extends Swarm {
 
 		if (x >= dangerX && y >= dangerY) {
 			for (int i = 0; i < fleeingDistance; i++) {
-				this.swarm[this.select].moveAnimal(this, 16, 0, 16, 0);
+				this.getSwarm()[this.getSelect()].moveAnimal(this, 16, 0, 16, 0);
 				this.resetMoved();
 			}
 		}
 		if (x < dangerX && y > dangerY) {
 			for (int i = 0; i < fleeingDistance; i++) {
-				this.swarm[this.select].moveAnimal(this, 0, 16, 16, 0);
+				this.getSwarm()[this.getSelect()].moveAnimal(this, 0, 16, 16, 0);
 				this.resetMoved();
 			}
 		}
 		if (x > dangerX && y < dangerY) {
 			for (int i = 0; i < fleeingDistance; i++) {
-				this.swarm[this.select].moveAnimal(this, 16, 0, 0, 16);
+				this.getSwarm()[this.getSelect()].moveAnimal(this, 16, 0, 0, 16);
 				this.resetMoved();
 			}
 		}
 		if (x < dangerX && y < dangerY) {
 			for (int i = 0; i < fleeingDistance; i++) {
-				this.swarm[this.select].moveAnimal(this, 0, 16, 0, 16);
+				this.getSwarm()[this.getSelect()].moveAnimal(this, 0, 16, 0, 16);
 				this.resetMoved();
 			}
 		}
 
 		double[] center = new double[2];
 		double averageX = 0, averageY = 0;
-		for (int i = 0; i < this.swarm.length; i++) {
-			this.swarm[i].stressed = false;
-			this.swarm[i].modifier = 1;
-			averageX += this.swarm[i].xcoord;
-			averageY += this.swarm[i].ycoord;
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			this.getSwarm()[i].setStressed(false);
+			this.getSwarm()[i].setModifier(1);
+			averageX += this.getSwarm()[i].getXcoord();
+			averageY += this.getSwarm()[i].getYcoord();
 		}
-		center[0] = averageX / this.swarm.length;
-		center[1] = averageY / this.swarm.length;
+		center[0] = averageX / this.getSwarm().length;
+		center[1] = averageY / this.getSwarm().length;
 
-		for (int i = 0; i < this.swarm.length; i++) {
-			this.swarm[i].recenter(this, center);
+		for (int i = 0; i < this.getSwarm().length; i++) {
+			this.getSwarm()[i].recenter(this, center);
 		}
 	}
 }
