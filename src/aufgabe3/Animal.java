@@ -71,6 +71,7 @@ public class Animal {
 	/* NOTE: logically the following four methods only make sense for k > 0 we also
 	 * made a compromise for move to be only done in whole integers to achieve more
 	 * fluid movement */
+	// Precondition: k > 0 for the following 4 methods
 	void moveUp(double k) throws InterruptedException {
 		for (int i = 0; i < (k * this.getModifier()); i++) {
 			TimeUnit.MICROSECONDS.sleep(200);

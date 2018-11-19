@@ -6,7 +6,7 @@ package aufgabe3;
  * minDistance (after being generated and during movement) and resetting swarm movement (which resets
  * all the animals movement, instead of setting it one by one).
  * 
- * While movingDistance logically could be part of Animal it requires swarm[].length to be accessible - so it's here.
+ * While movingDistance logically could be part of Animal it requires this.swarm[].length to be accessible - so it's here.
  * Possibly worth mentioning is that each swarm knows the animals it consists of but no animal knows the swarm it's part of.
  * 
  * The mentioned exception is the start method. This could be part of it's own class, but since each
@@ -90,8 +90,6 @@ public class Swarm {
 	// reusability and simplicity
 	public void resetMoved() {
 		for (int i = 0; i < this.getSwarm().length; i++) {
-			// BAD: strong coupling - looser coupling is achievable by adding complexity in
-			// form of a setter method in Animal
 			this.getSwarm()[i].setMoved(false);
 		}
 	}
@@ -113,8 +111,7 @@ public class Swarm {
 			// downside for large swarms
 		}
 		for (int i = 0; i < this.getSwarm().length; i++) {
-			// NOTE: considering the fact that the swarm is in it's essence a structure of
-			// individual animals
+			// NOTE: the swarm is in it's essence a structure of individual animals
 			Animal b = new Animal();
 			b.setXcoord(xvalues[i]);
 			b.setYcoord(yvalues[i]);
@@ -132,11 +129,12 @@ public class Swarm {
 		this.establishDistance();
 		this.resetMoved();
 		/*
+		 * History-Constraint (server side):
 		 * after makeswarm is executed we assert that there is a usable swarm consisting
 		 * of Animals with all their required parameters to be set in a way that makes
 		 * it ready to be displayed, the minimal distance to be approximately adhered
-		 * and its members to be ready to be moved { swarm[i] != null && swarm[i] == a
-		 * fully functioning animal object }
+		 * and its members to be ready to be moved { swarm[i] != null && swarm[i] == (a
+		 * fully functioning animal object) }
 		 */
 	}
 
@@ -161,7 +159,7 @@ public class Swarm {
 	public void establishDistance() {
 		if (this.getMinDistance() != 0) {
 			/*
-			 * ERROR: With the asymptotic runtime being as high as it is to keep our
+			 * Bad: With the asymptotic runtime being as high as it is to keep our
 			 * randomly generated Swarm from getting to cozy with eachother we concede that
 			 * through introducing a cap (willfully chosen, but relative to the swarmsize)
 			 * that limits how often we check for new minimal distance infringements in
@@ -180,7 +178,7 @@ public class Swarm {
 		}
 	}
 
-	// NOTE: this might as well be part of another class and doesn't add to class
+	// NOTE: this might be part of another class and doesn't add to class
 	// cohesion, but since it belongs to the method below we find having it here
 	// feels more intuitive
 	public double[] distanceHelper(double helpDistance, double xDistance, double yDistance) {
@@ -246,19 +244,6 @@ public class Swarm {
 	// good object coupling, we wanted this to be compact and accessible in order to
 	// communicate what is being done to the swarm after it has been generated
 	public void start() throws InterruptedException {
-		/*
-		 * BAD: strong object coupling (although Animal and Swarm logically and
-		 * otherwise belong together anyway) - a *simple* getter method however wouldn't
-		 * help us here, since we want select to be the random nth animal and be a
-		 * different one for both movements
-		 * 
-		 * so the price in added complexity for looser object coupling would be higher
-		 * than for typeToDraw - depending on how willing one is to pay that price this
-		 * might be a NOTE instead of BAD & the lack of encapsulation makes it more
-		 * usable for us, since this is a much easier way to manipulate all the
-		 * variables that determine the rules of the swarm movement
-		 */
-
 		this.setSelect((int) (Math.random() * (this.getSwarm().length - 1)));
 		double a = 4 + (double) Math.round((Math.random() * 14) * 100) / 100;
 		double b = 8 + (double) Math.round((Math.random() * 8) * 100) / 100;

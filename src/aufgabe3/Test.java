@@ -17,15 +17,6 @@ import javax.swing.*;
  *  - Swarm +
  *  - Flock +
  *  - Colony +
- * 
- * Preconditions & Postconditions ... Invarianten
- *  - Test +
- *  - Animal +
- *  - Bird +
- *  - Insect +
- *  - Swarm +
- *  - Flock +
- *  - Colony +
  */ 
 
 /* Concerning cohesion & coupling
@@ -52,9 +43,8 @@ public class Test extends JPanel implements ActionListener {
 	private static Colony insects = new Colony();
 	// Postcondition: assertion: all of these exist and can be used; especially important for paintComponent
 
-	// NOTE: these coordinates could be made final
-	private static double dangerX = (double) Math.round((100 + Math.random() * 80) * 100) / 100;
-	private static double dangerY = (double) Math.round((400 + Math.random() * 150) * 100) / 100;
+	private static final double dangerX = (double) Math.round((100 + Math.random() * 80) * 100) / 100;
+	private static final double dangerY = (double) Math.round((400 + Math.random() * 150) * 100) / 100;
 	// Postcondition: assertion { dangerX, dangerY are a number between 0 and 800 }
 	// while the program could handle any double some are pointless to use since the
 	// JFrame is 800x800 (same for the other two types)
@@ -123,7 +113,6 @@ public class Test extends JPanel implements ActionListener {
 	}
 
 	private static void GUI() {
-		// ERROR: we missed adjusting the frame title
 		JFrame frame = new JFrame("oopG22 Aufgabe 3");
 		frame.getContentPane().add(new Test());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -162,10 +151,6 @@ public class Test extends JPanel implements ActionListener {
 		/* Invariante (Server & Client): assertion { regular.swarmsize >= 0 } & { regular.minDistance >= 0 }
 		 * as soon as typeToDraw is initialized the program will want to use
 		 * regular.swarm.length to be >= 0 */
-		
-		/* BAD: object coupling could've been improved by implementing a getter method for type,
-		 * however this would add complexity without actually reaping the benefits from this
-		 * encapsulation */
 		typeToDraw = regular.getType();
 		regular.start();
 		TimeUnit.SECONDS.sleep(4);

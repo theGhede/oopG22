@@ -77,7 +77,7 @@ public class Bird extends Animal {
 			if (this.getXcoord() - x > 0)
 				moveLeft(Math.min(20, this.getXcoord() - x));
 			// Postcondition: assertion { Wert ist min(20, Abstand zur Mitte) }
-			// equivalent für die folgenden 3 if
+			// auch für die folgenden 3 if() Klauseln
 
 			if (this.getXcoord() - x < 0)
 				moveRight(Math.min(20, x - this.getXcoord()));
