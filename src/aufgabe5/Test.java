@@ -3,36 +3,6 @@ package aufgabe5;
 /*
 TODO:
 
-• FitAnimal
-– fitter
-- changeFitness
-– hierarchical
-– mayBeAlpha
-
-• SteppeHerdAnimal (Untertyp von FitAnimal)
-
-• Zebra (Untertyp von SteppeHerdAnimal)
-– hierarchical gibt true zurück.
-– mayBeAlpha
-– protection
-
-• Ostrich (Untertyp von SteppeHerdAnimal)
-– hierarchical
-– mayBeAlpha
-– power
-
-• Starling (Untertyp von FitAnimal)
-– fitter
-– hierarchical
-– mayBeAlpha
-
-• SocialGroup (Untertyp von java.lang.Iterable)
-– iterator
-– add
-– hierarchical
-– alpha
-– move mit einem Parameter vom Typ SocialGroup und einem vom Typ java.util.function.Predicate
-– compareAll
 
 • toString methods
 */
