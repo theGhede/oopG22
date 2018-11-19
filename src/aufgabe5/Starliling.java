@@ -6,4 +6,5 @@ package aufgabe5;
 – mayBeAlpha
  */
 public class Starliling extends SteppeHerdAnimal{
+
 }
