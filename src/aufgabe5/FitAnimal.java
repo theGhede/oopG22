@@ -5,10 +5,11 @@ package aufgabe5;
 *        - changeFitness
 *        – hierarchical
 *        – mayBeAlpha
+*        - toStirng
  */
 
 public class FitAnimal {
 
-
+ 
 
 }

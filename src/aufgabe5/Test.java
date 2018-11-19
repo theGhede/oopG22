@@ -1,13 +1,6 @@
 package aufgabe5;
 
 /*
-TODO:
-
-
-• toString methods
-*/
-
-/*
 1. Erzeugen Sie mindestens je ein Objekt der Typen
          SocialGroup<Starling>
          SocialGroup<Zebra>
