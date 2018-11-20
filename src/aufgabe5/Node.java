@@ -1,47 +1,46 @@
 package aufgabe5;
 
-@SuppressWarnings("hiding")
-public class Node<FitAnimal> {
-	private FitAnimal current;
-	private Node<FitAnimal> next;
-	private Node<FitAnimal> previous;
-	private Node<FitAnimal> nextNext;
+public class Node<T> {
+	private T current;
+	private Node<T> next;
+	private Node<T> previous;
+	private Node<T> nextNext;
 
-	public Node(FitAnimal current, Node<FitAnimal> next) {
+	public Node(T current, Node<T> next) {
 		this.current = current;
 		this.next = next;
 		this.nextNext = next.getNext();
 	}
 
-	public void setCurrent(FitAnimal current) {
+	public void setCurrent(T current) {
 		this.current = current;
 	}
 
-	public FitAnimal getCurrent() {
+	public T getCurrent() {
 		return this.current;
 	}
 
-	public void setNext(Node<FitAnimal> next) {
+	public void setNext(Node<T> next) {
 		this.next = next;
 	}
 
-	public Node<FitAnimal> getNext() {
+	public Node<T> getNext() {
 		return this.next;
 	}
 
-	public void setPrevious(Node<FitAnimal> prev) {
+	public void setPrevious(Node<T> prev) {
 		this.previous = prev;
 	}
 
-	public Node<FitAnimal> getPrevious() {
+	public Node<T> getPrevious() {
 		return this.previous;
 	}
 
-	public void setNextNext(Node<FitAnimal> nextNext) {
+	public void setNextNext(Node<T> nextNext) {
 		this.nextNext = nextNext;
 	}
 
-	public Node<FitAnimal> getNextNext() {
+	public Node<T> getNextNext() {
 		return this.nextNext;
 	}
 }

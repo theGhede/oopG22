@@ -12,35 +12,35 @@ import java.util.function.Predicate;
 – compareAll
 - toString */
 
-@SuppressWarnings("hiding")
-public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
+public class SocialGroup<T> implements Iterable<T> {
 
-	private Node<FitAnimal> head, tail;
+	private Node<T> head, tail;
 
-	public Node<FitAnimal> getHead() {
+	public Node<T> getHead() {
 		return this.head;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setHead(Node<?> head) {
-		this.head = (Node<FitAnimal>) head;
+		this.head = (Node<T>) head;
 	}
 
-	public Node<FitAnimal> getTail() {
+	public Node<T> getTail() {
 		return this.tail;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void setTail(Node<?> tail) {
-		this.tail = (Node<FitAnimal>) tail;
+		this.tail = (Node<T>) tail;
 	}
 
 	@Override
-	public Iterator<FitAnimal> iterator() {
-		return new SocialGroupIterator<FitAnimal>(this);
+	public Iterator<T> iterator() {
+		return new SocialGroupIterator<T>(this);
 	}
 
-	public void add(FitAnimal a) {
-		Node<FitAnimal> node = new Node<>(a, null);
+	public void add(T a) {
+		Node<T> node = new Node<>(a, null);
 		if (head == null) {
 			this.head = this.tail = node;
 			this.head.setPrevious(null);
@@ -52,7 +52,7 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 	}
 
 	// TODO
-	public void move(SocialGroup<FitAnimal> source, Predicate<FitAnimal> p) {
+	public void move(SocialGroup<T> source, Predicate<T> p) {
 
 	}
 
@@ -71,21 +71,21 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 	}
 
 	// TODO
-	public SocialGroup<FitAnimal> sort() {
+	public SocialGroup<T> sort() {
 		return null;
 	}
 
 	// TODO
-	public Iterator<FitAnimal> alpha() {
+	public Iterator<T> alpha() {
 		return null;
 
 	}
 
-	public class SocialGroupIterator<FitAnimal> implements Iterator<FitAnimal> {
+	public class SocialGroupIterator<T> implements Iterator<T> {
 
-		private Node<FitAnimal> current;
+		private Node<T> current;
 
-		public SocialGroupIterator(SocialGroup<FitAnimal> group) {
+		public SocialGroupIterator(SocialGroup<T> group) {
 			this.current = group.getHead();
 		}
 
@@ -95,18 +95,18 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 		}
 
 		@Override
-		public FitAnimal next() {
+		public T next() {
 			if (!this.hasNext()) {
 				throw new NoSuchElementException();
 			}
-			FitAnimal animal = current.getCurrent();
+			T animal = current.getCurrent();
 			this.current = this.current.getNext();
 			return animal;
 		}
 
 		// TODO setHead / setTail
 
-		public void remove(Node<FitAnimal> a) {
+		public void remove(Node<T> a) {
 			if (a.getPrevious() == null && a.getNext() != null) {
 				a.getNext().setPrevious(null);
 				a.setNext(null);
