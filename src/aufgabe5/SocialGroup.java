@@ -4,13 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-/*– iterator
-– add
-– hierarchical
-– alpha
-– move mit einem Parameter vom Typ SocialGroup und einem vom Typ java.util.function.Predicate
-– compareAll
-- toString */
+/* - toString */
 
 public class SocialGroup<T> implements Iterable<T> {
 
@@ -19,7 +13,7 @@ public class SocialGroup<T> implements Iterable<T> {
 	public Node<T> getHead() {
 		return this.head;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void setHead(Node<?> head) {
 		this.head = (Node<T>) head;
@@ -39,7 +33,37 @@ public class SocialGroup<T> implements Iterable<T> {
 		return new SocialGroupIterator<T>(this);
 	}
 
-	public void add(T a) {
+	public void add(T t) {
+		if (head == null) {
+			addTail(t);
+		}
+		FitAnimal a = (FitAnimal) t;
+		int tailFitness = ((FitAnimal) this.tail.getCurrent()).getFitness();
+		for (T i : this) {
+			FitAnimal other = (FitAnimal) i;
+			if (head == null) {
+				addTail(t);
+			} else if (a.getFitness() >= other.getFitness() && i == this.head.getCurrent()) {
+				addHead(t);
+				// TODO
+			} else if (a.getFitness() >= other.getFitness() && a.getFitness() < 0) {
+				insert(t);
+			} else if (other.getFitness() == tailFitness) {
+				addTail(t);
+			}
+
+		}
+	}
+
+	public void insert(T a) {
+
+	}
+
+	public void addHead(T a) {
+
+	}
+
+	public void addTail(T a) {
 		Node<T> node = new Node<>(a, null);
 		if (head == null) {
 			this.head = this.tail = node;
@@ -63,16 +87,12 @@ public class SocialGroup<T> implements Iterable<T> {
 
 	// TODO
 	public boolean hierarchical() {
-		for (Node <FitAnimal> current : this) {
-			if (!current.getHierarchical) return false;
+		for (Node<FitAnimal> current : this) {
+			if (!current.getHierarchical)
+				return false;
 		}
 
 		return true;
-	}
-
-	// TODO
-	public SocialGroup<T> sort() {
-		return null;
 	}
 
 	// TODO
