@@ -12,6 +12,11 @@ public class SteppeHerdAnimal extends FitAnimal {
         this.changeFintess(this.sprintVelocity);
     }
 
+    public SteppeHerdAnimal(int fitness, boolean hierarchical, int sprintVelocity) {
+        super(fitness, hierarchical);
+        this.sprintVelocity = sprintVelocity;
+    }
+
     @Override
     public String toString () {
         String h;

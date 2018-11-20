@@ -17,7 +17,12 @@ public class FitAnimal {
      this.hierarchical = h;
  }
 
- public int fitter (FitAnimal compared) {
+    public FitAnimal(int fitness, boolean hierarchical) {
+        this.fitness = fitness;
+        this.hierarchical = hierarchical;
+    }
+
+    public int fitter (FitAnimal compared) {
      double margin = 0.2;
      if (this.fitness >= (1 + margin) * compared.fitness) return 1;
      if (this.fitness <= (1 + margin) * compared.fitness && this.fitness >= (1 - margin) * compared.fitness) return 0;
