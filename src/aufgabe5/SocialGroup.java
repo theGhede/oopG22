@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 – compareAll
 - toString */
 
+@SuppressWarnings("hiding")
 public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 
 	private Node<FitAnimal> head, tail;
@@ -19,17 +20,18 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 	public Node<FitAnimal> getHead() {
 		return this.head;
 	}
-
-	public void setHead(SocialGroup<FitAnimal>.Node<FitAnimal> node) {
-		this.head = node;
+	
+	public void setHead(Node<?> head) {
+		this.head = (Node<FitAnimal>) head;
 	}
 
 	public Node<FitAnimal> getTail() {
 		return this.tail;
 	}
 
-	public void setTail(Node<FitAnimal> tail) {
-		this.tail = tail;
+	@SuppressWarnings("unchecked")
+	public void setTail(Node<?> tail) {
+		this.tail = (Node<FitAnimal>) tail;
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 	}
 
 	public void add(FitAnimal a) {
-		Node<FitAnimal> node = new Node<FitAnimal>(a, null);
+		Node<FitAnimal> node = new Node<>(a, null);
 		if (head == null) {
 			this.head = this.tail = node;
 			this.head.setPrevious(null);
@@ -62,7 +64,6 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 	// TODO
 	public boolean hierarchical() {
 		return false;
-
 	}
 
 	// TODO
@@ -78,7 +79,7 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 
 	public class SocialGroupIterator<FitAnimal> implements Iterator<FitAnimal> {
 
-		private SocialGroup<FitAnimal>.Node<FitAnimal> current;
+		private Node<FitAnimal> current;
 
 		public SocialGroupIterator(SocialGroup<FitAnimal> group) {
 			this.current = group.getHead();
@@ -99,6 +100,7 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 			return animal;
 		}
 
+		// TODO setHead / setTail
 		public void remove(Node<FitAnimal> a) {
 			if (a.getPrevious() == null && a.getNext() != null) {
 				a.getNext().setPrevious(null);
@@ -114,51 +116,6 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 				a.getNext().setPrevious(a.getPrevious());
 				a.getPrevious().setNext(a.getNext());
 			}
-		}
-	}
-
-	public class Node<FitAnimal> {
-		private FitAnimal current;
-		private Node<FitAnimal> next;
-		private Node<FitAnimal> previous;
-		private Node<FitAnimal> nextNext;
-
-		public Node(FitAnimal current, Node<FitAnimal> next) {
-			this.current = current;
-			this.next = next;
-			this.nextNext = next.getNext();
-		}
-
-		public void setCurrent(FitAnimal current) {
-			this.current = current;
-		}
-
-		public FitAnimal getCurrent() {
-			return this.current;
-		}
-
-		public void setNext(Node<FitAnimal> next) {
-			this.next = next;
-		}
-
-		public Node<FitAnimal> getNext() {
-			return this.next;
-		}
-
-		public void setPrevious(Node<FitAnimal> prev) {
-			this.previous = prev;
-		}
-
-		public Node<FitAnimal> getPrevious() {
-			return this.previous;
-		}
-
-		public void setNextNext(Node<FitAnimal> nextNext) {
-			this.nextNext = nextNext;
-		}
-
-		public Node<FitAnimal> getNextNext() {
-			return this.nextNext;
 		}
 	}
 }
