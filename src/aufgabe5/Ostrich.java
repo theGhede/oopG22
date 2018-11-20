@@ -12,6 +12,10 @@ public class Ostrich extends SteppeHerdAnimal {
 
     public int power(){ return power; }
 
+    public Ostrich(int fitness, boolean hierarchical, int sprintVelocity, int power) {
+        super(fitness, hierarchical, sprintVelocity);
+        this.power = power;
+    }
     //this.setHierarchical(false);
 
     @Override

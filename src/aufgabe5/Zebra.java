@@ -9,7 +9,11 @@ public class Zebra extends SteppeHerdAnimal {
     private final int alphaMinVelocity = 60;
     private double striped;
 
-
+    public Zebra(int fitness, boolean hierarchical, int sprintVelocity, boolean female, double striped) {
+        super(fitness, hierarchical, sprintVelocity);
+        this.female = female;
+        this.striped = striped;
+    }
     //this.setHierarchical(true);
 
     public double protection() {

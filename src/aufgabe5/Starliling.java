@@ -1,9 +1,5 @@
 package aufgabe5;
 
-/*
-  TODO
-  - Konstruktor
- */
 public class Starliling extends FitAnimal{
 
     private int endurance;
@@ -15,6 +11,11 @@ public class Starliling extends FitAnimal{
         this.changeFintess(newFitness);
     }
 
+    public Starliling(int fitness, boolean hierarchical, int endurance, boolean responsivness) {
+        super(fitness, hierarchical);
+        this.endurance = endurance;
+        this.responsivness = responsivness;
+    }
    // this.setHierarchical(false);
 
     @Override
