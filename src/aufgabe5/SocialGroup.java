@@ -86,6 +86,8 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 		// TODO
 		public void remove(FitAnimal a) {
 
+
+
 		}
 	}
 
