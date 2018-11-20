@@ -85,20 +85,30 @@ public class SocialGroup<T> implements Iterable<T> {
 
 	}
 
-	// TODO
-	public boolean hierarchical() {
-		for (Node<FitAnimal> current : this) {
-			if (!current.getHierarchical)
-				return false;
-		}
 
+	public boolean hierarchical() {
+		for (T current : this) {
+			if (!current.getHierarchical) return false;
+		}
 		return true;
 	}
 
 	// TODO
-	public Iterator<T> alpha() {
+	public SocialGroup<T> sort() {
 		return null;
+	}
 
+	public SocialGroup<T> alpha() {
+		SocialGroup<T> potentialAlphas = new SocialGroup<T>();
+		if (hierarchical()) {
+			for (T current : this) {
+				if (current.getAlpha) {
+					potentialAlphas.add(current);
+				}
+			}
+			return potentialAlphas;
+		}
+		return null;
 	}
 
 	public class SocialGroupIterator<T> implements Iterator<T> {
@@ -123,8 +133,6 @@ public class SocialGroup<T> implements Iterable<T> {
 			this.current = this.current.getNext();
 			return animal;
 		}
-
-		// TODO setHead / setTail
 
 		public void remove(Node<T> a) {
 			if (a.getPrevious() == null && a.getNext() != null) {
