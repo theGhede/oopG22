@@ -63,7 +63,11 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 
 	// TODO
 	public boolean hierarchical() {
-		return false;
+		for (Node <FitAnimal> current : this) {
+			if (!current.getHierarchical) return false;
+		}
+
+		return true;
 	}
 
 	// TODO
