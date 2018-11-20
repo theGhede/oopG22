@@ -101,6 +101,7 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 		}
 
 		// TODO setHead / setTail
+
 		public void remove(Node<FitAnimal> a) {
 			if (a.getPrevious() == null && a.getNext() != null) {
 				a.getNext().setPrevious(null);
