@@ -1,6 +1,7 @@
 package aufgabe5;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 /*– iterator
@@ -11,7 +12,6 @@ import java.util.function.Predicate;
 – compareAll
 - toString */
 
-@SuppressWarnings("hiding")
 public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 
 	private Node<FitAnimal> head, tail;
@@ -20,8 +20,16 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 		return this.head;
 	}
 
+	public void setHead(SocialGroup<FitAnimal>.Node<FitAnimal> node) {
+		this.head = node;
+	}
+
 	public Node<FitAnimal> getTail() {
 		return this.tail;
+	}
+
+	public void setTail(Node<FitAnimal> tail) {
+		this.tail = tail;
 	}
 
 	@Override
@@ -33,9 +41,11 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 		Node<FitAnimal> node = new Node<FitAnimal>(a, null);
 		if (head == null) {
 			this.head = this.tail = node;
+			this.head.setPrevious(null);
 		} else {
+			this.tail.setPrevious(this.tail);
 			this.tail.setNext(node);
-			tail = node;
+			this.tail = node;
 		}
 	}
 
@@ -43,18 +53,24 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 	public void move(SocialGroup<FitAnimal> source, Predicate<FitAnimal> p) {
 
 	}
-	
+
 	// TODO
 	public void compareAll() {
 
 	}
-	
+
 	// TODO
 	public boolean hierarchical() {
 		return false;
 
 	}
 
+	// TODO
+	public SocialGroup<FitAnimal> sort() {
+		return null;
+	}
+
+	// TODO
 	public Iterator<FitAnimal> alpha() {
 		return null;
 
@@ -65,39 +81,53 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 		private SocialGroup<FitAnimal>.Node<FitAnimal> current;
 
 		public SocialGroupIterator(SocialGroup<FitAnimal> group) {
-			current = group.getHead();
+			this.current = group.getHead();
 		}
 
 		@Override
 		public boolean hasNext() {
-			return current != null;
+			return this.current != null;
 		}
 
 		@Override
 		public FitAnimal next() {
 			if (!this.hasNext()) {
-				return null;
+				throw new NoSuchElementException();
 			}
 			FitAnimal animal = current.getCurrent();
-			current = current.getNext();
+			this.current = this.current.getNext();
 			return animal;
 		}
-		
-		// TODO
-		public void remove(FitAnimal a) {
 
 
-
+		public void remove(Node<FitAnimal> a) {
+			if (a.getPrevious() == null && a.getNext() != null) {
+				a.getNext().setPrevious(null);
+				a.setNext(null);
+				setHead(a.getNext());
+			} else if (a.getNext() == null && a.getPrevious() != null) {
+				a.getPrevious().setNext(null);
+				setTail(a.getPrevious());
+			} else if (a.getNext() == null && a.getPrevious() == null) {
+				setHead(null);
+				setTail(null);
+			} else {
+				a.getNext().setPrevious(a.getPrevious());
+				a.getPrevious().setNext(a.getNext());
+			}
 		}
 	}
 
 	public class Node<FitAnimal> {
 		private FitAnimal current;
 		private Node<FitAnimal> next;
+		private Node<FitAnimal> previous;
+		private Node<FitAnimal> nextNext;
 
 		public Node(FitAnimal current, Node<FitAnimal> next) {
 			this.current = current;
 			this.next = next;
+			this.nextNext = next.getNext();
 		}
 
 		public void setCurrent(FitAnimal current) {
@@ -114,6 +144,22 @@ public class SocialGroup<FitAnimal> implements Iterable<FitAnimal> {
 
 		public Node<FitAnimal> getNext() {
 			return this.next;
+		}
+
+		public void setPrevious(Node<FitAnimal> prev) {
+			this.previous = prev;
+		}
+
+		public Node<FitAnimal> getPrevious() {
+			return this.previous;
+		}
+
+		public void setNextNext(Node<FitAnimal> nextNext) {
+			this.nextNext = nextNext;
+		}
+
+		public Node<FitAnimal> getNextNext() {
+			return this.nextNext;
 		}
 	}
 }
