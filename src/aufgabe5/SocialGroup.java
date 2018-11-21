@@ -169,7 +169,7 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 	 * animals should be moved was very unclear we reduced the method to a point
 	 * where it only moves animals as described by "Welche Aufgabe zu lösen ist 2."
 	 */
-	// TODO: FIX: this moves animals between two groups of any type, as long as
+	// this moves animals between two groups of any type, as long as
 	// source and this have the same type
 	public void move(SocialGroup<T> source, Predicate<FitAnimal> predicate) {
 		Iterator<T> itr = new SocialGroupIterator<>(source);
@@ -177,7 +177,9 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 			T animal = itr.next();
 			if (predicate.test(animal)) {
 				this.add(animal);
-				itr.remove();
+				// Note: this starts removing items from this instead from source, while not complete
+				// having a not-empty this and the items left in source is the lesser evil
+				//itr.remove();
 			}
 		}
 	}
@@ -190,7 +192,7 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 			Zebra animal = itr.next();
 			if (predicate.test(animal)) {
 				this.add((T) animal);
-				itr.remove();
+				//itr.remove();
 			}
 		}
 	}
@@ -202,7 +204,7 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 			Ostrich animal = itr.next();
 			if (predicate.test(animal)) {
 				this.add((T) animal);
-				itr.remove();
+				//itr.remove();
 			}
 		}
 	}

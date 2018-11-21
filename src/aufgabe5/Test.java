@@ -20,6 +20,7 @@ public class Test {
 		SocialGroup<Zebra> zebraGroup = new SocialGroup<>();
 		SocialGroup<Ostrich> ostrichGroup = new SocialGroup<>();
 		SocialGroup<SteppeHerdAnimal> steppeGroup = new SocialGroup<>();
+		SocialGroup<SteppeHerdAnimal> steppeGroup2 = new SocialGroup<>();
 
 		/*
 		 * Note: in order to not depend on setting hierarchical correctly animal
@@ -77,7 +78,7 @@ public class Test {
 		SocialGroup<Zebra> moveZebras = new SocialGroup<>();
 		moveZebras.add(zebra6);
 		moveZebras.add(zebra7);
-/*
+
 		System.out.println(
 				"Starlings (these were added out of order to test the 3 methods of adding animals addTail, addHead & insert)");
 		starlingGroup.print();
@@ -91,10 +92,10 @@ public class Test {
 		System.out.println(zebraGroup.alpha().getClass() + "\n");
 
 		System.out.println("Mixing Zebras and Ostriches ... and SteppeHerdAnimals");
-		steppeGroup.add(zebra1);
-		steppeGroup.add(ostrich1);
-		steppeGroup.add(steppeAnimal);
-		steppeGroup.print();
+		steppeGroup2.add(zebra1);
+		steppeGroup2.add(ostrich1);
+		steppeGroup2.add(steppeAnimal);
+		steppeGroup2.print();
 
 		// animals of different groups can be compared, even if it might be questionable
 		// to do so - zebra2's fittnes is just within the 10% margin of ostrich2's
@@ -113,20 +114,21 @@ public class Test {
 		System.out.println(starling3.fitter(starling1));
 		System.out.println("Is starling3 fitter than starling4?");
 		System.out.println(starling3.fitter(starling4) + "\n");
-*/
+
 		System.out.println("Moving zebras between two zebra groups");
 		moveZebras.print();
-		//zebraGroup.move(moveZebras, TypePredicates.typePredicate);
-		zebraGroup.compareAll();
+		zebraGroup.move(moveZebras, TypePredicates.typePredicate);
 		zebraGroup.print();
-		moveZebras.print();
 		
-		// TODO: use move() instead of moveZebra() & moveOstrich()
+		// ERROR: use move() instead of moveZebra() & moveOstrich()
+		// steppeGroup is our most powerful ostriches and most intensely striped zebras
 		System.out.println("Moving animals between Zebra/Ostrich & SteppeAnimal groups");
 		steppeGroup.moveZebras(zebraGroup, TypePredicates.typePredicate);
 		steppeGroup.moveOstriches(ostrichGroup, TypePredicates.typePredicate);
-		//steppeGroup.print();
-		//zebraGroup.print();
+		steppeGroup.print();
+		
+		zebraGroup.compareAll();
+		zebraGroup.print();
 	}
 
 }
