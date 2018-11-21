@@ -116,7 +116,8 @@ public class Test {
 */
 		System.out.println("Moving zebras between two zebra groups");
 		moveZebras.print();
-		zebraGroup.move(moveZebras, TypePredicates.typePredicate);
+		//zebraGroup.move(moveZebras, TypePredicates.typePredicate);
+		zebraGroup.compareAll();
 		zebraGroup.print();
 		moveZebras.print();
 		

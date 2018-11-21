@@ -19,7 +19,6 @@ public class Starling extends FitAnimal {
 		this.responsivness = responsivness;
 		this.calculateFitness();
 	}
-	// this.setHierarchical(false);
 
 	@Override
 	public String toString() {

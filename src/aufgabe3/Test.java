@@ -7,18 +7,6 @@ import java.awt.geom.Ellipse2D;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
-/* TODO:
- * 
- * data hiding
- *  - Test +
- *  - Animal +
- *  - Bird +
- *  - Insect +
- *  - Swarm +
- *  - Flock +
- *  - Colony +
- */ 
-
 /* Concerning cohesion & coupling
  * To us having high cohesion is much more intuitive than loose coupling and while cohesion may vary
  * from class to class it's never low. Coupling on the other hand is tight in a few spots where it
@@ -175,9 +163,9 @@ public class Test extends JPanel implements ActionListener {
 	}
 }
 
-/* TODO:  Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
- * Elias Nachbaur (01634010): Comments for version from last Wednesday, made testDistance and it's calculations
+/* Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
+ * Elias Nachbaur (01634010): made testDistance and it's calculations
  * Florian Fusstetter (00709759): Comments for Test, Animal & Swarm, Swing, start & makeswarm, distance (keep & moving),
- * 								  testDistance debugging, restructuring into Test + 3 class pairs
+ * 								  testDistance debugging, restructuring into Test + 3 class pairs, data hiding
  * Ignjat Karanovic (01529940): Comments for Bird, Flock, Insect & Colony, neighborhood, center for Flock, moveBird,
  * 							    testDistance debugging */

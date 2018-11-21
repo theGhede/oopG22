@@ -46,9 +46,9 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 	public void add(T a) {
 		if (this.head == null) {
 			this.addTail(a);
-		} else if (a.fitter(this.tail.getCurrent()) <= 0) {
+		} else if (a.getFitness() <= this.tail.getCurrent().getFitness()) {
 			addTail(a);
-		} else if (a.fitter(this.head.getCurrent()) >= 0) {
+		} else if (a.getFitness() >= this.head.getCurrent().getFitness()) {
 			addHead(a);
 		} else {
 			insert(a, head);
@@ -57,10 +57,10 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 
 	public void insert(T a, Node<T> current) {
 		Node<T> node = new Node<>(a, null);
-		if (a.fitter(current.getCurrent()) == -1 && a.fitter(current.getNext().getCurrent()) == -1) {
+		if (a.getFitness() < current.getCurrent().getFitness() && a.getFitness() <=  current.getNext().getCurrent().getFitness()) {
 			insert(a, current.getNext());
 		}
-		if (a.fitter(current.getNext().getCurrent()) >= 0) {
+		if (a.getFitness() >= current.getNext().getCurrent().getFitness()) {
 			node.setNext(current.getNext());
 			current.setNext(node);
 			node.setPrevious(current);
@@ -91,9 +91,34 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		}
 	}
 
-	// TODO
 	public void compareAll() {
-
+		SocialGroup<T> save = new SocialGroup<>();
+		int change;
+		for (T i : this) {
+			for (T j : this) {
+				if (i.fitter(j) == 0) {
+					double winner = Math.random();
+					if (winner >= 0.5 ) {
+						change = (int) (j.getFitness() * 0.1);
+						i.changeFintess(i.getFitness() + change);
+						j.changeFintess(j.getFitness() - change);
+						
+					} else if (winner < 0.5) {
+						change = (int) (j.getFitness() * 0.1);
+						i.changeFintess(i.getFitness() - change);
+						j.changeFintess(j.getFitness() + change);
+					}
+				}
+			}
+		}
+		Iterator<T> itr = new SocialGroupIterator<>(this);
+		while (itr.hasNext()) {
+			save.add(itr.next());
+			itr.remove();
+		}
+		for (T t : save) {
+			this.add(t);
+		}
 	}
 
 	public boolean hierarchical() {
@@ -147,36 +172,37 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 	// TODO: FIX: this moves animals between two groups of any type, as long as
 	// source and this have the same type
 	public void move(SocialGroup<T> source, Predicate<FitAnimal> predicate) {
-		Iterator<T> iterator = new SocialGroupIterator<>(source);
-		while (iterator.hasNext()) {
-			T animal = iterator.next();
+		Iterator<T> itr = new SocialGroupIterator<>(source);
+		while (itr.hasNext()) {
+			T animal = itr.next();
 			if (predicate.test(animal)) {
 				this.add(animal);
-				iterator().remove();
+				itr.remove();
 			}
 		}
 	}
 
+	// cast is checked by assertions - Zebra is in fact valid for T
 	@SuppressWarnings("unchecked")
 	public void moveZebras(SocialGroup<Zebra> source, Predicate<FitAnimal> predicate) {
-		Iterator<Zebra> iterator = new SocialGroupIterator<>(source);
-		while (iterator.hasNext()) {
-			Zebra animal = iterator.next();
+		Iterator<Zebra> itr = new SocialGroupIterator<>(source);
+		while (itr.hasNext()) {
+			Zebra animal = itr.next();
 			if (predicate.test(animal)) {
 				this.add((T) animal);
-				iterator.remove();
+				itr.remove();
 			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public void moveOstriches(SocialGroup<Ostrich> source, Predicate<FitAnimal> predicate) {
-		Iterator<Ostrich> iterator = new SocialGroupIterator<>(source);
-		while (iterator.hasNext()) {
-			Ostrich animal = iterator.next();
+		Iterator<Ostrich> itr = new SocialGroupIterator<>(source);
+		while (itr.hasNext()) {
+			Ostrich animal = itr.next();
 			if (predicate.test(animal)) {
 				this.add((T) animal);
-				iterator.remove();
+				itr.remove();
 			}
 		}
 	}
@@ -237,19 +263,20 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		@Override
 		public void remove() {
 			if (this.hasNext()) {
-				if (this.current.getPrevious() == null && this.current.getNext() != null) {
+				if (this.current.getPrevious() == null && this.current.getNext() != null) { // head
 					this.current.getNext().setPrevious(null);
 					this.current.setNext(null);
 					setHead(this.current.getNext());
-				} else if (this.current.getNext() == null && this.current.getPrevious() != null) {
+				} else if (this.current.getNext() == null && this.current.getPrevious() != null) { // tail
 					this.current.getPrevious().setNext(null);
 					setTail(this.current.getPrevious());
-				} else if (this.current.getNext() == null && this.current.getPrevious() == null) {
+				} else if (this.current.getNext() == null && this.current.getPrevious() == null) { // only element
 					setHead(null);
 					setTail(null);
-				} else {
+				} else { // else
+					Node<T> prevHelp = this.current.getPrevious();
 					this.current.getNext().setPrevious(this.current.getPrevious());
-					this.current.getPrevious().setNext(this.current.getNext());
+					prevHelp.setNext(this.current.getNext());
 				}
 			}
 		}

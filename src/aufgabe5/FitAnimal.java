@@ -4,7 +4,7 @@ public class FitAnimal {
 
 	private int fitness;
 	private boolean hierarchical;
-
+	
 	public int getFitness() {
 		return this.fitness;
 	}
@@ -54,5 +54,4 @@ public class FitAnimal {
 
 		return "<" + " Fitness is: " + this.fitness + " | " + h + " >";
 	}
-
 }
