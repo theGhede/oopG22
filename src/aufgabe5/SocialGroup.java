@@ -43,63 +43,45 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		return new SocialGroupIterator<>(this);
 	}
 
-	// TODO: unclusterfuck this aadd Method for sorted groups and replace add
-	public void aadd(T a) {
-		int tIndex = 0;
-		int nextIndex;
-		for (T t : this) {
-			if (head == null) {
-				addTail(a);
-			} else if (t == this.tail.getCurrent() && a.getFitness() <= this.tail.getCurrent().getFitness()) {
-				addTail(a);
-			} else if (a.getFitness() >= t.getFitness() && t == this.head.getCurrent()) {
-				addHead(a);
-			} else if (a.getFitness() < t.getFitness()) {
-				nextIndex = tIndex + 1;
-				for (T next : this) {
-					if (a.getFitness() >= next.getFitness() && nextIndex == 0) {
-						insert(a, t, next);
-					}
-					nextIndex--;
-				}
-			}
-			tIndex++;
-		}
-	}
-
+	// TODO: add insert()
 	public void add(T a) {
-		Node<T> node = new Node<>(a, null);
-		if (head == null) {
-			this.head = this.tail = node;
-			this.head.setPrevious(null);
+		if (this.head == null) {
+			this.addTail(a);
+		} else if (a.fitter(this.tail.getCurrent()) <= 0) {
+			addTail(a);
+		} else if (a.fitter(this.head.getCurrent()) >= 0) {
+			addHead(a);
 		} else {
-			this.tail.setPrevious(this.tail);
-			this.tail.setNext(node);
-			this.tail = node;
+			insert(a, head);
 		}
 	}
 
-	private void insert(T a, T prev, T next) {
+	public void insert(T a, Node<T> current) {
 		Node<T> node = new Node<>(a, null);
-		// TODO adding pointers for node
-		// node.setNext(???);
-		// node.setPrevious(???);
-
-		// correcting pointers pointing towards node
-		node.getNext().setPrevious(node);
-		node.getPrevious().setNext(node);
+		// checks nodes in recursion
+		if (a.fitter(current.getCurrent()) == -1 && a.fitter(current.getNext().getCurrent()) == -1) {
+			insert(a, current.getNext());
+		}
+		if (a.fitter(current.getNext().getCurrent()) >= 0) {
+			node.setNext(current.getNext());
+			current.setNext(node);
+			node.setPrevious(current);
+			current.getNext().setPrevious(node);
+		}
+		
 	}
 
-	private void addHead(T a) {
+	public void addHead(T a) {
 		// new head node [null -> a -> oldHead]
 		Node<T> node = new Node<>(a, head);
+		node.setPrevious(null);
+		// adjust previous of the old head to new head
+		this.head.setPrevious(node);
 		// change head
 		this.head = node;
-		// adjust previous of the old head to new head
-		this.head.getNext().setPrevious(this.head);
 	}
 
-	private void addTail(T a) {
+	public void addTail(T a) {
 		Node<T> node = new Node<>(a, null);
 		if (head == null) {
 			this.head = this.tail = node;
@@ -175,7 +157,7 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void moveZebras(SocialGroup<Zebra> source, Predicate<FitAnimal> predicate) {
 		for (Zebra animal : source) {
@@ -186,7 +168,7 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void moveOstriches(SocialGroup<Ostrich> source, Predicate<FitAnimal> predicate) {
 		for (Ostrich animal : source) {

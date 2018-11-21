@@ -39,6 +39,7 @@ public class Test {
 		Starling starling2 = new Starling(0, false, 71, true);
 		Starling starling3 = new Starling(0, true, 100, false);
 		Starling starling4 = new Starling(0, false, 48, true);
+		Starling starling5 = new Starling(0, false, 60, true);
 
 		Zebra zebra1 = new Zebra(0, false, 64, true, 0.6);
 		Zebra zebra2 = new Zebra(0, true, 63, false, 0.8);
@@ -53,28 +54,32 @@ public class Test {
 		System.out.println("FitAnimal: " + fitAnimal.toString() + " Is this FitAnimal fitter than zebra1? "
 				+ fitAnimal.fitter(zebra1));
 
-		starlingGroup.add(starling1);
 		starlingGroup.add(starling2);
 		starlingGroup.add(starling3);
 		starlingGroup.add(starling4);
+		// testing addHead() - if new animal is the fittest it becomes the new head
+		starlingGroup.add(starling1);
+		// testing insert
+		starlingGroup.add(starling5);
 
+		
 		zebraGroup.add(zebra1);
 		zebraGroup.add(zebra2);
 		zebraGroup.add(zebra3);
 		zebraGroup.add(zebra4);
 		zebraGroup.add(zebra5);
 
+		ostrichGroup.add(ostrich1);
+		ostrichGroup.add(ostrich2);
+		ostrichGroup.add(ostrich3);
+		
 		Zebra zebra6 = new Zebra(0, true, 64, true, 0.8);
 		Zebra zebra7 = new Zebra(0, false, 60, false, 0.5);
 		SocialGroup<Zebra> moveZebras = new SocialGroup<>();
 		moveZebras.add(zebra6);
 		moveZebras.add(zebra7);
 
-		ostrichGroup.add(ostrich1);
-		ostrichGroup.add(ostrich2);
-		ostrichGroup.add(ostrich3);
-
-		System.out.println("Starlings");
+		System.out.println("Starlings (these were added out of order to test the 3 methods of adding animals addTail, addHead & insert)");
 		starlingGroup.print();
 
 		System.out.println("Ostriches");
