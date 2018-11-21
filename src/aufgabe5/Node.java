@@ -1,6 +1,6 @@
 package aufgabe5;
 
-public class Node<T> {
+public class Node<T extends FitAnimal> {
 	private T current;
 	private Node<T> next;
 	private Node<T> previous;

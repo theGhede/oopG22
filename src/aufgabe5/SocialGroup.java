@@ -4,11 +4,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-/* - toString */
+/* - toString or print method */
 
-public class SocialGroup<T> implements Iterable<T> {
+public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 
-	private Node<T> head, tail;
+	private Node<T> head;
+	private Node<T> tail;
 
 	public Node<T> getHead() {
 		return this.head;
@@ -33,25 +34,32 @@ public class SocialGroup<T> implements Iterable<T> {
 		return new SocialGroupIterator<T>(this);
 	}
 
-	public void add(T t) {
+	public void add(T a) {
 		if (head == null) {
-			addTail(t);
+			addTail(a);
 		}
-		FitAnimal a = (FitAnimal) t;
-		int tailFitness = ((FitAnimal) this.tail.getCurrent()).getFitness();
-		for (T i : this) {
-			FitAnimal other = (FitAnimal) i;
+		int tailFitness = (this.tail.getCurrent()).getFitness();
+		int tIndex = 0;
+		int nextIndex;
+		for (T t : this) {
 			if (head == null) {
-				addTail(t);
-			} else if (a.getFitness() >= other.getFitness() && i == this.head.getCurrent()) {
-				addHead(t);
+				addTail(a);
+			} else if (a.getFitness() >= t.getFitness() && t == this.head.getCurrent()) {
+				addHead(a);
 				// TODO
-			} else if (a.getFitness() >= other.getFitness() && a.getFitness() < 0) {
-				insert(t);
-			} else if (other.getFitness() == tailFitness) {
-				addTail(t);
+				// e.g. 5 > a=4 < 2
+			} else if (a.getFitness() >= t.getFitness()) {
+				nextIndex = tIndex + 1;
+				for (T next : this) {
+					if (a.getFitness() < next.getFitness() && nextIndex == 0) {
+						insert(a);
+					}
+					nextIndex--;
+				}
+			} else if (t.getFitness() == tailFitness) {
+				addTail(a);
 			}
-
+			tIndex++;
 		}
 	}
 
@@ -60,7 +68,9 @@ public class SocialGroup<T> implements Iterable<T> {
 	}
 
 	public void addHead(T a) {
-
+		Node<T> node = new Node<>(a, null);
+		Node<T> oldHead = new Node<>(a, null);
+		
 	}
 
 	public void addTail(T a) {
@@ -85,24 +95,19 @@ public class SocialGroup<T> implements Iterable<T> {
 
 	}
 
-
 	public boolean hierarchical() {
 		for (T current : this) {
-			if (!current.getHierarchical) return false;
+			if (!current.hierarchical())
+				return false;
 		}
 		return true;
 	}
 
-	// TODO
-	public SocialGroup<T> sort() {
-		return null;
-	}
-
 	public SocialGroup<T> alpha() {
-		SocialGroup<T> potentialAlphas = new SocialGroup<T>();
+		SocialGroup<T> potentialAlphas = new SocialGroup<>();
 		if (hierarchical()) {
 			for (T current : this) {
-				if (current.getAlpha) {
+				if (current.mayBeAlpha()) {
 					potentialAlphas.add(current);
 				}
 			}
@@ -111,7 +116,7 @@ public class SocialGroup<T> implements Iterable<T> {
 		return null;
 	}
 
-	public class SocialGroupIterator<T> implements Iterator<T> {
+	public class SocialGroupIterator<T extends FitAnimal> implements Iterator<T> {
 
 		private Node<T> current;
 
