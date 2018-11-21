@@ -1,15 +1,15 @@
 package aufgabe5;
 
-/*
- * TODO
- * - Konstuktor
- */
 public class Zebra extends SteppeHerdAnimal {
 	private boolean female;
 	// google says actual zebras can get to top sprint speeds of 64km/h & we only
 	// want the fastest of females to be our alpha zebra
-	private final static int alphaMinVelocity = 60;
+	private static final int ALPHAMINVELOCITY = 60;
 	private double striped;
+
+	public double getStriped() {
+		return this.striped;
+	}
 
 	public Zebra(int fitness, boolean hierarchical, int sprintVelocity, boolean female, double striped) {
 		super(fitness, hierarchical, sprintVelocity);
@@ -34,21 +34,24 @@ public class Zebra extends SteppeHerdAnimal {
 
 	@Override
 	public boolean mayBeAlpha() {
-		if (this.female && this.hierarchical() && this.getSprintVelocity() > alphaMinVelocity)
-			return true;
-		return false;
+		return (this.female && this.hierarchical() && this.getSprintVelocity() > ALPHAMINVELOCITY);
 	}
 
 	@Override
 	public String toString() {
 		String h;
+		String gender;
 		if (this.hierarchical())
 			h = "is hierarchical";
 		else
 			h = "is not hierarchical";
+		if (this.female)
+			gender = "female";
+		else
+			gender = "male";
 
 		return "<" + " Fitness is: " + this.getFitness() + " | Sprint velocity is: " + this.getSprintVelocity()
-				+ " | Degree of protection: " + this.protection() + " | " + h + " | May be Alpha: " + this.mayBeAlpha()
-				+ " >";
+				+ " | Degree of protection: " + this.protection() + " | Gender:" + gender + " | " + h
+				+ " | May be alpha: " + this.mayBeAlpha() + " >";
 	}
 }

@@ -13,6 +13,17 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		return this.head;
 	}
 
+	/*
+	 * Note: If the parameter type is Node<T> like we wanted, this would ask to be
+	 * cast from Node<T> to Node<T> for some reason @line 209 but still would work
+	 * fine with head = null; further more casting the argument where the method is
+	 * called to Node<T> (as was the other suggestion of the IDE) does nothing at
+	 * all and still is considered an error.
+	 * 
+	 * But while the IDE asks for a suppressed warning, through assertions this is
+	 * not a problem - since we have no Nodes of any type but <T> & the method is
+	 * never called with any type that cannot be resolved.
+	 */
 	@SuppressWarnings("unchecked")
 	public void setHead(Node<?> head) {
 		this.head = (Node<T>) head;
@@ -32,7 +43,8 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		return new SocialGroupIterator<>(this);
 	}
 
-	public void add(T a) {
+	// TODO: unclusterfuck this aadd Method for sorted groups and replace add
+	public void aadd(T a) {
 		int tIndex = 0;
 		int nextIndex;
 		for (T t : this) {
@@ -55,18 +67,30 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		}
 	}
 
-	public void insert(T a, T prev, T next) {
+	public void add(T a) {
+		Node<T> node = new Node<>(a, null);
+		if (head == null) {
+			this.head = this.tail = node;
+			this.head.setPrevious(null);
+		} else {
+			this.tail.setPrevious(this.tail);
+			this.tail.setNext(node);
+			this.tail = node;
+		}
+	}
+
+	private void insert(T a, T prev, T next) {
 		Node<T> node = new Node<>(a, null);
 		// TODO adding pointers for node
 		// node.setNext(???);
 		// node.setPrevious(???);
-		
+
 		// correcting pointers pointing towards node
 		node.getNext().setPrevious(node);
 		node.getPrevious().setNext(node);
 	}
 
-	public void addHead(T a) {
+	private void addHead(T a) {
 		// new head node [null -> a -> oldHead]
 		Node<T> node = new Node<>(a, head);
 		// change head
@@ -75,7 +99,7 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		this.head.getNext().setPrevious(this.head);
 	}
 
-	public void addTail(T a) {
+	private void addTail(T a) {
 		Node<T> node = new Node<>(a, null);
 		if (head == null) {
 			this.head = this.tail = node;
@@ -103,11 +127,14 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 	// options for printing:
 	// - one animal in each line
 	// - all animals in one String
+	// Note: Generics are not accessible at run time without trickery so the println
+	// will only know it's a SocialGroup, but has already forgotten which kind
 	public void print() {
 		System.out.println("Animals within this " + this.getClass().getSimpleName() + " :");
 		for (T t : this) {
 			System.out.println(t.toString());
 		}
+		System.out.println("\n");
 	}
 
 	public void printString() {
@@ -116,7 +143,7 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		for (T t : this) {
 			s += t.toString() + "  ";
 		}
-		System.out.println(s);
+		System.out.println(s + "\n");
 	}
 
 	public SocialGroup<T> alpha() {
@@ -132,56 +159,66 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		return null;
 	}
 
-	public void move(SocialGroup<T> source, Predicate<T> predicate) {
-		// result should be this remaining a 'clean' group of either only
-		// SteppeHerdAnimals or Starlings
-		boolean steppe = false;
-		// is this group already a mixed group?
-		boolean mixed = false;
-		for (T t : this) {
-			if (predicate.test(t) && !mixed) {
-				steppe = true;
-			} else if (!predicate.test(t) && !mixed) {
-				steppe = false;
-			}
-			if (predicate.test(t) && !steppe) {
-				mixed = true;
-			}
-			if (!predicate.test(t) && steppe) {
-				mixed = true;
+	/*
+	 * Note: While the description found in Context.SocialGroup.move of which
+	 * animals should be moved was very unclear we reduced the method to a point
+	 * where it only moves animals as described by "Welche Aufgabe zu lösen ist 2."
+	 */
+	// TODO: FIX: this moves animals between two groups of any type, as long as
+	// source and this have the same type
+	public void move(SocialGroup<T> source, Predicate<FitAnimal> predicate) {
+		for (T animal : source) {
+			if (predicate.test(animal)) {
+				this.add(animal);
+				// TODO: remove the Node which animal belongs to from source
+				source.iterator();
 			}
 		}
-		// this contains only FitAnimals which aren't SteppeHerdAnimals and Starlings
-		if (!steppe && !mixed) {
-			for (T animal : source) {
-				if (!predicate.test(animal)) {
-					this.add(animal);
-					source.iterator().remove();
-				}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void moveZebras(SocialGroup<Zebra> source, Predicate<FitAnimal> predicate) {
+		for (Zebra animal : source) {
+			if (predicate.test(animal)) {
+				this.add((T) animal);
+				// TODO: remove the Node which animal belongs to from source
+				source.iterator();
 			}
 		}
-		// this contains only SteppeHerdAnimals
-		if (steppe && !mixed) {
-			for (T animal : source) {
-				if (predicate.test(animal)) {
-					this.add(animal);
-					source.iterator().remove();
-				}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void moveOstriches(SocialGroup<Ostrich> source, Predicate<FitAnimal> predicate) {
+		for (Ostrich animal : source) {
+			if (predicate.test(animal)) {
+				this.add((T) animal);
+				// TODO: remove the Node which animal belongs to from source
+				source.iterator();
 			}
 		}
 	}
 
-	@SuppressWarnings("hiding")
-	public class TypePredicates<T> {
+	public static class TypePredicates {
 		/*
 		 * NOTE: SonarLint linter recommends turning this into a lambda function & after
 		 * doing so it recommends using methods so it is hard to be certain which is the
 		 * preferred option, but since test() was explicitly mentioned this seemed like
 		 * it
+		 * 
+		 * Predicate<T> is not possible - must be static and <T> requires non-static
+		 * method
 		 */
-		public Predicate<T> typePredicate = new Predicate<T>() {
-			public boolean test(T t) {
-				return (SteppeHerdAnimal.class.isInstance(t));
+		public static final Predicate<FitAnimal> typePredicate = new Predicate<FitAnimal>() {
+			public boolean test(FitAnimal t) {
+				if (Zebra.class.isInstance(t)) {
+					// above average when it comes to stripes (assuming a normal distribution)
+					return ((Zebra) t).getStriped() > 0.5;
+				}
+				if (Ostrich.class.isInstance(t)) {
+					// roughly the 75th percentile in terms of power
+					return ((Ostrich) t).power() > 1000;
+				}
+				return false;
 			}
 		};
 	}
@@ -190,6 +227,10 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 	public class SocialGroupIterator<T extends FitAnimal> implements Iterator<T> {
 
 		private Node<T> current;
+
+		public Node<T> getCurrent() {
+			return this.current;
+		}
 
 		public SocialGroupIterator(SocialGroup<T> group) {
 			this.current = group.getHead();
