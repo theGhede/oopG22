@@ -93,6 +93,38 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 
 	// TODO
 	public void compareAll() {
+		for (T current : this) {
+			for (T other : this) {
+				if(current.fitter(other) == 0) {
+					int helpFitness = (int)(Math.random()*10 + 1);
+					int winner = (int)(Math.random()*2 + 1);
+					if(winner == 1) {
+						current.changeFintess(current.getFitness()+helpFitness);
+						other.changeFintess(other.getFitness()-helpFitness);
+						if(other.getFitness() < 0) {
+							other.changeFintess(0);
+						}
+						if(current.getFitness() > 100) {
+							current.changeFintess(100);
+						}
+					}
+					else {
+						current.changeFintess(current.getFitness()-helpFitness);
+						other.changeFintess(other.getFitness()+helpFitness);
+						if(current.getFitness() < 0) {
+							current.changeFintess(0);
+						}
+						if(other.getFitness() > 100) {
+							other.changeFintess(100);
+						}
+					}
+					break;
+				}
+			}
+		}
+
+
+
 
 	}
 
