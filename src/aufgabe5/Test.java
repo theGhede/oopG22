@@ -52,7 +52,7 @@ public class Test {
 		Ostrich ostrich3 = new Ostrich(0, true, 56, 1100);
 
 		System.out.println("FitAnimal: " + fitAnimal.toString() + " Is this FitAnimal fitter than zebra1? "
-				+ fitAnimal.fitter(zebra1));
+				+ fitAnimal.fitter(zebra1) + "\n");
 
 		starlingGroup.add(starling2);
 		starlingGroup.add(starling3);
@@ -62,7 +62,6 @@ public class Test {
 		// testing insert
 		starlingGroup.add(starling5);
 
-		
 		zebraGroup.add(zebra1);
 		zebraGroup.add(zebra2);
 		zebraGroup.add(zebra3);
@@ -72,14 +71,15 @@ public class Test {
 		ostrichGroup.add(ostrich1);
 		ostrichGroup.add(ostrich2);
 		ostrichGroup.add(ostrich3);
-		
+
 		Zebra zebra6 = new Zebra(0, true, 64, true, 0.8);
 		Zebra zebra7 = new Zebra(0, false, 60, false, 0.5);
 		SocialGroup<Zebra> moveZebras = new SocialGroup<>();
 		moveZebras.add(zebra6);
 		moveZebras.add(zebra7);
-
-		System.out.println("Starlings (these were added out of order to test the 3 methods of adding animals addTail, addHead & insert)");
+/*
+		System.out.println(
+				"Starlings (these were added out of order to test the 3 methods of adding animals addTail, addHead & insert)");
 		starlingGroup.print();
 
 		System.out.println("Ostriches");
@@ -89,11 +89,6 @@ public class Test {
 		zebraGroup.print();
 		zebraGroup.alpha().print();
 		System.out.println(zebraGroup.alpha().getClass() + "\n");
-
-		System.out.println("Moving zebras between two zebra groups");
-		moveZebras.print();
-		zebraGroup.move(moveZebras, TypePredicates.typePredicate);
-		zebraGroup.print();
 
 		System.out.println("Mixing Zebras and Ostriches ... and SteppeHerdAnimals");
 		steppeGroup.add(zebra1);
@@ -118,21 +113,34 @@ public class Test {
 		System.out.println(starling3.fitter(starling1));
 		System.out.println("Is starling3 fitter than starling4?");
 		System.out.println(starling3.fitter(starling4) + "\n");
-
+*/
+		System.out.println("Moving zebras between two zebra groups");
+		moveZebras.print();
+		zebraGroup.move(moveZebras, TypePredicates.typePredicate);
+		zebraGroup.print();
+		moveZebras.print();
+		
 		// TODO: use move() instead of moveZebra() & moveOstrich()
 		System.out.println("Moving animals between Zebra/Ostrich & SteppeAnimal groups");
 		steppeGroup.moveZebras(zebraGroup, TypePredicates.typePredicate);
 		steppeGroup.moveOstriches(ostrichGroup, TypePredicates.typePredicate);
-		steppeGroup.print();
-		zebraGroup.print();
+		//steppeGroup.print();
+		//zebraGroup.print();
 	}
 
 }
 
+// Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
 /*
- * TODO: Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der
- * Angabe
+ * We met IRL to write FitAnimal, its methods, subtypes and subtype methods,
+ * except constructors; Second meeting we made remove() & improved the Iterator
  */
-/* Elias Nachbaur (01634010): */
-/* Florian Fusstetter (00709759): */
-/* Ignjat Karanovic (01529940): */
+/* Elias Nachbaur (01634010): Starling, Ostrich & Zebra constructor */
+/*
+ * Florian Fusstetter (00709759): Iterable, Node, Generics, Predicate, Tests,
+ * 								  add() & it's 3 variations, alpha()
+ */
+/*
+ * Ignjat Karanovic (01529940): FitAnimal & SteppeHerdAnimal constructor,
+ * hierarchical() & alpha()
+ */

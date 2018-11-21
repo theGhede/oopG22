@@ -43,7 +43,6 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 		return new SocialGroupIterator<>(this);
 	}
 
-	// TODO: add insert()
 	public void add(T a) {
 		if (this.head == null) {
 			this.addTail(a);
@@ -58,7 +57,6 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 
 	public void insert(T a, Node<T> current) {
 		Node<T> node = new Node<>(a, null);
-		// checks nodes in recursion
 		if (a.fitter(current.getCurrent()) == -1 && a.fitter(current.getNext().getCurrent()) == -1) {
 			insert(a, current.getNext());
 		}
@@ -68,7 +66,7 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 			node.setPrevious(current);
 			current.getNext().setPrevious(node);
 		}
-		
+
 	}
 
 	public void addHead(T a) {
@@ -149,33 +147,36 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 	// TODO: FIX: this moves animals between two groups of any type, as long as
 	// source and this have the same type
 	public void move(SocialGroup<T> source, Predicate<FitAnimal> predicate) {
-		for (T animal : source) {
+		Iterator<T> iterator = new SocialGroupIterator<>(source);
+		while (iterator.hasNext()) {
+			T animal = iterator.next();
 			if (predicate.test(animal)) {
 				this.add(animal);
-				// TODO: remove the Node which animal belongs to from source
-				source.iterator();
+				iterator().remove();
 			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public void moveZebras(SocialGroup<Zebra> source, Predicate<FitAnimal> predicate) {
-		for (Zebra animal : source) {
+		Iterator<Zebra> iterator = new SocialGroupIterator<>(source);
+		while (iterator.hasNext()) {
+			Zebra animal = iterator.next();
 			if (predicate.test(animal)) {
 				this.add((T) animal);
-				// TODO: remove the Node which animal belongs to from source
-				source.iterator();
+				iterator.remove();
 			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public void moveOstriches(SocialGroup<Ostrich> source, Predicate<FitAnimal> predicate) {
-		for (Ostrich animal : source) {
+		Iterator<Ostrich> iterator = new SocialGroupIterator<>(source);
+		while (iterator.hasNext()) {
+			Ostrich animal = iterator.next();
 			if (predicate.test(animal)) {
 				this.add((T) animal);
-				// TODO: remove the Node which animal belongs to from source
-				source.iterator();
+				iterator.remove();
 			}
 		}
 	}
@@ -233,20 +234,23 @@ public class SocialGroup<T extends FitAnimal> implements Iterable<T> {
 			return animal;
 		}
 
-		public void remove(Node<T> a) {
-			if (a.getPrevious() == null && a.getNext() != null) {
-				a.getNext().setPrevious(null);
-				a.setNext(null);
-				setHead(a.getNext());
-			} else if (a.getNext() == null && a.getPrevious() != null) {
-				a.getPrevious().setNext(null);
-				setTail(a.getPrevious());
-			} else if (a.getNext() == null && a.getPrevious() == null) {
-				setHead(null);
-				setTail(null);
-			} else {
-				a.getNext().setPrevious(a.getPrevious());
-				a.getPrevious().setNext(a.getNext());
+		@Override
+		public void remove() {
+			if (this.hasNext()) {
+				if (this.current.getPrevious() == null && this.current.getNext() != null) {
+					this.current.getNext().setPrevious(null);
+					this.current.setNext(null);
+					setHead(this.current.getNext());
+				} else if (this.current.getNext() == null && this.current.getPrevious() != null) {
+					this.current.getPrevious().setNext(null);
+					setTail(this.current.getPrevious());
+				} else if (this.current.getNext() == null && this.current.getPrevious() == null) {
+					setHead(null);
+					setTail(null);
+				} else {
+					this.current.getNext().setPrevious(this.current.getPrevious());
+					this.current.getPrevious().setNext(this.current.getNext());
+				}
 			}
 		}
 	}
