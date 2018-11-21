@@ -4,12 +4,10 @@ public class Node<T extends FitAnimal> {
 	private T current;
 	private Node<T> next;
 	private Node<T> previous;
-	private Node<T> nextNext;
 
 	public Node(T current, Node<T> next) {
 		this.current = current;
 		this.next = next;
-		this.nextNext = next.getNext();
 	}
 
 	public void setCurrent(T current) {
@@ -34,13 +32,5 @@ public class Node<T extends FitAnimal> {
 
 	public Node<T> getPrevious() {
 		return this.previous;
-	}
-
-	public void setNextNext(Node<T> nextNext) {
-		this.nextNext = nextNext;
-	}
-
-	public Node<T> getNextNext() {
-		return this.nextNext;
 	}
 }

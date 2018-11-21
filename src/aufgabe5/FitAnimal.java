@@ -1,9 +1,4 @@
 package aufgabe5;
-/*
-* TODO
-*     - Konstruktor
-*
-*/
 
 public class FitAnimal {
 
@@ -24,7 +19,7 @@ public class FitAnimal {
 	}
 
 	public int fitter(FitAnimal compared) {
-		double margin = 0.2;
+		double margin = 0.1;
 		if (this.fitness >= (1 + margin) * compared.fitness)
 			return 1;
 		if (this.fitness <= (1 + margin) * compared.fitness && this.fitness >= (1 - margin) * compared.fitness)

@@ -17,7 +17,9 @@ Überprüfen Sie das so aufgefüllte Objekt noch einmal so wie in Punkt 1.
 
 public class Test {
 	public static void main(String[] args) {
-
+		SocialGroup<Starling> starlingGroup = new SocialGroup<>();
+		SocialGroup<Zebra> zebraGroup = new SocialGroup<>();
+		SocialGroup<Ostrich> ostrichGroup = new SocialGroup<>();
+		SocialGroup<SteppeHerdAnimal> steppeGroup = new SocialGroup<>();
 	}
-
 }
