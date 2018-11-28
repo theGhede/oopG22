@@ -59,6 +59,19 @@ public class Pack implements Iterable {
 		System.out.println("\n");
 	}
 
+	public String toString() {
+		String s = "";
+		if (this.head == null)
+			s = "This pack is empty";
+		for (Object o : this) {
+			s += o.toString() + ", ";
+		}
+		if (s.length() > 0 && s.charAt(s.length() - 2) == ',') {
+			s = s.substring(0, s.length() - 2);
+		}
+		return s;
+	}
+
 	public int size() {
 		int size = 0;
 		for (@SuppressWarnings("unused")
@@ -168,7 +181,7 @@ public class Pack implements Iterable {
 		int i = 0;
 		for (Object o : this) {
 			if (((Animal) o).getRank()) {
-				time += ((Animal) o).getTimeAsAlpha();
+				time += ((Animal) o).getAlphaTime();
 				i++;
 			}
 		}
@@ -195,7 +208,7 @@ public class Pack implements Iterable {
 		return (int) (today.getTime() / 60000 - 30 * 525600);
 	}
 
-	// 3 cases: remove head, remove tail, remove other than head or tail
+	// 4 cases: remove head, remove tail, remove other than head or tail & remove only element (= head = tail)
 	public void removeByID(int id) {
 		boolean hasID = false;
 		Iterator itr = new PackIterator(this);

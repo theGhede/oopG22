@@ -54,6 +54,19 @@ public class AllPacks implements Iterable {
 		}
 	}
 
+	public String toString() {
+		String s = "";
+		if (this.head == null)
+			s += "This pack is empty";
+		for (Object o : this) {
+			s += o.toString() + "\n";
+		}
+		if (s.length() > 0 && s.charAt(s.length() - 2) == ',') {
+			s = s.substring(0, s.length() - 2);
+		}
+		return s;
+	}
+
 	public void removeByName(String name) {
 		boolean hasName = false;
 		Iterator itr = new AllPacksIterator(this);
@@ -96,7 +109,7 @@ public class AllPacks implements Iterable {
 				if (index == 1) {
 					Node newBeforeTail = new Node(s, this.tail);
 					this.beforeTail = newBeforeTail;
-					
+
 				}
 			}
 		}
