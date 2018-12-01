@@ -55,7 +55,8 @@ public class LaborInventar {
 	public Vivarium stelleBereit(Animals animals) {
 		for (Vivarium v : this.inventory) {
 			// TODO: dynamic checks for
-			
+			// type: -1 = unspecific / 0 = terra / 1 = aqua
+			// expensive: -1 = unspecific / 0 = chap / 1 = expensive
 			v.setInhabitant(animals);
 			animals.setContainer(v);
 			this.inventory.remove(v);
