@@ -91,7 +91,7 @@ public class Test {
 		System.out.println("Check animals of lab2 if they point towards the container they're in:");
 		lab2.schwarmListe();
 
-		System.out.println("Check lab1 total volume:");
+		System.out.println("Check lab1 free & occupied vivarias volume:");
 		lab3.inventarListe();
 		lab3.volumenFrei();
 		lab3.volumenBelegt();
@@ -128,14 +128,14 @@ public class Test {
 // Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
 /*
  * Togather at an IRL meeting: the different classes, constructors and their
- * variables, getters & setters, schwarmListe, inventarListe, volume (& related
+ * variables and inheritance, getters & setters, schwarmListe, inventarListe, volume (& related
  * methods), neu, retourniere
  */
 /*
  * Elias Nachbaur (01634010):
  */
 /*
- * Florian Fusstetter (00709759): toString() methods, objects for testing,
+ * Florian Fusstetter (00709759): toString() methods, Test,
  * generating various output, stelleBereit() & the methods it calls, assertions
  */
 /*
