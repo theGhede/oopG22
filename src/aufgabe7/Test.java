@@ -107,7 +107,7 @@ public class Test {
 		System.out.println("A mishandling of in lab2 leads to defects in the larger ones they have in inventory:");
 		lab2.inventarListe();
 		for (Vivarium v : lab2.getInventory()) {
-			if(v.volume() > 15)
+			if (v.volume() > 15)
 				v.setIntact(false);
 		}
 		lab2.defekt();
@@ -116,18 +116,28 @@ public class Test {
 		// got all of them
 		lab2.defekt();
 		lab2.inventarListe();
+
+		// adding foreign lab animals to a labs vivaria
+		Animals a = new CheapTerrAnimals(10);
+		lab3.addAnimals(a);
+		System.out.println(lab1.stelleBereit(a));
 	}
 }
 
 // TODO
 // Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
 /*
+ * Togather at an IRL meeting: the different classes, constructors and their
+ * variables, getters & setters, schwarmListe, inventarListe, volume (& related
+ * methods), neu, retourniere
+ */
+/*
  * Elias Nachbaur (01634010):
  */
 /*
- * Florian Fusstetter (00709759): toString(), dynamic methods, objects for
- * testing, methods for generating output
+ * Florian Fusstetter (00709759): toString() methods, objects for testing,
+ * generating various output, stelleBereit() & the methods it calls, assertions
  */
 /*
- * Ignjat Karanovic (01529940):
+ * Ignjat Karanovic (01529940): assertions
  */

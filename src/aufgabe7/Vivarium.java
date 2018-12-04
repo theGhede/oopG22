@@ -10,6 +10,8 @@ public abstract class Vivarium {
 	// variable for shortened toString() if called by toString() of a Vivarium
 	private boolean shortString;
 
+	// precondition - length, width, height sind sinnvolle Werte, sodass das Volumen
+	// des Vivariums > 1 ist -> length, width, height > 1
 	public Vivarium(int length, int width, int height) {
 		this.length = length;
 		this.width = width;
@@ -27,30 +29,6 @@ public abstract class Vivarium {
 
 	public boolean isFree() {
 		return this.inhabitant == null;
-	}
-
-	public int getLength() {
-		return length;
-	}
-
-	public void setLength(int length) {
-		this.length = length;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
 	}
 
 	public boolean isIntact() {
@@ -84,7 +62,7 @@ public abstract class Vivarium {
 	public abstract void housesExpensiveTerrAnimals(ExpensiveTerrAnimals expensiveTerrAnimals);
 
 	public abstract void housesExpensiveAquAnimals(ExpensiveAquAnimals expensiveAquAnimals);
-	
+
 	public abstract void housesCheapTerrSecondChoice(CheapTerrAnimals cheapTerrAnimals);
 
 	public abstract void housesCheapAquSecondChoice(CheapAquAnimals cheapAquAnimals);
