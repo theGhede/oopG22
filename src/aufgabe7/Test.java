@@ -51,7 +51,7 @@ public class Test {
 		lab1.neu(3, 3, 1, 2);
 		lab1.inventarListe();
 		lab1.schwarmListe();
-		lab1.volumenFrei();
+		System.out.println(lab1.volumenFrei()+"\n");
 
 		lab2.addAnimals(cheapAquA1);
 		lab2.addAnimals(cheapAquA2);

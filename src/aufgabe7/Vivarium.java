@@ -26,7 +26,7 @@ public abstract class Vivarium {
 	}
 
 	public boolean isFree() {
-		return this.inhabitant != null;
+		return this.inhabitant == null;
 	}
 
 	public int getLength() {
