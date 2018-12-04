@@ -8,6 +8,8 @@ public abstract class Animals {
 	// variable for shortened toString() if called by toString() of a Vivarium
 	private boolean shortString;
 
+	// precondition - size ist ein sinnvoller Wert, der das Volumen eines Tieres
+	// beschreibt (size > 0)
 	public Animals(int size) {
 		this.size = size;
 		this.container = null;

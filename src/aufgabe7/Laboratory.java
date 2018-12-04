@@ -6,43 +6,42 @@ import java.util.List;
 public class Laboratory {
 
 	private String name;
+	/*
+	 * considering all methods which add or remove items to or from inventory there
+	 * always be only empty vivaria in it - this list holds all vivaria of any type
+	 * which belong to this lab
+	 */
 	private List<Vivarium> inventory;
+	/*
+	 * Note: since we remove filled vivaria from inventory as soon as we fill them
+	 * and need some datastructure to keep track of the labs lab animals we use this
+	 * second list NOT for Vivarium but Animals and can also use it to find filled
+	 * vivaria by looking at the container found in Animals
+	 */
 	private List<Animals> labAnimals;
 
 	public Laboratory(String name) {
 		this.name = name;
-		List<Vivarium> inv = new ArrayList<>();
-		List<Animals> ani = new ArrayList<>();
-		this.inventory = inv;
-		this.labAnimals = ani;
+		this.inventory = new ArrayList<>();
+		this.labAnimals = new ArrayList<>();
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public List<Vivarium> getInventory() {
 		return inventory;
 	}
 
-	public void setInventory(List<Vivarium> inventory) {
-		this.inventory = inventory;
-	}
-
-	public List<Animals> getLabAnimals() {
-		return labAnimals;
-	}
-
-	public void setLabAnimals(List<Animals> labAnimals) {
-		this.labAnimals = labAnimals;
-	}
-
-	// Assertion: postcondition - Nach der Ausführung sind mehr leere Vivariums in
-	// inventory Arraylist als vor der Ausführung
+	/*
+	 * Assertion:
+	 * 
+	 * precondition & postcondition - lenght, width, height sind sinnvolle Werte
+	 * 
+	 * postcondition - Nach der Ausführung von neu sind mehr leere Vivariums in
+	 * inventory als vor dem Ausführen & min. ein leeres Vivarium
+	 */
 	public void neu(int length, int width, int height, int type) {
 		if (type == 0) {
 			Vivarium vivarium = new CheapTerrarium(length, width, height);
@@ -57,7 +56,7 @@ public class Laboratory {
 			Vivarium vivarium = new ExpensiveAquarium(length, width, height);
 			this.inventory.add(vivarium);
 		} else {
-			System.out.println("Input correct type for neu: 0 = cheap terrarium / 1 = expensive terrarium /"
+			System.out.println("Input correct type for 'neu': 0 = cheap terrarium / 1 = expensive terrarium /"
 					+ " 2 = cheap aquarium / 3 = expensive aquarium \n");
 		}
 	}
@@ -84,32 +83,44 @@ public class Laboratory {
 		}
 	}
 
-	// Assertion: postcondition - Nach der Ausführung sind nur leere Vivariums in
-	// inventory Arraylist sein.
-	// uses next available container of the correct type that is large enough;
-	// not using the best available container that wastes the least space
+	/*
+	 * Assertion:
+	 * 
+	 * postcondition - Nach dem Ausführen sind entweder inventory.length()-1 oder
+	 * inventory.length() viele Vivarien in inventory & es wird im Fall 1 ein zuvor
+	 * leeres Vivarium entfernt - die Anzahl der befüllten Vivarien in inventory ist
+	 * vor und nach Ausführen stelleBereit unverändert
+	 */
+	/*
+	 * Note: uses next available container of the correct type that is large enough
+	 * (= "ein passendes Vivarium"); not using the best available container that
+	 * wastes the least space
+	 */
 	public Vivarium stelleBereit(Animals animals) {
-		for (Vivarium v : this.inventory) {
-			if (animals.getContainer() == null && v.getInhabitant() == null && v.volume() >= animals.getSize()) {
-				animals.putInContainer(v);
-				if (v.getInhabitant() != null) {
-					this.inventory.remove(v);
-					return v;
+		if (this.labAnimals.contains(animals)) {
+			for (Vivarium v : this.inventory) {
+				if (animals.getContainer() == null && v.getInhabitant() == null && v.volume() >= animals.getSize()) {
+					animals.putInContainer(v);
+					if (v.getInhabitant() != null) {
+						this.inventory.remove(v);
+						return v;
+					}
 				}
 			}
-		}
-		// option to put cheap animals in expensive containers
-		for (Vivarium v : this.inventory) {
-			if (animals.getContainer() == null && v.getInhabitant() == null && v.volume() >= animals.getSize()) {
-				animals.putInSecondChoice(v);
-				if (v.getInhabitant() != null) {
-					this.inventory.remove(v);
-					return v;
+			// option to put cheap animals in expensive containers
+			for (Vivarium v : this.inventory) {
+				if (animals.getContainer() == null && v.getInhabitant() == null && v.volume() >= animals.getSize()) {
+					animals.putInSecondChoice(v);
+					if (v.getInhabitant() != null) {
+						this.inventory.remove(v);
+						return v;
+					}
 				}
 			}
-
+			System.out.println("Can't find a suitable container for " + animals.toString());
+			return null;
 		}
-		System.out.println("Can't find a suitable container for " + animals.toString());
+		System.out.println(animals.toString() + " is not part of this Laboratories lab animals!");
 		return null;
 	}
 
@@ -123,9 +134,12 @@ public class Laboratory {
 		System.out.println("\n");
 	}
 
-	// Assertion: postcondition - Falls ein Vivarium "Inhabitants" hat, nach der
-	// Ausführung ist das Vivarium
-	// als leer wieder in Arraylist.
+	/*
+	 * Assertion: postcondition - Falls das übergebene Vivarium "inhabitants" hat,
+	 * ist nach Ausführen von retourniere das Vivarium leer und wieder Teil von
+	 * inventory und das Tier, welches zuvür in dem Vivarium gelebt hat hat keinen
+	 * container mehr
+	 */
 	public void retourniere(Vivarium vivarium) {
 		if (vivarium.getInhabitant() != null) {
 			System.out.println("Returning" + vivarium.toString() + "to inventory and removing it's inhabitants.");
@@ -148,6 +162,10 @@ public class Laboratory {
 
 	public void volumenBelegt() {
 		int vol = 0;
+		/*
+		 * inventory has no information about filled vivaria, thus we need to look at
+		 * our animals and the containers holding them
+		 */
 		for (Animals animals : this.labAnimals) {
 			if (animals.getContainer() != null)
 				vol += animals.getContainer().volume();
@@ -166,7 +184,7 @@ public class Laboratory {
 			 * going to print a list of only empty vivaria belonging to this laboratory
 			 * 
 			 * vivaria currently housing animals are as requested no longer part of the
-			 * inventory even though this is very unintuitive in our opinion
+			 * inventory even though this is unintuitive in our opinion
 			 */
 			System.out.println(vivarium.toString());
 		}
