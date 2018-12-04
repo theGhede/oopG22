@@ -2,15 +2,6 @@ package aufgabe7;
 
 public class Test {
 
-	// Animals
-	// 1. in Aquarium
-	// 1.1. expensive
-	// 1.2. cheap
-	// 2. in Terrarium
-	// 2.1. expensive
-	// 2.2. chaep
-	// Note: cheap animals can be held in expensive Vivarium if none other available
-
 	public static void main(String[] args) {
 
 		Laboratory lab1 = new Laboratory("Lab 1");
@@ -51,7 +42,7 @@ public class Test {
 		lab1.neu(3, 3, 1, 2);
 		lab1.inventarListe();
 		lab1.schwarmListe();
-		System.out.println(lab1.volumenFrei()+"\n");
+		System.out.println(lab1.volumenFrei() + "\n");
 
 		lab2.addAnimals(cheapAquA1);
 		lab2.addAnimals(cheapAquA2);
@@ -95,10 +86,10 @@ public class Test {
 		lab1.allocateVivaria();
 		lab2.allocateVivaria();
 		lab3.allocateVivaria();
-		
+
 		System.out.println("Check animals of lab2 if they point towards the container they're in:");
 		lab2.schwarmListe();
-		
+
 		System.out.println("");
 
 		// retourniere
