@@ -8,27 +8,26 @@ public class Test {
 		Laboratory lab2 = new Laboratory("Lab 2");
 		Laboratory lab3 = new Laboratory("Lab 3");
 
-		CheapAquAnimals cheapAquA1 = new CheapAquAnimals(10);
-		CheapAquAnimals cheapAquA2 = new CheapAquAnimals(8);
-		CheapAquAnimals cheapAquA3 = new CheapAquAnimals(21);
-		CheapAquAnimals cheapAquA4 = new CheapAquAnimals(6);
+		Animals cheapAquA1 = new CheapAquAnimals(10);
+		Animals cheapAquA2 = new CheapAquAnimals(8);
+		Animals cheapAquA3 = new CheapAquAnimals(21);
+		Animals cheapAquA4 = new CheapAquAnimals(6);
 
-		CheapTerrAnimals cheapTerrA1 = new CheapTerrAnimals(12);
-		CheapTerrAnimals cheapTerrA2 = new CheapTerrAnimals(17);
-		CheapTerrAnimals cheapTerrA3 = new CheapTerrAnimals(16);
-		CheapTerrAnimals cheapTerrA4 = new CheapTerrAnimals(9);
+		Animals cheapTerrA1 = new CheapTerrAnimals(12);
+		Animals cheapTerrA2 = new CheapTerrAnimals(17);
+		Animals cheapTerrA3 = new CheapTerrAnimals(16);
+		Animals cheapTerrA4 = new CheapTerrAnimals(9);
 
-		ExpensiveAquAnimals expensiveAquA1 = new ExpensiveAquAnimals(13);
-		ExpensiveAquAnimals expensiveAquA2 = new ExpensiveAquAnimals(16);
-		ExpensiveAquAnimals expensiveAquA3 = new ExpensiveAquAnimals(7);
-		ExpensiveAquAnimals expensiveAquA4 = new ExpensiveAquAnimals(15);
+		Animals expensiveAquA1 = new ExpensiveAquAnimals(13);
+		Animals expensiveAquA2 = new ExpensiveAquAnimals(16);
+		Animals expensiveAquA3 = new ExpensiveAquAnimals(7);
+		Animals expensiveAquA4 = new ExpensiveAquAnimals(15);
 
-		ExpensiveTerrAnimals expensiveTerrA1 = new ExpensiveTerrAnimals(22);
-		ExpensiveTerrAnimals expensiveTerrA2 = new ExpensiveTerrAnimals(15);
-		ExpensiveTerrAnimals expensiveTerrA3 = new ExpensiveTerrAnimals(18);
-		ExpensiveTerrAnimals expensiveTerrA4 = new ExpensiveTerrAnimals(9);
+		Animals expensiveTerrA1 = new ExpensiveTerrAnimals(22);
+		Animals expensiveTerrA2 = new ExpensiveTerrAnimals(15);
+		Animals expensiveTerrA3 = new ExpensiveTerrAnimals(18);
+		Animals expensiveTerrA4 = new ExpensiveTerrAnimals(9);
 
-		// TODO: convert these to lab.neu()
 		lab1.addAnimals(cheapTerrA1);
 		lab1.addAnimals(cheapTerrA2);
 		lab1.addAnimals(expensiveTerrA1);
@@ -42,7 +41,9 @@ public class Test {
 		lab1.neu(3, 3, 1, 2);
 		lab1.inventarListe();
 		lab1.schwarmListe();
-		System.out.println(lab1.volumenFrei() + "\n");
+		lab1.volumenFrei();
+		lab1.volumenBelegt();
+		System.out.println("\n");
 
 		lab2.addAnimals(cheapAquA1);
 		lab2.addAnimals(cheapAquA2);
@@ -90,12 +91,31 @@ public class Test {
 		System.out.println("Check animals of lab2 if they point towards the container they're in:");
 		lab2.schwarmListe();
 
-		System.out.println("");
+		System.out.println("Check lab1 total volume:");
+		lab3.inventarListe();
+		lab3.volumenFrei();
+		lab3.volumenBelegt();
 
-		// retourniere
+		System.out.println("\n" + "Removing animals from containers and returning them to inventory:");
+		lab3.schwarmListe();
+		lab3.retourniere(cheapTerrA3.getContainer());
+		System.out.println(cheapTerrA3.toString());
+		lab3.retourniere(cheapAquA3.getContainer());
+		System.out.println(cheapAquA3.toString());
+		System.out.println(lab3.stelleBereit(expensiveAquA4) + "\n");
 
-		System.out.println("A vivarium in lab2 is defekt:");
-
+		System.out.println("A mishandling of in lab2 leads to defects in the larger ones they have in inventory:");
+		lab2.inventarListe();
+		for (Vivarium v : lab2.getInventory()) {
+			if(v.volume() > 15)
+				v.setIntact(false);
+		}
+		lab2.defekt();
+		// still one more defective vivarium to remove
+		lab2.defekt();
+		// got all of them
+		lab2.defekt();
+		lab2.inventarListe();
 	}
 }
 

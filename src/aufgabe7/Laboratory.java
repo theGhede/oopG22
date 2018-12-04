@@ -25,19 +25,36 @@ public class Laboratory {
 		this.name = name;
 	}
 
-	//Assertion: postcondition - Nach der Ausführung sind mehr leere Vivariums in inventory Arraylist als vor der Ausführung
+	public List<Vivarium> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(List<Vivarium> inventory) {
+		this.inventory = inventory;
+	}
+
+	public List<Animals> getLabAnimals() {
+		return labAnimals;
+	}
+
+	public void setLabAnimals(List<Animals> labAnimals) {
+		this.labAnimals = labAnimals;
+	}
+
+	// Assertion: postcondition - Nach der Ausführung sind mehr leere Vivariums in
+	// inventory Arraylist als vor der Ausführung
 	public void neu(int length, int width, int height, int type) {
 		if (type == 0) {
-			CheapTerrarium vivarium = new CheapTerrarium(length, width, height);
+			Vivarium vivarium = new CheapTerrarium(length, width, height);
 			this.inventory.add(vivarium);
 		} else if (type == 1) {
-			ExpensiveTerrarium vivarium = new ExpensiveTerrarium(length, width, height);
+			Vivarium vivarium = new ExpensiveTerrarium(length, width, height);
 			this.inventory.add(vivarium);
 		} else if (type == 2) {
-			CheapAquarium vivarium = new CheapAquarium(length, width, height);
+			Vivarium vivarium = new CheapAquarium(length, width, height);
 			this.inventory.add(vivarium);
 		} else if (type == 3) {
-			ExpensiveAquarium vivarium = new ExpensiveAquarium(length, width, height);
+			Vivarium vivarium = new ExpensiveAquarium(length, width, height);
 			this.inventory.add(vivarium);
 		} else {
 			System.out.println("Input correct type for neu: 0 = cheap terrarium / 1 = expensive terrarium /"
@@ -59,12 +76,16 @@ public class Laboratory {
 		for (Vivarium vivarium : this.inventory) {
 			if (!vivarium.isIntact()) {
 				this.inventory.remove(vivarium);
-				// -> "löscht EIN defektes Vivarium"
+				System.out.println("Defect vivarium " + vivarium.toString() + " was removed from inventory of Lab '"
+						+ this.name + "'.");
+				// -> "löscht EIN defektes Vivarium aus der Inventarliste"
 				break;
 			}
 		}
 	}
-	//Assertion: postcondition - Nach der Ausführung sind nur leere Vivariums in inventory Arraylist sein.
+
+	// Assertion: postcondition - Nach der Ausführung sind nur leere Vivariums in
+	// inventory Arraylist sein.
 	// uses next available container of the correct type that is large enough;
 	// not using the best available container that wastes the least space
 	public Vivarium stelleBereit(Animals animals) {
@@ -101,10 +122,13 @@ public class Laboratory {
 		}
 		System.out.println("\n");
 	}
-	//Assertion: postcondition - Falls ein Vivarium "Inhabitants" hat, nach der Ausführung ist das Vivarium
+
+	// Assertion: postcondition - Falls ein Vivarium "Inhabitants" hat, nach der
+	// Ausführung ist das Vivarium
 	// als leer wieder in Arraylist.
 	public void retourniere(Vivarium vivarium) {
 		if (vivarium.getInhabitant() != null) {
+			System.out.println("Returning" + vivarium.toString() + "to inventory and removing it's inhabitants.");
 			vivarium.getInhabitant().setContainer(null);
 			vivarium.setInhabitant(null);
 			this.inventory.add(vivarium);
@@ -113,24 +137,23 @@ public class Laboratory {
 		}
 	}
 
-	public int volumenFrei() {
+	public void volumenFrei() {
 		int vol = 0;
-		for (Vivarium vivarium : inventory) {
+		for (Vivarium vivarium : this.inventory) {
 			if (vivarium.isFree())
 				vol += vivarium.volume();
 		}
-		return vol;
+		System.out.println("Total volume of available vivaria in Lab '" + this.name + "': " + vol);
 	}
 
-	public int volumenBelegt() {
+	public void volumenBelegt() {
 		int vol = 0;
-		for (Vivarium vivarium : inventory) {
-			if (!vivarium.isFree())
-				vol += vivarium.volume();
+		for (Animals animals : this.labAnimals) {
+			if (animals.getContainer() != null)
+				vol += animals.getContainer().volume();
 		}
-		return vol;
+		System.out.println("Total volume of inhabited vivaria in Lab '" + this.name + "': " + vol);
 	}
-
 
 	public void inventarListe() {
 		System.out.println("Vivaria in '" + this.name + "'s inventory:");
