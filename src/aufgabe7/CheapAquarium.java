@@ -1,6 +1,6 @@
 package aufgabe7;
 
-public class CheapAquarium extends Aquarium {
+public class CheapAquarium extends Vivarium {
 
 	public CheapAquarium(int length, int width, int height) {
 		super(length, width, height);

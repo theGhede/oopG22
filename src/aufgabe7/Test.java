@@ -128,15 +128,15 @@ public class Test {
 // Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
 /*
  * Togather at an IRL meeting: the different classes, constructors and their
- * variables and inheritance, getters & setters, schwarmListe, inventarListe, volume (& related
- * methods), neu, retourniere
+ * variables and inheritance, getters & setters, schwarmListe, inventarListe,
+ * volume (& related methods), neu, retourniere
  */
 /*
  * Elias Nachbaur (01634010):
  */
 /*
- * Florian Fusstetter (00709759): toString() methods, Test,
- * generating various output, stelleBereit() & the methods it calls, assertions
+ * Florian Fusstetter (00709759): toString() methods, Test, generating various
+ * output, stelleBereit() & the methods it calls, assertions
  */
 /*
  * Ignjat Karanovic (01529940): assertions

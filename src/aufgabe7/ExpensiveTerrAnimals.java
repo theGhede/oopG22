@@ -1,6 +1,6 @@
 package aufgabe7;
 
-public class ExpensiveTerrAnimals extends TerrAnimals {
+public class ExpensiveTerrAnimals extends Animals {
 
 	public ExpensiveTerrAnimals(int size) {
 		super(size);
@@ -13,6 +13,7 @@ public class ExpensiveTerrAnimals extends TerrAnimals {
 			this.setContainer(container);
 	}
 
+	@Override
 	public void putInSecondChoice(Vivarium container) {
 	}
 

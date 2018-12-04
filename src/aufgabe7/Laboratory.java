@@ -39,8 +39,8 @@ public class Laboratory {
 	 * 
 	 * precondition & postcondition - lenght, width, height sind sinnvolle Werte
 	 * 
-	 * postcondition - Nach der Ausführung von neu sind mehr leere Vivariums in
-	 * inventory als vor dem Ausführen & min. ein leeres Vivarium
+	 * postcondition - Nach der Ausführung von neu sind ein leeres Vivarium mehr in
+	 * inventory als vor dem Ausführen (& min. ein leeres Vivarium)
 	 */
 	public void neu(int length, int width, int height, int type) {
 		if (type == 0) {
@@ -107,7 +107,7 @@ public class Laboratory {
 					}
 				}
 			}
-			// option to put cheap animals in expensive containers
+			// option to put cheap animals in expensive containers if no cheap one fits
 			for (Vivarium v : this.inventory) {
 				if (animals.getContainer() == null && v.getInhabitant() == null && v.volume() >= animals.getSize()) {
 					animals.putInSecondChoice(v);
@@ -135,7 +135,7 @@ public class Laboratory {
 	}
 
 	/*
-	 * Assertion: postcondition - Falls das übergebene Vivarium "inhabitants" hat,
+	 * Assertion: postcondition - falls das übergebene Vivarium "inhabitants" hat,
 	 * ist nach Ausführen von retourniere das Vivarium leer und wieder Teil von
 	 * inventory und das Tier, welches zuvür in dem Vivarium gelebt hat hat keinen
 	 * container mehr

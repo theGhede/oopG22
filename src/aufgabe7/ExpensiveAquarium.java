@@ -1,6 +1,6 @@
 package aufgabe7;
 
-public class ExpensiveAquarium extends Aquarium {
+public class ExpensiveAquarium extends Vivarium {
 
 	public ExpensiveAquarium(int length, int width, int height) {
 		super(length, width, height);
@@ -33,8 +33,7 @@ public class ExpensiveAquarium extends Aquarium {
 	}
 
 	@Override
-	// TODO: toString always shortened for cheap animals / expensive container
-	// combination
+	// toString shortened for cheap animals / expensive container combination
 	public String toString() {
 		String s = "[Type: expensive aquarium, Size: " + this.volume();
 		if (this.getInhabitant() != null && !this.getShortString()) {
