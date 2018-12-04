@@ -25,6 +25,7 @@ public class Laboratory {
 		this.name = name;
 	}
 
+	//Assertion: postcondition - Nach der Ausführung sind mehr leere Vivariums in inventory Arraylist als vor der Ausführung
 	public void neu(int length, int width, int height, int type) {
 		if (type == 0) {
 			CheapTerrarium vivarium = new CheapTerrarium(length, width, height);
@@ -63,7 +64,7 @@ public class Laboratory {
 			}
 		}
 	}
-
+	//Assertion: postcondition - Nach der Ausführung sind nur leere Vivariums in inventory Arraylist sein.
 	// uses next available container of the correct type that is large enough;
 	// not using the best available container that wastes the least space
 	public Vivarium stelleBereit(Animals animals) {
@@ -100,7 +101,8 @@ public class Laboratory {
 		}
 		System.out.println("\n");
 	}
-
+	//Assertion: postcondition - Falls ein Vivarium "Inhabitants" hat, nach der Ausführung ist das Vivarium
+	// als leer wieder in Arraylist.
 	public void retourniere(Vivarium vivarium) {
 		if (vivarium.getInhabitant() != null) {
 			vivarium.getInhabitant().setContainer(null);
@@ -128,6 +130,7 @@ public class Laboratory {
 		}
 		return vol;
 	}
+
 
 	public void inventarListe() {
 		System.out.println("Vivaria in '" + this.name + "'s inventory:");
