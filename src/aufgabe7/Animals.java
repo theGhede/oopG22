@@ -29,10 +29,6 @@ public abstract class Animals {
 		return size;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
-	}
-
 	public boolean isOwned() {
 		return owned;
 	}
