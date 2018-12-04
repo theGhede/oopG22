@@ -6,17 +6,42 @@ public class ExpensiveTerrarium extends Terrarium {
 		super(length, width, height);
 	}
 
-	public boolean expensive() {
-		return true;
+	@Override
+	public void housesCheapTerrAnimals(CheapTerrAnimals cheapTerrAnimals) {
 	}
 
-	public boolean type() {
-		return true;
+	@Override
+	public void housesCheapAquAnimals(CheapAquAnimals cheapAquAnimals) {
 	}
 
-	// TODO:
+	@Override
+	public void housesExpensiveTerrAnimals(ExpensiveTerrAnimals expensiveTerrAnimals) {
+		this.setInhabitant(expensiveTerrAnimals);
+	}
+
+	@Override
+	public void housesExpensiveAquAnimals(ExpensiveAquAnimals expensiveAquAnimals) {
+	}
+
+	@Override
+	public void housesCheapTerrSecondChoice(CheapTerrAnimals cheapTerrAnimals) {
+		this.setInhabitant(cheapTerrAnimals);
+	}
+
+	@Override
+	public void housesCheapAquSecondChoice(CheapAquAnimals cheapAquAnimals) {
+	}
+
+	@Override
+	// TODO: toString always shortened for cheap animals / expensive container combination
 	public String toString() {
-		String s = "";
+		String s = "[Type: expensive terrarium, Size: " + this.volume();
+		if (this.getInhabitant() != null && !this.getShortString()) {
+			this.getInhabitant().setShortString(true);
+			s += ", Houses: " + this.getInhabitant().toString();
+		}
+		s += "]";
+		this.setShortString(false);
 		return s;
 	}
 }

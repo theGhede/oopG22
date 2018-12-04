@@ -1,14 +1,19 @@
 package aufgabe7;
 
-public class Animals {
+public abstract class Animals {
+
+	private Vivarium container;
+	private int size;
+	private boolean owned;
+	// variable for shortened toString() if called by toString() of a Vivarium
+	private boolean shortString;
 
 	public Animals(int size) {
 		this.size = size;
 		this.container = null;
+		this.setOwned(false);
+		this.shortString = false;
 	}
-
-	private Vivarium container;
-	private int size;
 
 	public Vivarium getContainer() {
 		return container;
@@ -26,9 +31,25 @@ public class Animals {
 		this.size = size;
 	}
 
-	// TODO:
-	public String toString() {
-		String s = "";
-		return s;
+	public boolean isOwned() {
+		return owned;
 	}
+
+	public void setOwned(boolean owned) {
+		this.owned = owned;
+	}
+
+	public boolean getShortString() {
+		return shortString;
+	}
+
+	public void setShortString(boolean shortString) {
+		this.shortString = shortString;
+	}
+
+	public abstract void putInContainer(Vivarium container);
+
+	public abstract void putInSecondChoice(Vivarium container);
+
+	public abstract String toString();
 }

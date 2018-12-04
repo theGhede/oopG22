@@ -6,17 +6,43 @@ public class ExpensiveAquarium extends Aquarium {
 		super(length, width, height);
 	}
 
-	public boolean expensive() {
-		return true;
+	@Override
+	public void housesCheapTerrAnimals(CheapTerrAnimals cheapTerrAnimals) {
 	}
 
-	public boolean type() {
-		return false;
+	@Override
+	public void housesCheapAquAnimals(CheapAquAnimals cheapAquAnimals) {
 	}
 
-	// TODO:
+	@Override
+	public void housesExpensiveTerrAnimals(ExpensiveTerrAnimals expensiveTerrAnimals) {
+	}
+
+	@Override
+	public void housesExpensiveAquAnimals(ExpensiveAquAnimals expensiveAquAnimals) {
+		this.setInhabitant(expensiveAquAnimals);
+	}
+
+	@Override
+	public void housesCheapTerrSecondChoice(CheapTerrAnimals cheapTerrAnimals) {
+	}
+
+	@Override
+	public void housesCheapAquSecondChoice(CheapAquAnimals cheapAquAnimals) {
+		this.setInhabitant(cheapAquAnimals);
+	}
+
+	@Override
+	// TODO: toString always shortened for cheap animals / expensive container
+	// combination
 	public String toString() {
-		String s = "";
+		String s = "[Type: expensive aquarium, Size: " + this.volume();
+		if (this.getInhabitant() != null && !this.getShortString()) {
+			this.getInhabitant().setShortString(true);
+			s += ", Houses: " + this.getInhabitant().toString();
+		}
+		s += "]";
+		this.setShortString(false);
 		return s;
 	}
 }

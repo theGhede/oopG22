@@ -6,13 +6,25 @@ public class ExpensiveTerrAnimals extends TerrAnimals {
 		super(size);
 	}
 
-	public boolean expensive() {
-		return true;
+	@Override
+	public void putInContainer(Vivarium container) {
+		container.housesExpensiveTerrAnimals(this);
+		if (container.getInhabitant() != null && container.getInhabitant().equals(this))
+			this.setContainer(container);
 	}
 
-	// TODO:
+	public void putInSecondChoice(Vivarium container) {
+	}
+
+	@Override
 	public String toString() {
-		String s = "";
+		String s = "<Type: expensive terrestrial animal, Size: " + this.getSize();
+		if (this.getContainer() != null && !this.getShortString()) {
+			this.getContainer().setShortString(true);
+			s += ", Housed in:" + this.getContainer().toString();
+		}
+		s += ">";
+		this.setShortString(false);
 		return s;
 	}
 }

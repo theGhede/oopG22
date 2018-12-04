@@ -1,18 +1,17 @@
 package aufgabe7;
 
-public class AquAnimals extends Animals {
+public abstract class AquAnimals extends Animals {
 
 	public AquAnimals(int size) {
 		super(size);
 	}
 
-	public boolean type() {
-		return true;
-	}
+	@Override
+	public abstract void putInContainer(Vivarium container);
 
-	// TODO:
-	public String toString() {
-		String s = "";
-		return s;
-	}
+	@Override
+	public abstract void putInSecondChoice(Vivarium container);
+
+	@Override
+	public abstract String toString();
 }

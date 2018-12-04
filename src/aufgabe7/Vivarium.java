@@ -1,12 +1,14 @@
 package aufgabe7;
 
-public class Vivarium {
+public abstract class Vivarium {
 
-	// TODO
-	// • Terrarium, preiswert
-	// • Terrarium, teuer
-	// • Aquarium, preiswert
-	// • Aquarium, teuer
+	private int length;
+	private int width;
+	private int height;
+	private boolean intact;
+	private Animals inhabitant;
+	// variable for shortened toString() if called by toString() of a Vivarium
+	private boolean shortString;
 
 	public Vivarium(int length, int width, int height) {
 		this.length = length;
@@ -14,13 +16,8 @@ public class Vivarium {
 		this.height = height;
 		this.intact = true;
 		this.inhabitant = null;
+		this.shortString = false;
 	}
-
-	private int length;
-	private int width;
-	private int height;
-	private boolean intact;
-	private Animals inhabitant;
 
 	public int volume() {
 		int vol = -1;
@@ -29,11 +26,7 @@ public class Vivarium {
 	}
 
 	public boolean isFree() {
-		boolean free = true;
-		if (this.inhabitant != null) {
-			return false;
-		}
-		return free;
+		return this.inhabitant != null;
 	}
 
 	public int getLength() {
@@ -75,11 +68,26 @@ public class Vivarium {
 	public void setInhabitant(Animals inhabitant) {
 		this.inhabitant = inhabitant;
 	}
-	
-	// TODO:
-	public String toString() {
-		String s = "";
-		return s;
+
+	public boolean getShortString() {
+		return shortString;
 	}
 
+	public void setShortString(boolean shortString) {
+		this.shortString = shortString;
+	}
+
+	public abstract void housesCheapTerrAnimals(CheapTerrAnimals cheapTerrAnimals);
+
+	public abstract void housesCheapAquAnimals(CheapAquAnimals cheapAquAnimals);
+
+	public abstract void housesExpensiveTerrAnimals(ExpensiveTerrAnimals expensiveTerrAnimals);
+
+	public abstract void housesExpensiveAquAnimals(ExpensiveAquAnimals expensiveAquAnimals);
+	
+	public abstract void housesCheapTerrSecondChoice(CheapTerrAnimals cheapTerrAnimals);
+
+	public abstract void housesCheapAquSecondChoice(CheapAquAnimals cheapAquAnimals);
+
+	public abstract String toString();
 }
