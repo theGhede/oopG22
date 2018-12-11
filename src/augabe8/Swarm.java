@@ -80,7 +80,7 @@ public class Swarm {
 
 	public boolean above(Fish fish) {
 		for (Fish f : swarm) {
-			if (fish.getX() == f.getX() && (fish.getY() == f.getY() - 1)) {
+			if (fish.getX() == f.getX() && (fish.getY() == f.getY() + 1)) {
 				return true;
 			}
 		}
@@ -89,7 +89,7 @@ public class Swarm {
 
 	public boolean below(Fish fish) {
 		for (Fish f : swarm) {
-			if (fish.getX() == f.getX() && (fish.getY() == f.getY() + 1)) {
+			if (fish.getX() == f.getX() && (fish.getY() == f.getY() - 1)) {
 				return true;
 			}
 		}
