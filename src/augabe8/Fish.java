@@ -2,8 +2,6 @@ package augabe8;
 
 public class Fish extends Thread {
 
-	// TODO: fish as threads (16k max.)
-
 	private int direction;
 	private int x;
 	private int y;
@@ -18,6 +16,7 @@ public class Fish extends Thread {
 		this.y = y;
 		this.direction = dir;
 		this.waitCount = 0;
+		this.waiting = false;
 	}
 
 	public int getDirection() {
@@ -65,39 +64,51 @@ public class Fish extends Thread {
 	}
 
 	public void turnLeft() {
-		if (!waiting) {
+		if (!this.waiting) {
 			if (this.direction == 3) {
 				this.direction = 12;
 			} else
 				this.direction -= 3;
 		}
-		if (waiting) {
-			this.waitCount++;
-			// waiting
-			// TODO: collision check
-			this.waiting = false;
-			this.turnLeft();
+		try {
+			while (this.waiting && this.repeat()) {
+				this.waitCount++;
+				int n = (int) (Math.random() * 45 + 5);
+				Thread.sleep(n);
+				this.waiting = this.group.collision(this);
+				if (!this.waiting)
+					this.turnLeft();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 	}
 
 	public void turnRight() {
-		if (!waiting) {
+		if (!this.waiting) {
 			if (this.direction == 12) {
 				this.direction = 3;
 			} else
 				this.direction += 3;
 		}
-		if (waiting) {
-			this.waitCount++;
-			// waiting
-			// TODO: collision check
-			this.waiting = false;
-			this.turnRight();
+		try {
+			while (this.waiting && this.repeat()) {
+				this.waitCount++;
+				int n = (int) (Math.random() * 45 + 5);
+				Thread.sleep(n);
+				this.waiting = this.group.collision(this);
+				if (!this.waiting)
+					this.turnRight();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 	}
 
 	public void move() {
-		if (!waiting) {
+		if (!this.waiting) {
 			this.changeFacing();
 			switch (this.direction) {
 			case 3:
@@ -128,48 +139,49 @@ public class Fish extends Thread {
 				break;
 			}
 		}
-		boolean repeat = true;
+		try {
+			while (this.waiting && this.repeat()) {
+				this.waitCount++;
+				int n = (int) (Math.random() * 45 + 5);
+				Thread.sleep(n);
+				this.waiting = this.group.collision(this);
+				if (!this.waiting)
+					this.move();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	public boolean repeat() {
 		for (Fish fish : this.group.getSwarm()) {
 			if (fish.waitCount >= 32)
-				repeat = false;
+				return false;
 		}
-		if (waiting && repeat == true) {
-			this.waitCount++;
-			try {
-				this.waiting = this.group.collision(this);
-				this.move();
-			} catch (Exception e) {
-				System.out.println("Move interrupted.");
-			}
-		}
+		return true;
 	}
 
 	public void changeFacing() {
 		double facing = Math.random();
-		// TODO: rules for turning at the border of the matrix
 		if (facing < 0.33) {
-			if (this.x == 3)
+			if (this.direction == 3)
 				this.group.topNeighbors(this);
-			if (this.x == 9)
+			if (this.direction == 9)
 				this.group.bottomNeighbors(this);
-			if ((this.y == 0 && this.direction == 9) || (this.y == 23 && this.direction == 3)
-					|| (this.x == 0 && this.direction == 12) || (this.x == 23 && this.direction == 6))
-				this.turnLeft();
+			this.turnLeft();
 		}
 		if (facing > 0.66) {
-			if (this.x == 9)
+			if (this.direction == 9)
 				this.group.topNeighbors(this);
-			if (this.x == 3)
+			if (this.direction == 3)
 				this.group.bottomNeighbors(this);
-			if ((this.y == 0 && this.direction == 3) || (this.y == 23 && this.direction == 9)
-					|| (this.x == 0 && this.direction == 6) || (this.x == 23 && this.direction == 12))
-				this.turnRight();
+			this.turnRight();
 		}
-		this.group.collision(this);
 	}
 
-	public void edgeFacing() {
-		if ((this.y == 0 && this.direction == 6) || (this.y == 23 && this.direction == 12)) {
+	public synchronized void edgeFacing() {
+		if ((this.y == 0 && this.direction == 12) || (this.y == 23 && this.direction == 6)) {
 			double facing = Math.random();
 			if (facing <= 0.5) {
 				this.turnLeft();
@@ -184,16 +196,13 @@ public class Fish extends Thread {
 	public void start() {
 		if (this.thread == null) {
 			this.thread = new Thread(null, this, "Thread-" + this.threadNumber(), 1 << 14);
+			this.thread.start();
 		}
 	}
 
 	@Override
 	public void run() {
-		try {
-			this.move();
-		} catch (Exception e) {
-			System.out.println("Run interrupted.");
-		}
+		this.move();
 	}
 
 	@Override
@@ -201,18 +210,18 @@ public class Fish extends Thread {
 		String s = "";
 		switch (this.direction) {
 		case 3:
-			s += "X>";
+			s += "X> ";
 			break;
 		case 9:
-			s += "<X";
+			s += "<X ";
 			break;
 		case 6:
 		case 12:
-			s += " X";
+			s += " X ";
 			break;
 		default:
 			break;
 		}
-		return s += " ";
+		return s;
 	}
 }

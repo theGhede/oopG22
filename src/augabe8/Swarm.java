@@ -32,13 +32,13 @@ public class Swarm {
 			int y = (int) (Math.random() * 24 - 1);
 			double facing = Math.random();
 			int direction = 0;
-			if (facing <= 0.20)
+			if (facing <= 0.25)
 				direction = 12;
-			if (facing > 0.20 && facing <= 0.40)
+			if (facing > 0.25 && facing <= 0.50)
 				direction = 6;
-			if (facing > 0.40 && facing <= 0.70)
+			if (facing > 0.50 && facing <= 0.75)
 				direction = 3;
-			if (facing > 0.70)
+			if (facing > 0.75)
 				direction = 9;
 			Fish fish = new Fish(direction, x, y);
 			swarm.add(fish);
@@ -56,15 +56,13 @@ public class Swarm {
 				}
 			}
 			double turn = Math.random();
-			if (fish.getDirection() == 12 && topNeighbors(fish)) {
-				fish.setWaiting(false);
+			if (fish.getDirection() == 12 && this.above(fish)) {
 				if (turn <= 0.5) {
 					fish.turnLeft();
 				} else
 					fish.turnRight();
 			}
-			if (fish.getDirection() == 6 && bottomNeighbors(fish)) {
-				fish.setWaiting(false);
+			if (fish.getDirection() == 6 && this.below(fish)) {
 				if (turn <= 0.5) {
 					fish.turnLeft();
 				} else
@@ -175,44 +173,38 @@ public class Swarm {
 		}
 		this.convert();
 		String s = "";
+		String empty = "   ";
 		for (int j = 0; j < matrix[i].length; j++) {
 			if (i == 0) {
 				if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
 					s += " A ";
-				}
-				if ((matrix[i][j] == null && matrix[i + 1][j] == null) || (matrix[i][j] == null
+				} else if ((matrix[i][j] == null && matrix[i + 1][j] == null) || (matrix[i][j] == null
 						&& matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 12)) {
-					s += "   ";
-				}
-				if (matrix[i][j] != null) {
+					s += empty;
+				} else if (matrix[i][j] != null) {
 					s += matrix[i][j].toString();
 				}
 			}
 			if (i > 0 && i < matrix.length - 1) {
 				if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
 					s += " V ";
-				}
-				if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
+				} else if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
 					s += " A ";
-				}
-				if ((matrix[i][j] == null && matrix[i + 1][j] == null && matrix[i - 1][j] == null)
+				} else if ((matrix[i][j] == null && matrix[i + 1][j] == null && matrix[i - 1][j] == null)
 						|| (matrix[i][j] == null && (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 6)
 								|| (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 12))) {
-					s += "   ";
-				}
-				if (matrix[i][j] != null) {
+					s += empty;
+				} else if (matrix[i][j] != null) {
 					s += matrix[i][j].toString();
 				}
 			}
 			if (i == matrix.length - 1) {
 				if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
 					s += " V ";
-				}
-				if ((matrix[i][j] == null && matrix[i - 1][j] == null)
+				} else if ((matrix[i][j] == null && matrix[i - 1][j] == null)
 						|| (matrix[i][j] == null && matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 6)) {
-					s += "   ";
-				}
-				if (matrix[i][j] != null) {
+					s += empty;
+				} else if (matrix[i][j] != null) {
 					s += matrix[i][j].toString();
 				}
 			}
