@@ -10,6 +10,8 @@ public class Fish extends Thread {
 	private boolean waiting;
 	private int waitCount;
 	private Swarm group;
+	private Thread thread;
+	private int threadNum = 0;
 
 	public Fish(int dir, int x, int y) {
 		this.x = x;
@@ -56,6 +58,10 @@ public class Fish extends Thread {
 
 	public void setGroup(Swarm swarm) {
 		this.group = swarm;
+	}
+
+	public synchronized int threadNumber() {
+		return threadNum++;
 	}
 
 	public void turnLeft() {
@@ -171,6 +177,13 @@ public class Fish extends Thread {
 			if (facing > 0.5) {
 				this.turnRight();
 			}
+		}
+	}
+
+	@Override
+	public void start() {
+		if (this.thread == null) {
+			this.thread = new Thread(null, this, "Thread-" + this.threadNumber(), 1 << 14);
 		}
 	}
 

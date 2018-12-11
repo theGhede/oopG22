@@ -169,59 +169,58 @@ public class Swarm {
 		return false;
 	}
 
-	public void print() {
+	public void print(int i) {
 		for (Fish fish : swarm) {
 			fish.edgeFacing();
 		}
 		this.convert();
-		System.out.println("\n");
 		String s = "";
-		for (int i = matrix.length - 1; i == 0; i--) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				if (i == matrix.length - 1) {
-					if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
-						s += " A ";
-					}
-					if ((matrix[i][j] == null && matrix[i + 1][j] == null) || (matrix[i][j] == null
-							&& matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 12)) {
-						s += "   ";
-					}
-					if (matrix[i][j] != null) {
-						s += matrix[i][j].toString();
-					}
+		for (int j = 0; j < matrix[i].length; j++) {
+			if (i == 0) {
+				if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
+					s += " A ";
 				}
-				if (i > 0 && i < matrix.length - 1) {
-					if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
-						s += " V ";
-					}
-					if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
-						s += " A ";
-					}
-					if ((matrix[i][j] == null && matrix[i + 1][j] == null && matrix[i - 1][j] == null)
-							|| (matrix[i][j] == null
-									&& (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 6)
-									|| (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 12))) {
-						s += "   ";
-					}
-					if (matrix[i][j] != null) {
-						s += matrix[i][j].toString();
-					}
+				if ((matrix[i][j] == null && matrix[i + 1][j] == null) || (matrix[i][j] == null
+						&& matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 12)) {
+					s += "   ";
 				}
-				if (i == 0) {
-					if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
-						s += " V ";
-					}
-					if ((matrix[i][j] == null && matrix[i - 1][j] == null) || (matrix[i][j] == null
-							&& matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 6)) {
-						s += "   ";
-					}
-					if (matrix[i][j] != null) {
-						s += matrix[i][j].toString();
-					}
+				if (matrix[i][j] != null) {
+					s += matrix[i][j].toString();
 				}
 			}
-			System.out.println(s);
-			s = "";
+			if (i > 0 && i < matrix.length - 1) {
+				if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
+					s += " V ";
+				}
+				if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
+					s += " A ";
+				}
+				if ((matrix[i][j] == null && matrix[i + 1][j] == null && matrix[i - 1][j] == null)
+						|| (matrix[i][j] == null && (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 6)
+								|| (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 12))) {
+					s += "   ";
+				}
+				if (matrix[i][j] != null) {
+					s += matrix[i][j].toString();
+				}
+			}
+			if (i == matrix.length - 1) {
+				if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
+					s += " V ";
+				}
+				if ((matrix[i][j] == null && matrix[i - 1][j] == null)
+						|| (matrix[i][j] == null && matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 6)) {
+					s += "   ";
+				}
+				if (matrix[i][j] != null) {
+					s += matrix[i][j].toString();
+				}
+			}
+		}
+		System.out.println(s);
+		s = "";
+		if (i < matrix.length - 1) {
+			print(++i);
 		}
 	}
 }
