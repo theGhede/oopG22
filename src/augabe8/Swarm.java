@@ -14,6 +14,10 @@ public class Swarm {
 		this.makeSwarm();
 	}
 
+	public List<Fish> getSwarm() {
+		return this.swarm;
+	}
+
 	public void convert() {
 		for (Fish fish : swarm) {
 			fish.getX();
@@ -38,6 +42,7 @@ public class Swarm {
 				direction = 9;
 			Fish fish = new Fish(direction, x, y);
 			swarm.add(fish);
+			fish.setGroup(this);
 		}
 		this.newSwarmCollision();
 	}
@@ -93,44 +98,9 @@ public class Swarm {
 		return false;
 	}
 
-	public void run() {
-		this.move();
-		// TODO: clock
+	public void startSwarm() {
 		for (Fish fish : swarm) {
-			System.out.println(fish.getWaitCount());
-			this.collision(fish);
-		}
-	}
-
-	public void move() {
-		for (Fish fish : swarm) {
-			double facing = Math.random();
-			// TODO: rules for turning at the border of the matrix
-			if (facing < 0.33) {
-				if (fish.getX() == 3)
-					this.topNeighbors(fish);
-				if (fish.getX() == 9)
-					this.bottomNeighbors(fish);
-				fish.turnLeft();
-			}
-			if (facing > 0.66) {
-				if (fish.getX() == 9)
-					this.topNeighbors(fish);
-				if (fish.getX() == 3)
-					this.bottomNeighbors(fish);
-				fish.turnRight();
-			}
-			this.collision(fish);
-			fish.move();
-		}
-		boolean repeat = true;
-		for (Fish fish : swarm) {
-			if (fish.getWaitCount() >= 32)
-				repeat = false;
-		}
-		if (repeat == true) {
-			// TODO:
-			// this.move();
+			fish.start();
 		}
 	}
 
@@ -148,6 +118,8 @@ public class Swarm {
 	}
 
 	public boolean leftNeighbors(Fish fish) {
+		if (fish.getX() == 0)
+			return false;
 		for (Fish f : swarm) {
 			if (fish.getY() == f.getY() && (fish.getX() == f.getX() - 1 || fish.getX() == f.getX() - 2)) {
 				fish.setWaiting(true);
@@ -159,6 +131,8 @@ public class Swarm {
 	}
 
 	public boolean rightNeighbors(Fish fish) {
+		if (fish.getX() == 23)
+			return false;
 		for (Fish f : swarm) {
 			if (fish.getY() == f.getY() && (fish.getX() == f.getX() + 1 || fish.getX() == f.getX() + 2)) {
 				fish.setWaiting(true);
@@ -170,6 +144,8 @@ public class Swarm {
 	}
 
 	public boolean topNeighbors(Fish fish) {
+		if (fish.getY() == 23)
+			return false;
 		for (Fish f : swarm) {
 			if ((fish.getX() == f.getX() && (fish.getY() == f.getY() + 1) || fish.getY() == f.getY() + 2)) {
 				fish.setWaiting(true);
@@ -181,6 +157,8 @@ public class Swarm {
 	}
 
 	public boolean bottomNeighbors(Fish fish) {
+		if (fish.getY() == 0)
+			return false;
 		for (Fish f : swarm) {
 			if ((fish.getX() == f.getX() && (fish.getY() == f.getY() - 1) || fish.getY() == f.getY() - 2)) {
 				fish.setWaiting(true);
@@ -192,11 +170,15 @@ public class Swarm {
 	}
 
 	public void print() {
+		for (Fish fish : swarm) {
+			fish.edgeFacing();
+		}
 		this.convert();
+		System.out.println("\n");
 		String s = "";
-		for (int i = 0; i < matrix.length; i++) {
+		for (int i = matrix.length - 1; i == 0; i--) {
 			for (int j = 0; j < matrix[i].length; j++) {
-				if (i == 0) {
+				if (i == matrix.length - 1) {
 					if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
 						s += " A ";
 					}
@@ -225,7 +207,7 @@ public class Swarm {
 						s += matrix[i][j].toString();
 					}
 				}
-				if (i == matrix.length - 1) {
+				if (i == 0) {
 					if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
 						s += " V ";
 					}

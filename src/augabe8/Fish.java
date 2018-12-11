@@ -1,6 +1,6 @@
 package augabe8;
 
-public class Fish {
+public class Fish extends Thread {
 
 	// TODO: fish as threads (16k max.)
 
@@ -9,6 +9,7 @@ public class Fish {
 	private int y;
 	private boolean waiting;
 	private int waitCount;
+	private Swarm group;
 
 	public Fish(int dir, int x, int y) {
 		this.x = x;
@@ -53,6 +54,10 @@ public class Fish {
 		this.waitCount = waitCount;
 	}
 
+	public void setGroup(Swarm swarm) {
+		this.group = swarm;
+	}
+
 	public void turnLeft() {
 		if (!waiting) {
 			if (this.direction == 3) {
@@ -87,6 +92,7 @@ public class Fish {
 
 	public void move() {
 		if (!waiting) {
+			this.changeFacing();
 			switch (this.direction) {
 			case 3:
 				if (this.x < 22)
@@ -95,10 +101,10 @@ public class Fish {
 					this.x++;
 				break;
 			case 6:
-				if (this.y >= 2)
-					this.y -= 2;
-				if (this.y == 1)
-					this.y--;
+				if (this.y < 22)
+					this.y += 2;
+				if (this.y == 22)
+					this.y++;
 				break;
 			case 9:
 				if (this.x >= 2)
@@ -107,24 +113,77 @@ public class Fish {
 					this.x--;
 				break;
 			case 12:
-				if (this.y < 22)
-					this.y += 2;
-				if (this.y == 22)
-					this.y++;
+				if (this.y >= 2)
+					this.y -= 2;
+				if (this.y == 1)
+					this.y--;
 				break;
 			default:
 				break;
 			}
 		}
-		if (waiting) {
+		boolean repeat = true;
+		for (Fish fish : this.group.getSwarm()) {
+			if (fish.waitCount >= 32)
+				repeat = false;
+		}
+		if (waiting && repeat == true) {
 			this.waitCount++;
-			// waiting
-			// TODO: collision check
-			this.waiting = false;
-			this.move();
+			try {
+				this.waiting = this.group.collision(this);
+				this.move();
+			} catch (Exception e) {
+				System.out.println("Move interrupted.");
+			}
 		}
 	}
 
+	public void changeFacing() {
+		double facing = Math.random();
+		// TODO: rules for turning at the border of the matrix
+		if (facing < 0.33) {
+			if (this.x == 3)
+				this.group.topNeighbors(this);
+			if (this.x == 9)
+				this.group.bottomNeighbors(this);
+			if ((this.y == 0 && this.direction == 9) || (this.y == 23 && this.direction == 3)
+					|| (this.x == 0 && this.direction == 12) || (this.x == 23 && this.direction == 6))
+				this.turnLeft();
+		}
+		if (facing > 0.66) {
+			if (this.x == 9)
+				this.group.topNeighbors(this);
+			if (this.x == 3)
+				this.group.bottomNeighbors(this);
+			if ((this.y == 0 && this.direction == 3) || (this.y == 23 && this.direction == 9)
+					|| (this.x == 0 && this.direction == 6) || (this.x == 23 && this.direction == 12))
+				this.turnRight();
+		}
+		this.group.collision(this);
+	}
+
+	public void edgeFacing() {
+		if ((this.y == 0 && this.direction == 6) || (this.y == 23 && this.direction == 12)) {
+			double facing = Math.random();
+			if (facing <= 0.5) {
+				this.turnLeft();
+			}
+			if (facing > 0.5) {
+				this.turnRight();
+			}
+		}
+	}
+
+	@Override
+	public void run() {
+		try {
+			this.move();
+		} catch (Exception e) {
+			System.out.println("Run interrupted.");
+		}
+	}
+
+	@Override
 	public String toString() {
 		String s = "";
 		switch (this.direction) {
