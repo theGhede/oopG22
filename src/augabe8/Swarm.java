@@ -8,7 +8,7 @@ public class Swarm {
 	private List<Fish> swarm;
 	private Fish[][] matrix;
 
-	public Swarm() {
+	public Swarm() throws InterruptedException {
 		this.swarm = new ArrayList<>();
 		this.matrix = new Fish[24][24];
 		this.makeSwarm();
@@ -16,6 +16,10 @@ public class Swarm {
 
 	public List<Fish> getSwarm() {
 		return this.swarm;
+	}
+
+	public int getMatrixLength() {
+		return this.matrix.length;
 	}
 
 	public void convert() {
@@ -26,8 +30,8 @@ public class Swarm {
 		}
 	}
 
-	public void makeSwarm() {
-		for (int i = 0; i < 144; i++) {
+	public void makeSwarm() throws InterruptedException {
+		for (int i = 0; i < 80; i++) {
 			int x = (int) (Math.random() * 24 - 1);
 			int y = (int) (Math.random() * 24 - 1);
 			double facing = Math.random();
@@ -47,7 +51,7 @@ public class Swarm {
 		this.newSwarmCollision();
 	}
 
-	public void newSwarmCollision() {
+	public void newSwarmCollision() throws InterruptedException {
 		for (Fish fish : swarm) {
 			for (Fish other : swarm) {
 				if (!fish.equals(other) && fish.getX() == other.getX() && fish.getY() == other.getY()) {
@@ -167,52 +171,54 @@ public class Swarm {
 		return false;
 	}
 
-	public void print(int i) {
+	int empty = 0;
+
+	public void print(int i) throws InterruptedException {
 		for (Fish fish : swarm) {
-			fish.edgeFacing();
+			if ((fish.getY() == 0 && fish.getDirection() == 12) || (fish.getY() == 23 && fish.getDirection() == 6)) {
+				fish.edgeFacing();
+			}
 		}
 		this.convert();
 		String s = "";
 		String empty = "   ";
 		for (int j = 0; j < matrix[i].length; j++) {
-			if (i == 0) {
-				if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
-					s += " A ";
-				} else if ((matrix[i][j] == null && matrix[i + 1][j] == null) || (matrix[i][j] == null
-						&& matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 12)) {
-					s += empty;
-				} else if (matrix[i][j] != null) {
+			if (i == matrix.length - 1) {
+				if (matrix[i][j] != null) {
 					s += matrix[i][j].toString();
+				} else if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 12) {
+					s += " A ";
+				} else if (matrix[i][j] == null && (matrix[i - 1][j] == null
+						|| (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 12))) {
+					s += empty;
 				}
 			}
 			if (i > 0 && i < matrix.length - 1) {
-				if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
-					s += " V ";
-				} else if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 12) {
-					s += " A ";
-				} else if ((matrix[i][j] == null && matrix[i + 1][j] == null && matrix[i - 1][j] == null)
-						|| (matrix[i][j] == null && (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 6)
-								|| (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 12))) {
-					s += empty;
-				} else if (matrix[i][j] != null) {
+				if (matrix[i][j] != null) {
 					s += matrix[i][j].toString();
+				} else if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 6) {
+					s += " V ";
+				} else if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 12) {
+					s += " A ";
+				} else if (matrix[i][j] == null && (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 12)
+						|| (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 6)) {
+					s += empty;
 				}
 			}
-			if (i == matrix.length - 1) {
-				if (matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() == 6) {
-					s += " V ";
-				} else if ((matrix[i][j] == null && matrix[i - 1][j] == null)
-						|| (matrix[i][j] == null && matrix[i - 1][j] != null && matrix[i - 1][j].getDirection() != 6)) {
-					s += empty;
-				} else if (matrix[i][j] != null) {
+			if (i == 0) {
+				if (matrix[i][j] != null) {
 					s += matrix[i][j].toString();
+				} else if (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() == 6) {
+					s += " V ";
+				} else if (matrix[i][j] == null && (matrix[i + 1][j] == null
+						|| (matrix[i + 1][j] != null && matrix[i + 1][j].getDirection() != 6))) {
+					s += empty;
 				}
 			}
 		}
 		System.out.println(s);
-		s = "";
-		if (i < matrix.length - 1) {
-			print(++i);
+		if (i != 0) {
+			print(--i);
 		}
 	}
 }
