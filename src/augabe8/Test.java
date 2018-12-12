@@ -22,8 +22,5 @@ public class Test {
 		 * while the different swarms use a stack the ordering of the output will vary
 		 * depending on which swarm finishes first
 		 */
-		Swarm swarm = new Swarm(100);
-		swarm.makeSwarm();
-		//swarm.start();
 	}
 }
