@@ -14,7 +14,7 @@ public class Test {
 		 * adjusting the amount of swarms created and run very easy.
 		 * 
 		 */
-		SynchroGroup group = new SynchroGroup(1);
+		SynchroGroup group = new SynchroGroup(3);
 		group.start();
 		/*
 		 * NOTE:

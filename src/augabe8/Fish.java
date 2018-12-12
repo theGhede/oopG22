@@ -16,6 +16,9 @@ public class Fish extends Thread {
 	private Thread thread;
 	private int threadNum = 0;
 
+	// NOTE: makeSwarm takes care of calling this with direction = (3,6,9,12) and
+	// x/y
+	// within the appropriate limits (0, matrix.length-1)
 	public Fish(int dir, int x, int y) {
 		this.direction = dir;
 		this.x = x;
@@ -151,26 +154,18 @@ public class Fish extends Thread {
 			case 3:
 				if (this.x < this.group.useMatrixLength() - 1)
 					this.x += 2;
-				if (this.x == this.group.useMatrixLength() - 1)
-					this.x++;
 				break;
-			case 6:
+			case 12:
 				if (this.y < this.group.useMatrixLength() - 1)
 					this.y += 2;
-				if (this.y == this.group.useMatrixLength() - 1)
-					this.y++;
 				break;
 			case 9:
 				if (this.x >= 2)
 					this.x -= 2;
-				if (this.x == 1)
-					this.x--;
 				break;
-			case 12:
+			case 6:
 				if (this.y >= 2)
 					this.y -= 2;
-				if (this.y == 1)
-					this.y--;
 				break;
 			default:
 				break;
@@ -240,19 +235,7 @@ public class Fish extends Thread {
 		 */
 		if (this.waitCount == 32) {
 			synchronized (this.sg) {
-				// this.group.print();
-				int d = 0;
-				for (Fish fish : this.group.getSwarm()) {
-					for (Fish other : this.group.getSwarm()) {
-						if (!fish.equals(other) && fish.getX() == other.getX() && fish.getY() == other.getY()) {
-							System.out.println("DOUBLEFISH! ");
-							d++;
-							fish.details();
-							other.details();
-						}
-					}
-				}
-				System.out.println(d/2);
+				this.group.print();
 			}
 		}
 	}
