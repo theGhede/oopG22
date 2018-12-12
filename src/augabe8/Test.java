@@ -3,15 +3,27 @@ package augabe8;
 public class Test {
 
 	public static void main(String[] args) throws InterruptedException {
-		Swarm swarm = new Swarm();
-		swarm.startSwarm();
-
-		int up = 0;
-		int down = 0;
-		for (Fish f : swarm.getSwarm()) {
-			// System.out.println(f.getName() + ", " + f.isAlive());
-			// if (f.getWaitCount() == 32)
-			// System.out.println(f.getWaitCount());
-		}
+		/*
+		 * NOTE:
+		 * 
+		 * Since "Testläufe der Simulation von Fischschwärmen" is plural
+		 * synchronisation with only two classes and multiple swarms proved itself to be
+		 * difficult. Synchronized printing requires to synchronize the group of all
+		 * swarms which are to be synchronized & this lead to an additional class, which
+		 * is a group of n swarms. An upside of having all swarms grouped together makes
+		 * adjusting the amount of swarms created and run very easy.
+		 * 
+		 */
+		SynchroGroup group = new SynchroGroup(1);
+		group.start();
+		/*
+		 * NOTE:
+		 * 
+		 * while the different swarms use a stack the ordering of the output will vary
+		 * depending on which swarm finishes first
+		 */
+		Swarm swarm = new Swarm(100);
+		swarm.makeSwarm();
+		//swarm.start();
 	}
 }
