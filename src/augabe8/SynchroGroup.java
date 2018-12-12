@@ -14,6 +14,18 @@ public class SynchroGroup {
 			s.makeSwarm();
 			this.group.add(s);
 		}
+		this.choose();
+	}
+
+	public void choose() {
+		int i = 0;
+		for (Swarm swarm : group) {
+			int choosing = (int) (Math.random() * 96 + 96 * i);
+			for (Fish fish : swarm.getSwarm()) {
+					fish.setChosen(choosing);
+			}
+			i++;
+		}
 	}
 
 	public void start() {

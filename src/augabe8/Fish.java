@@ -16,8 +16,8 @@ public class Fish extends Thread {
 	private Thread thread;
 	private int threadNum = 0;
 
-	// NOTE: makeSwarm takes care of calling this with direction = (3,6,9,12) and
-	// x/y
+	// NOTE:
+	// makeSwarm takes care of calling this with direction = (3,6,9,12) and x/y
 	// within the appropriate limits (0, matrix.length-1)
 	public Fish(int dir, int x, int y) {
 		this.direction = dir;
@@ -189,7 +189,7 @@ public class Fish extends Thread {
 		return true;
 	}
 
-	public synchronized void changeFacing() throws InterruptedException {
+	public void changeFacing() throws InterruptedException {
 		double facing = Math.random();
 		if (facing < 0.33) {
 			this.turnLeft();
@@ -200,8 +200,8 @@ public class Fish extends Thread {
 		}
 	}
 
-	// method to correct direction for better display after movement is done, right
-	// before output is generated
+	// simple method to correct direction for better display after movement is done,
+	// right before output is generated & before movement start
 	public synchronized void edgeFacing() {
 		double facing = Math.random();
 		if (facing <= 0.5) {
@@ -241,8 +241,37 @@ public class Fish extends Thread {
 	}
 
 	public void details() {
-		System.out.println("        [" + this.getName() + " can be found at coordinates (" + this.x + "/" + this.y
-				+ ")," + " waited " + this.waitCount + " times, moved " + this.moveCount + " times]");
+		if (this.isChosen())
+			System.out.println("        [" + this.getName() + " can be found at coordinates (" + this.x + "/" + this.y
+					+ ")," + " waited " + this.waitCount + " times, moved " + this.moveCount
+					+ " times and this thread has been chosen]");
+		else
+			System.out.println("        [" + this.getName() + " can be found at coordinates (" + this.x + "/" + this.y
+					+ ")," + " waited " + this.waitCount + " times, moved " + this.moveCount + " times] ");
+
+	}
+
+	/*
+	 * NOTE:
+	 * 
+	 * Method to choose 1 thread per swarm to become the chosen thread as stated by
+	 * the assignment. Printing the entirety (String.length = SIZE * 3) every time
+	 * it waits (up to 32 times) for all swarms will generate a massive amount of
+	 * println in the console. It would take little effort to call print every time
+	 * the chosen threads waitCount increments just the way it is called at the end
+	 * of the run (but for the chosen threads swarm only of course)
+	 */
+	private int chosen;
+
+	public void setChosen(int chosen) {
+		this.chosen = chosen;
+	}
+
+	public boolean isChosen() {
+		String c = "Thread-" + this.chosen;
+		if (this.getName().equals(c))
+			return true;
+		return false;
 	}
 
 	@Override
