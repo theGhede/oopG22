@@ -1,4 +1,4 @@
-package augabe8;
+package aufgabe8;
 
 import java.util.ArrayList;
 import java.util.List;

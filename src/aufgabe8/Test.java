@@ -1,8 +1,8 @@
-package augabe8;
+package aufgabe8;
 
 public class Test {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		/*
 		 * NOTE:
 		 * 

@@ -1,4 +1,4 @@
-package augabe8;
+package aufgabe8;
 
 public class Fish extends Thread {
 
