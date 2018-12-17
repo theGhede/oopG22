@@ -124,7 +124,6 @@ public class Test {
 	}
 }
 
-// TODO
 // Beschreibung wer an welchem Teil gearbeitet hat, entsprechend der Angabe
 /*
  * Togather at an IRL meeting: the different classes, constructors and their

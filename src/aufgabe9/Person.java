@@ -15,15 +15,11 @@ public class Person {
 		return this.wishes;
 	}
 
-	public void setWishes(WishMap wishes) {
-		this.wishes = wishes;
-	}
-
 	public double getSusceptibility() {
 		return this.susceptibility;
 	}
 	
-	public boolean deathRate() {
+	public boolean mortality() {
 		return Math.random() <= 0.2;
 	}
 	

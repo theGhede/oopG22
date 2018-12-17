@@ -1,7 +1,8 @@
 package aufgabe9;
 
-import java.util.Map;	
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,18 +17,20 @@ public class WishList {
 
 	public WishList(Population people) {
 		this.people = people;
-		this.people.getPeople().stream().map(e -> this.wishList.add(e.getWishes()));
 	}
 
 	public List<WishMap> getWishList() {
 		return this.wishList;
 	}
 
-	public Stream<Person> topFive() {
+	public void setWishList() {
+		this.people.getPeople().stream().forEach(e -> this.wishList.add(e.getWishes()));
+	}
+
+	private Stream<Person> topFive() {
 		return this.people.getPeople().stream().map(person -> {
 			Map<Integer, Integer> sorted = person.getWishes().getWishes().entrySet().stream().sorted(comparingByValue())
-					.collect(toMap(elem -> elem.getKey(), elem -> elem.getValue(), (elem1, elem2) -> elem2,
-							LinkedHashMap::new));
+					.collect(toMap(Entry::getKey, Entry::getValue, (elem1, elem2) -> elem2, LinkedHashMap::new));
 			person.getWishes().getTopFive().clear();
 			@SuppressWarnings("unchecked")
 			Entry<Integer, Integer>[] entry = (Entry<Integer, Integer>[]) sorted.entrySet().toArray()[sorted.size()
@@ -41,12 +44,10 @@ public class WishList {
 		});
 	}
 
-	private double avg;
-
-	public double avgValue(int key) {
-		this.avg = 0;
-		this.wishList.stream().map(e -> this.avg += e.avgValue(key));
-		return this.avg / this.wishList.size();
+	private double avgValue(int key) {
+		double avg = 0;
+		avg = this.wishList.stream().collect(Collectors.summingDouble(wishMap -> wishMap.avgValue(key)));
+		return avg / this.wishList.size();
 	}
 
 	public double totalAvgValue() {
@@ -54,20 +55,23 @@ public class WishList {
 		for (int i = 0; i < 20; i++) {
 			total += this.avgValue(i);
 		}
-		return total / 20;
+		// TODO: alternative
+		this.wishList.stream().forEach(wishMap -> {
+			double t = wishMap.getWishes().entrySet().stream().collect(Collectors.averagingInt(Entry::getValue));
+		});
+		return total;
 	}
 
 	public void yearEnd() {
 		this.topFive();
 		// topFive wishes per person are being fulfilled
-		this.wishList.stream().map(w -> {
+		this.wishList.stream().forEach(wishMap -> {
 			for (int i = 0; i < 20; i++) {
-				w.getTopFive().get(i);
-				if (w.getTopFive().get(i) != null) {
-					w.getWishes().put(i, 0);
+				wishMap.getTopFive().get(i);
+				if (wishMap.getTopFive().get(i) != null) {
+					wishMap.getWishes().put(i, 0);
 				}
 			}
-			return w;
 		});
 	}
 }

@@ -54,31 +54,47 @@ public class Organization {
 			this.portfolio();
 	}
 
-	private int key;
+	// how many percent of the companies wishes are represented in the topWishes of
+	// all people
+	public double representedWishes() {
+		this.matches = 0;
+		this.people.getPeople().stream().forEach(e -> {
+			for (int i = 0; i < this.wishes.length; i++) {
+				int product = this.wishes[i];
+				// since we're looking for the type count will be either 0 or 1
+				long count = e.getWishes().getTopFive().entrySet().stream().filter(p -> p.getKey() == product).count();
+				this.matches += (int) count;
+			}
+		});
+		return (double) this.matches / Math.min(1, this.wishes.length);
+	}
 
 	public void influencing() {
-		this.analysing();
-		this.key = 0;
+		this.analyzing();
+		/*
+		 * Note: Another workaround for
+		 * "Local variable i defined in an enclosing scope must be final or effectively final"
+		 * is using an array (since the value inside the array changes, not the array
+		 * itself)
+		 */
+		int[] key = { 0 };
 		for (int i = 0; i < wishes.length; i++) {
-			this.key = i;
-			this.people.getWishList().getWishList().stream().map(p -> {
-				if (p.getWishes().get(key) != null && p.getWishes().get(key) != 0) {
-					int n = (int) (Math.random() * 2 * p.getWishes().get(key) * p.getOwner().getSusceptibility());
+			key[0] = i;
+			this.people.getWishList().getWishList().stream().forEach(wishMap -> {
+				if (wishMap.getWishes().get(key) != null && wishMap.getWishes().get(key[0]) != 0) {
+					int n = (int) (Math.random() * 2 * wishMap.getWishes().get(key[0])
+							* wishMap.getOwner().getSusceptibility());
+					if (this.strategy && wishMap.getOwner().getSusceptibility() < 0.75) {
+						wishMap.getWishes().put(key[0], n);
+					}
 					if (!this.strategy) {
-						if (p.getOwner().getSusceptibility() < 0.75) {
-							p.getWishes().put(key, n);
-						}
-					} else {
-						p.getWishes().put(key, n);
+						wishMap.getWishes().put(key[0], n);
+					}
+					if (!this.focused) {
+						int m = (int) (Math.random() * 2 * wishMap.getOwner().getSusceptibility());
+						wishMap.getWishes().put(key[0], m);
 					}
 				}
-				if (!this.focused) {
-					if (p.getWishes().get(key) == null && p.getWishes().get(key) == 0) {
-						int m = (int) (Math.random() * 2 * p.getOwner().getSusceptibility());
-						p.getWishes().put(key, m);
-					}
-				}
-				return p;
 			});
 		}
 	}
@@ -91,23 +107,22 @@ public class Organization {
 	 * checking for total overlap between own products and all topFive lists and
 	 * looking for strongly desired wishes
 	 */
-	public void analysing() {
-		// TODO: compare this.wishes to WishList after Christmas and make up rules for
-		// future strategy
+	private void analyzing() {
+		// compare this.wishes to WishList after Christmas and make up rules for future
+		// strategy
 		this.matches = 0;
 		this.desire = 0;
 		this.strongDesire = false;
 		for (int i = 0; i < this.wishes.length; i++) {
 			int product = this.wishes[i];
-			this.people.getWishList().getWishList().stream().map(p -> {
-				long count = p.getTopFive().entrySet().stream().filter(wish -> wish.getKey().equals(product)).count();
-				p.getWishes().entrySet().stream().map(wish -> {
+			this.people.getWishList().getWishList().stream().forEach(wishMap -> {
+				long count = wishMap.getTopFive().entrySet().stream().filter(wish -> wish.getKey().equals(product))
+						.count();
+				wishMap.getWishes().entrySet().stream().forEach(wish -> {
 					if (wish.getKey().equals(product))
 						this.desire += wish.getValue();
-					return wish;
 				});
 				this.matches += (int) count;
-				return p;
 			});
 			// desire for this organizations products is above average
 			if (this.desire >= this.people.getWishList().totalAvgValue())
