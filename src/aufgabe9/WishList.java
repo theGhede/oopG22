@@ -3,9 +3,9 @@ package aufgabe9;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 import static java.util.Map.Entry.*;
 import static java.util.stream.Collectors.*;
@@ -17,6 +17,7 @@ public class WishList {
 
 	public WishList(Population people) {
 		this.people = people;
+		this.wishList = new ArrayList<>();
 	}
 
 	public List<WishMap> getWishList() {
@@ -24,45 +25,56 @@ public class WishList {
 	}
 
 	public void setWishList() {
-		this.people.getPeople().stream().forEach(e -> this.wishList.add(e.getWishes()));
+		this.people.getPeople().stream().forEach(person -> this.wishList.add(person.getWishes()));
 	}
 
-	private Stream<Person> topFive() {
-		return this.people.getPeople().stream().map(person -> {
+	private void topFive() {
+		this.people.getPeople().stream().forEach(person -> {
 			Map<Integer, Integer> sorted = person.getWishes().getWishes().entrySet().stream().sorted(comparingByValue())
 					.collect(toMap(Entry::getKey, Entry::getValue, (elem1, elem2) -> elem2, LinkedHashMap::new));
 			person.getWishes().getTopFive().clear();
-			@SuppressWarnings("unchecked")
-			Entry<Integer, Integer>[] entry = (Entry<Integer, Integer>[]) sorted.entrySet().toArray()[sorted.size()
-					- 1];
-			int c = Math.max(4, entry.length - 1);
-			while (c <= 0) {
-				person.getWishes().getTopFive().put(entry[c].getKey(), entry[c].getValue());
+			/*
+			 * Note:
+			 * 
+			 * Had some really interesting experience with LinkedHashMap toArray() here:
+			 * Firstly the entry, keys and values are forced to be Object[] and a cast to
+			 * get them to what they actually are resolves in an error. Then checking
+			 * getClass() of the array entries reveals that the class of these Objects is in
+			 * fact Entry and Integer respectively, as one would expect. Lastly casting the
+			 * Object (which really is an Integer) right before it's used seems perfectly
+			 * fine and safe in contrast to the issues that came with the attempt to
+			 * generate arrays of the proper type in the first place. What seemed to have
+			 * happened was java was unsure about sorted.keySet()/.values() types before
+			 * toArray() and told me that I can't be sure either but afterwards says
+			 * "yes, of course these are Integers".
+			 */
+			Object[] keys = sorted.keySet().toArray();
+			Object[] values = sorted.values().toArray();
+			int c = Math.max(5, keys.length - 1);
+			while (c > 0) {
+				person.getWishes().getTopFive().put((Integer) keys[c], (Integer) values[c]);
 				c--;
 			}
-			return person;
 		});
 	}
 
-	private double avgValue(int key) {
-		double avg = 0;
-		avg = this.wishList.stream().collect(Collectors.summingDouble(wishMap -> wishMap.avgValue(key)));
-		return avg / this.wishList.size();
-	}
-
-	public double totalAvgValue() {
-		double total = 0;
-		for (int i = 0; i < 20; i++) {
-			total += this.avgValue(i);
-		}
-		// TODO: alternative
-		this.wishList.stream().forEach(wishMap -> {
-			double t = wishMap.getWishes().entrySet().stream().collect(Collectors.averagingInt(Entry::getValue));
-		});
-		return total;
+	public double avgValue() {
+		double[] t = { 0 };
+		this.wishList.stream().forEach(wishMap -> t[0] += wishMap.getWishes().entrySet().stream()
+				.collect(Collectors.averagingInt(Entry::getValue)));
+		t[0] = t[0] / this.wishList.size();
+		return t[0];
 	}
 
 	public void yearEnd() {
+		/*
+		 * Note:
+		 * 
+		 * Using aspectJ to manage these calls would require the methods to be static,
+		 * this is not going to happen despite us hoping to use it for cases such as
+		 * this and not just some console output
+		 */
+		this.setWishList();
 		this.topFive();
 		// topFive wishes per person are being fulfilled
 		this.wishList.stream().forEach(wishMap -> {
@@ -73,5 +85,6 @@ public class WishList {
 				}
 			}
 		});
+
 	}
 }

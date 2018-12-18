@@ -8,7 +8,7 @@ public class Person {
 
 	public Person() {
 		this.wishes = new WishMap(this);
-		this.susceptibility = Math.min(1, Math.random() + 0.5);
+		this.susceptibility = Math.min(1, Math.random() * 0.5 + 0.5);
 	}
 
 	public WishMap getWishes() {
@@ -18,11 +18,11 @@ public class Person {
 	public double getSusceptibility() {
 		return this.susceptibility;
 	}
-	
+
 	public boolean mortality() {
-		return Math.random() <= 0.2;
+		return Math.random() <= 0.15;
 	}
-	
+
 	public Person yearEnd() {
 		this.wishes.yearEnd();
 		return this;

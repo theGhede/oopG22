@@ -14,17 +14,19 @@ public class WishMap {
 
 	public WishMap(Person owner) {
 		this.wishes = new HashMap<>();
+		this.topFive = new HashMap<>();
 		// random amount of random wishes in map
 		for (int type = 0; type < 20; type++) {
-			this.wishes.put(type, this.desire());
+			this.wishes.put(type, desire());
 		}
 		this.owner = owner;
 	}
 
-	private int desire() {
-		int desire;
-		desire = (int) (Math.random() * 4);
-		if (Math.random() <= 0.20)
+	public static int desire() {
+		int desire = 0;
+		if (Math.random() > 0.4)
+			desire = (int) (Math.random() * 11 + 1);
+		if (Math.random() <= 0.15)
 			desire = desire * -1;
 		return desire;
 	}
@@ -45,27 +47,8 @@ public class WishMap {
 		return this.owner;
 	}
 
-	// Note:
-	// we wanted this to be a local variable of course but "Local variable avg
-	// defined in an enclosing scope must be final or effectively final" needs some
-	// working around
-	private double avg;
-	private int k;
-
-	public double avgValue(int key) {
-		this.avg = 0;
-		this.k = 0;
-		this.wishes.entrySet().stream().forEach(entry -> {
-			if (entry.getKey() == key) {
-				this.k++;
-				this.avg += entry.getValue();
-			}
-		});
-		return this.avg / Math.min(1, this.k);
-	}
-
 	public long countWishes() {
-		return this.wishes.entrySet().stream().filter(e -> (e.getValue() != null && e.getValue() != 0)).count();
+		return this.wishes.entrySet().stream().filter(e -> e.getValue() != 0).count();
 	}
 
 	public double avgDesire() {
@@ -77,7 +60,7 @@ public class WishMap {
 	// person is frustrated by not being granted ad wish they really wanted (because
 	// they had 5 even more important wishes but wanted more)
 	private void frustrated() {
-		this.wishes.entrySet().stream().filter(entry -> entry.getValue() > 8).forEach(entry -> entry.setValue(0));
+		this.wishes.entrySet().stream().filter(entry -> entry.getValue() > 22).forEach(entry -> entry.setValue(0));
 	}
 
 	public void yearEnd() {
@@ -86,13 +69,13 @@ public class WishMap {
 		this.wishes.entrySet().stream().forEach(entry -> {
 			if (entry.getValue() != 0 && entry.getValue() != null) {
 				double r = Math.random();
-				if (r <= 0.05) {
-					// 5% chance to forget about a wish
+				if (r <= 0.1) {
+					// 10% chance to forget about a wish
 					entry.setValue(0);
-				} else if (r > 0.05 && r <= 0.2) {
+				} else if (r > 0.1 && r <= 0.25) {
 					// 15% chance to do the advertisers work for them
 					entry.setValue((int) (entry.getValue() * Math.random() * 2));
-				} else if (r > 0.2 && r <= 0.25) {
+				} else if (r > 0.25 && r <= 0.30) {
 					// 5% chance to radically change opinion about a wish and change the sign
 					entry.setValue(-1 * entry.getValue());
 				}
@@ -100,11 +83,11 @@ public class WishMap {
 		});
 		// "adds" new wishes if low on wishes, desire randomly returns a positive or
 		// negative value or 0 (in which case no new wish is added)
-		long count = this.wishes.entrySet().stream().filter(e -> (e.getValue() == null && e.getValue() == 0)).count();
-		if (count > 10) {
+		long count = this.wishes.entrySet().stream().filter(e -> (e.getValue() == null || e.getValue() == 0)).count();
+		if (count > 12) {
 			this.wishes.entrySet().stream().forEach(entry -> {
-				if (entry.getValue() == null && entry.getValue() == 0) {
-					entry.setValue(this.desire());
+				if (entry.getValue() == null || entry.getValue() == 0) {
+					entry.setValue(desire());
 				}
 			});
 		}

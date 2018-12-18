@@ -26,10 +26,6 @@ public class Population {
 		return this.wishList;
 	}
 
-	private void sweetChristmas() {
-		wishList.yearEnd();
-	}
-
 	public int census() {
 		return this.people.size();
 	}
@@ -37,10 +33,8 @@ public class Population {
 	// average amount of wishes per person
 	public double avgWishes() {
 		int[] avg = { 0 };
-		this.people.stream().forEach(person -> {
-			avg[0] += person.getWishes().countWishes();
-		});
-		return (double) avg[0] / this.people.size();
+		this.people.stream().forEach(person -> avg[0] += person.getWishes().countWishes());
+		return (double) Math.round((double) avg[0] / this.people.size() * 100) / 100;
 	}
 
 	// average desire of wishes of all people
@@ -48,7 +42,14 @@ public class Population {
 	public double avgDesires() {
 		List<Double> avgList = new ArrayList<>();
 		this.people.stream().forEach(person -> avgList.add(person.getWishes().avgDesire()));
-		return avgList.stream().collect(Collectors.averagingDouble(d -> d));
+		return (double) Math.round(avgList.stream().collect(Collectors.averagingDouble(d -> d)) * 100) / 100;
+	}
+
+	public double avgNegatives() {
+		double[] c = { 0 };
+		this.people.stream().forEach(person -> c[0] += person.getWishes().getWishes().entrySet().stream()
+				.filter(entry -> entry.getValue() < 0).count());
+		return (double) Math.round(c[0] / this.people.size() * 100) / 100;
 	}
 
 	// average desires of positive wishes of all people
@@ -56,13 +57,19 @@ public class Population {
 		List<Integer> avgList = new ArrayList<>();
 		this.people.stream().forEach(person -> person.getWishes().getWishes().entrySet().stream()
 				.filter(entry -> entry.getValue() > 0).forEach(entry -> avgList.add(entry.getValue())));
-		return avgList.stream().collect(Collectors.averagingInt(i -> i));
+		return (double) Math.round(avgList.stream().collect(Collectors.averagingInt(i -> i)) * 100) / 100;
 	}
 
 	public void yearEnd() {
-		this.sweetChristmas();
+		wishList.yearEnd();
+		this.populationChanges();
+	}
+
+	private void populationChanges() {
+		int yearEndCount = this.people.size();
+		// population changes lead to a statistically growing population
 		this.people.removeIf(Person::mortality);
-		for (int i = 0; i < (int) (this.people.size() * Math.random() * 0.2); i++) {
+		for (int i = 0; i < (int) (yearEndCount * Math.max(0.17, Math.random())); i++) {
 			this.people.add(new Person());
 		}
 		this.people.stream().forEach(Person::yearEnd);
