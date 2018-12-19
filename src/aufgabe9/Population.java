@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@MadeBy
 public class Population {
 
 	private List<Person> people;
 	private WishList wishList;
 
+	@MadeBy
 	public Population() {
 		this.people = new ArrayList<>();
 		int census = (int) (Math.random() * 4000) + 10000;
@@ -65,6 +67,7 @@ public class Population {
 		this.populationChanges();
 	}
 
+	@MadeBy
 	private void populationChanges() {
 		int yearEndCount = this.people.size();
 		// population changes lead to a statistically growing population

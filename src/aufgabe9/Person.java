@@ -1,5 +1,6 @@
 package aufgabe9;
 
+@MadeBy(lastModification = "19.12.2018")
 public class Person {
 
 	private WishMap wishes;
@@ -23,8 +24,8 @@ public class Person {
 		return Math.random() <= 0.15;
 	}
 
-	public Person yearEnd() {
+	public void yearEnd() {
 		this.wishes.yearEnd();
-		return this;
+
 	}
 }

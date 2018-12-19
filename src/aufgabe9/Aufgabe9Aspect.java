@@ -1,5 +1,7 @@
 package aufgabe9;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 import org.aspectj.lang.*;
 import org.aspectj.lang.annotation.*;
@@ -7,9 +9,75 @@ import org.aspectj.lang.annotation.*;
 @Aspect
 public class Aufgabe9Aspect {
 
+	private void printAnnotation(Class<?> clazz) {
+
+		this.printMadeBy(this.getMadeBy(clazz.getAnnotation(MadeBy.class)));
+
+		if (clazz.getConstructors().length > 0) {
+			// not actually needed for our code but making it easier to extend the program
+			// seems important to whoever writes the feedback
+			if (clazz.getConstructors().length > 1)
+				System.out.println("This class has multiple constructors, the primary one is:");
+			// Note: interesting that constructors don't have getSimpleName()
+			if (clazz.getConstructors()[0].getAnnotation(MadeBy.class) != null) {
+				System.out.println("Constructor " + clazz.getConstructors()[0].getName() + ":");
+				this.printMadeBy(this.getMadeBy(clazz.getConstructors()[0].getAnnotation(MadeBy.class)));
+			}
+
+			Method[] methods = clazz.getDeclaredMethods();
+			// could use foreach for methods but that's prohibited, it's not streamable and
+			// so we sadly must resort to fori instead
+			for (int i = 0; i < methods.length; i++) {
+				if (methods[i] != null) {
+					if (methods[i].getAnnotation(MadeBy.class) != null) {
+						System.out.println("Method " + methods[i].getName() + ":");
+						this.printMadeBy(this.getMadeBy(methods[i].getAnnotation(MadeBy.class)));
+					}
+				}
+			}
+		}
+		System.out.println("\n");
+	}
+
+	private MadeBy getMadeBy(Annotation annotation) {
+		return (MadeBy) annotation;
+	}
+
+	private void printMadeBy(MadeBy madeBy) {
+		System.out.println("	Made by: " + madeBy.member().toString());
+		System.out.println("	Last modified: " + madeBy.lastModification());
+	}
+
 	@Before("execution (* Test.start(..))")
-	public void preStart() {
-		System.out.println("		Preface:");
+	public void preStart(JoinPoint joinpoint) {
+		System.out.println("		Who-made-what:");
+		// Note: since nothing in Aufgabe9Aspect is core it has no MadeBy annotation
+		if (Test.class.isAnnotationPresent(MadeBy.class)) {
+			System.out.println("Class " + Test.class.getSimpleName() + ":");
+			this.printAnnotation(Test.class);
+		}
+		if (Population.class.isAnnotationPresent(MadeBy.class)) {
+			System.out.println("Class " + Population.class.getSimpleName() + ":");
+			this.printAnnotation(Population.class);
+		}
+		if (Person.class.isAnnotationPresent(MadeBy.class)) {
+			System.out.println("Class " + Person.class.getSimpleName() + ":");
+			this.printAnnotation(Person.class);
+		}
+		if (WishMap.class.isAnnotationPresent(MadeBy.class)) {
+			System.out.println("Class " + WishMap.class.getSimpleName() + ":");
+			this.printAnnotation(WishMap.class);
+		}
+		if (WishList.class.isAnnotationPresent(MadeBy.class)) {
+			System.out.println("Class " + WishList.class.getSimpleName() + ":");
+			this.printAnnotation(WishList.class);
+		}
+		if (Organization.class.isAnnotationPresent(MadeBy.class)) {
+			System.out.println("Class " + Organization.class.getSimpleName() + ":");
+			this.printAnnotation(Organization.class);
+		}
+
+		System.out.println("\n" + "		Preface:");
 		System.out.println(
 				"The stats for all the wishes are showing rather small changes from year to year because each wish starts out with \n single digit values in year 0 in order not to randomly have a huge variance after organizations advertising.");
 		System.out.println(
@@ -20,11 +88,6 @@ public class Aufgabe9Aspect {
 				"Newly created people also come with the same amount of wishes as the people created in year 0 \n and each year at the end of the year a portion of the population dies (on avg 15%) and new people are created (on avg 17%)  \n which leads to a small and not entirely unrealistic population growth each year.");
 	}
 
-	@After("execution (* WishList.yearEnd(..))")
-	public void outputOrganization(JoinPoint joinpoint) {
-		this.printRep();
-	}
-
 	@Before("execution (* Population.yearEnd(..))")
 	public void outputCensus(JoinPoint joinpoint) {
 		this.printCensus();
@@ -33,6 +96,11 @@ public class Aufgabe9Aspect {
 	@Before("execution (* WishList.yearEnd(..))")
 	public void outputWishes(JoinPoint joinpoint) {
 		this.printWishStats();
+	}
+
+	@After("execution (* WishList.yearEnd(..))")
+	public void outputOrganization(JoinPoint joinpoint) {
+		this.printRep();
 	}
 
 	/*

@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import static java.util.Map.Entry.*;
 import static java.util.stream.Collectors.*;
 
+@MadeBy
 public class WishList {
 
 	private Population people;
 	private List<WishMap> wishList;
 
+	@MadeBy
 	public WishList(Population people) {
 		this.people = people;
 		this.wishList = new ArrayList<>();
@@ -28,6 +30,7 @@ public class WishList {
 		this.people.getPeople().stream().forEach(person -> this.wishList.add(person.getWishes()));
 	}
 
+	@MadeBy
 	private void topFive() {
 		this.people.getPeople().stream().forEach(person -> {
 			Map<Integer, Integer> sorted = person.getWishes().getWishes().entrySet().stream().sorted(comparingByValue())
@@ -58,6 +61,9 @@ public class WishList {
 		});
 	}
 
+	// Note: this is different from the other methods producing statistical data as
+	// it is required by Organization.analyzing()
+	@MadeBy
 	public double avgValue() {
 		double[] t = { 0 };
 		this.wishList.stream().forEach(wishMap -> t[0] += wishMap.getWishes().entrySet().stream()
@@ -66,6 +72,7 @@ public class WishList {
 		return t[0];
 	}
 
+	@MadeBy
 	public void yearEnd() {
 		/*
 		 * Note:

@@ -3,8 +3,10 @@ package aufgabe9;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+@MadeBy
 public class Organization {
 
+	@MadeBy
 	public Organization(Population people) {
 		this.people = people;
 		this.strategy = true;
@@ -29,6 +31,7 @@ public class Organization {
 	// focusing on only increasing desire, not creating new wishes
 	private boolean focused;
 
+	@MadeBy
 	private void portfolio() {
 		for (int i = 0; i < this.wishes.length; i++) {
 			int wish = (int) (Math.random() * 20);
@@ -71,6 +74,7 @@ public class Organization {
 		return this.people.getPeople().stream().collect(Collectors.averagingDouble(Person::getSusceptibility));
 	}
 
+	@MadeBy
 	public void influencing() {
 		this.analyzing();
 		/*
@@ -113,6 +117,7 @@ public class Organization {
 	 * checking for total overlap between own products and all topFive lists and
 	 * looking for strongly desired wishes
 	 */
+	@MadeBy
 	private void analyzing() {
 		// compare this.wishes to WishList after Christmas and make up rules for future
 		// strategy

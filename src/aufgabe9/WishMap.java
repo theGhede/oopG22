@@ -6,12 +6,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+@MadeBy
 public class WishMap {
 
 	private Map<Integer, Integer> wishes;
 	private Map<Integer, Integer> topFive;
 	private Person owner;
 
+	@MadeBy
 	public WishMap(Person owner) {
 		this.wishes = new HashMap<>();
 		this.topFive = new HashMap<>();
@@ -22,6 +24,7 @@ public class WishMap {
 		this.owner = owner;
 	}
 
+	@MadeBy
 	public static int desire() {
 		int desire = 0;
 		if (Math.random() > 0.4)
@@ -33,10 +36,6 @@ public class WishMap {
 
 	public Map<Integer, Integer> getWishes() {
 		return this.wishes;
-	}
-
-	public void setWishes(Map<Integer, Integer> wishes) {
-		this.wishes = wishes;
 	}
 
 	public Map<Integer, Integer> getTopFive() {
@@ -63,6 +62,7 @@ public class WishMap {
 		this.wishes.entrySet().stream().filter(entry -> entry.getValue() > 22).forEach(entry -> entry.setValue(0));
 	}
 
+	@MadeBy
 	public void yearEnd() {
 		this.frustrated();
 		// randomly adjusts some of the wishes

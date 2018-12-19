@@ -3,25 +3,20 @@ package aufgabe9;
 import java.util.ArrayList;
 import java.util.List;
 
+@MadeBy(lastModification = "19.12.2018")
 public class Test {
-	/*
-	 * TODO:
-	 * 
-	 * - custom annotations
-	 * 
-	 * - output workload distribution
-	 */
 
-	// these need to be visible for the Aspect
-	// package is the lowest visibility where this is the case
+	// some of these need to be visible for the Aspect
+	// (using default visibility package)
 	static Population population;
 	static List<Organization> industry;
-	static Organization org1;
-	static Organization org3;
-	static Organization org2;
+	private static Organization org1;
+	private static Organization org3;
+	private static Organization org2;
 	private final static int YEARS = 11;
 	static int currentYear = 0;
 
+	@MadeBy(lastModification = "19.12.2018")
 	public static void start() {
 		population = new Population();
 		org1 = new Organization(population);
@@ -36,9 +31,7 @@ public class Test {
 				currentYear = i;
 			System.out.println("\n" + "		YEAR " + currentYear + ":");
 			if (i > 0) {
-				org1.influencing();
-				org2.influencing();
-				org3.influencing();
+				industry.stream().forEach(Organization::influencing);
 			}
 			population.yearEnd();
 		}
