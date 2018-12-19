@@ -3,6 +3,9 @@ package aufgabe9;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+
+import Aufgabe9.MadeBy;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,7 +13,7 @@ import java.util.ArrayList;
 
 import static java.util.stream.Collectors.*;
 
-@MadeBy
+@MadeBy(lastModification = "19.12.2018")
 public class WishList {
 
 	private Population people;
