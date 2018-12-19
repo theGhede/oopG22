@@ -2,6 +2,7 @@ package aufgabe9;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @MadeBy(lastModification = "19.12.2018")
 public class Test {
@@ -13,7 +14,7 @@ public class Test {
 	private static Organization org1;
 	private static Organization org3;
 	private static Organization org2;
-	private final static int YEARS = 11;
+	private final static int YEARS = 10;
 	static int currentYear = 0;
 
 	@MadeBy(lastModification = "19.12.2018")
@@ -26,7 +27,8 @@ public class Test {
 		industry.add(org1);
 		industry.add(org2);
 		industry.add(org3);
-		for (int i = 0; i < YEARS; i++) {
+
+		IntStream.rangeClosed(0, YEARS).forEach(i -> {
 			if (i > 0)
 				currentYear = i;
 			System.out.println("\n" + "		YEAR " + currentYear + ":");
@@ -34,7 +36,7 @@ public class Test {
 				industry.stream().forEach(Organization::influencing);
 			}
 			population.yearEnd();
-		}
+		});
 	}
 
 	public static void main(String[] args) {

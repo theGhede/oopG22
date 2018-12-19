@@ -3,11 +3,11 @@ package aufgabe9;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-import static java.util.Map.Entry.*;
 import static java.util.stream.Collectors.*;
 
 @MadeBy
@@ -33,7 +33,8 @@ public class WishList {
 	@MadeBy
 	private void topFive() {
 		this.people.getPeople().stream().forEach(person -> {
-			Map<Integer, Integer> sorted = person.getWishes().getWishes().entrySet().stream().sorted(comparingByValue())
+			Map<Integer, Integer> sorted = person.getWishes().getWishes().entrySet().stream()
+					.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
 					.collect(toMap(Entry::getKey, Entry::getValue, (elem1, elem2) -> elem2, LinkedHashMap::new));
 			person.getWishes().getTopFive().clear();
 			/*
@@ -51,13 +52,10 @@ public class WishList {
 			 * toArray() and told me that I can't be sure either but afterwards says
 			 * "yes, of course these are Integers".
 			 */
-			Object[] keys = sorted.keySet().toArray();
-			Object[] values = sorted.values().toArray();
-			int c = Math.max(5, keys.length - 1);
-			while (c > 0) {
-				person.getWishes().getTopFive().put((Integer) keys[c], (Integer) values[c]);
-				c--;
-			}
+
+			sorted.entrySet().stream().limit(5).forEach(entry -> {
+				person.getWishes().getTopFive().put(entry.getKey(), entry.getValue());
+			});
 		});
 	}
 
